@@ -20,7 +20,7 @@ export const Panel: FunctionComponent = ({ children }) => {
 
   return (
     <div
-      className="w-64 z-50 fixed top-0 shadow-lg min-h-screen bg-gray-800 text-white"
+      className="flex flex-col w-64 z-50 fixed top-0 shadow-lg min-h-screen bg-gray-800 text-white"
       style={{
         left: isOpen ? 0 : "-16em",
         transition: "left 0.2s"
