@@ -1,4 +1,5 @@
 import { groupBy } from "lodash-es";
+import { classNameGroups } from "./classNameGroups";
 
 const cssRules = Array.from(document.styleSheets);
 
@@ -52,14 +53,25 @@ export const useRules = (query: string) => {
   });
 
   const groupedRules = Object.entries(
-    groupBy(filteredRules, (rule: CSSStyleRule) => {
-      return rule.style.cssText
-        .split(";")
-        .filter(Boolean)
-        .map(style => style.split(":").shift())
-        .filter(Boolean)
-        .join(", ");
-    })
+    groupBy(
+      // Remove :hover, :active, etc.
+      filteredRules.filter(
+        (rule: CSSStyleRule) => rule.selectorText.indexOf(":") === -1
+      ),
+      (rule: CSSStyleRule) => {
+        const { selectorText } = rule;
+
+        for (const className in classNameGroups) {
+          if (selectorText.startsWith(className)) {
+            return classNameGroups[className];
+          }
+        }
+
+        console.warn(`${selectorText} does not belong to a group`);
+
+        return "Other";
+      }
+    )
   )
     // Remove properties that can't be applied (e.g. touch)
     .filter(([properties]) => Boolean(properties))
