@@ -48,27 +48,23 @@ export const RuleInspector: FunctionComponent<RuleInspectorProps> = ({
       />
 
       <ul className="pb-2 list-reset overflow-auto">
-        <li>
-          <ol>
-            <label className="shadow-inner sticky pin-t block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black">
-              Current Styles
-            </label>
+        <label className="shadow-inner sticky top-0 block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black">
+          Current Styles
+        </label>
 
-            {elementRules.map((rule: CSSStyleRule) => (
-              <Rule
-                key={rule.selectorText}
-                onClick={handleClick(rule)}
-                onMouseEnter={handleMouseEnter(rule)}
-                onMouseLeave={handleMouseLeave(rule)}
-                rule={rule}
-              />
-            ))}
-          </ol>
-        </li>
+        {elementRules.map((rule: CSSStyleRule) => (
+          <Rule
+            key={rule.selectorText}
+            onClick={handleClick(rule)}
+            onMouseEnter={handleMouseEnter(rule)}
+            onMouseLeave={handleMouseLeave(rule)}
+            rule={rule}
+          />
+        ))}
 
         {groupedRules.map(([name, rules]) => (
           <li key={name}>
-            <label className="shadow-inner sticky pin-t block text-sm px-2 py-1 my-2 tracking-wide bg-black">
+            <label className="shadow-inner sticky top-0 block text-sm px-2 py-1 my-2 tracking-wide bg-black">
               {name}
               <small className="float-right rounded bg-black px-1 py-px bg-gray-900">
                 {rules.length}
