@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Inspector } from "./components/Inspector/";
+import { App } from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <Inspector root={document.getElementById("root")} />,
+  <App />,
   document.body.appendChild(document.createElement("div"))
 );
 

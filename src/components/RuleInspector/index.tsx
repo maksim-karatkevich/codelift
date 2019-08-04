@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 import { useRules } from "./useRules";
 import { useElementRules } from "./useElementRules";

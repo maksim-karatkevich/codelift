@@ -1,14 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
+import { useStore } from "../App";
+
 type SelectorProps = {
-  root: HTMLElement;
   onSelect: (element: HTMLElement) => void;
 };
 
-export const Selector: FunctionComponent<SelectorProps> = ({
-  root,
-  onSelect
-}) => {
+export const Selector: FunctionComponent<SelectorProps> = ({ onSelect }) => {
+  const store = useStore();
   const [rect, setRect] = useState();
 
   useEffect(() => {
@@ -23,12 +22,12 @@ export const Selector: FunctionComponent<SelectorProps> = ({
       setRect(target.getBoundingClientRect());
     };
 
-    root.addEventListener("mousemove", handleMouseMove);
-    root.addEventListener("click", handleClick);
+    store.root.addEventListener("mousemove", handleMouseMove);
+    store.root.addEventListener("click", handleClick);
 
     return () => {
-      root.removeEventListener("click", handleClick);
-      root.removeEventListener("mousemove", handleMouseMove);
+      store.root.removeEventListener("click", handleClick);
+      store.root.removeEventListener("mousemove", handleMouseMove);
     };
   });
 
