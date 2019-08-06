@@ -4,6 +4,7 @@ import { AppStore } from "./AppStore";
 import { Inspector } from "../Inspector";
 
 const store = AppStore.create({
+  isEnabled: true,
   rootSelector: "#root",
   targetSelector: "form button"
 });
