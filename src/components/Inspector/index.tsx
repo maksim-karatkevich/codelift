@@ -14,13 +14,5 @@ export const Inspector: FunctionComponent = observer(() => {
     return null;
   }
 
-  return (
-    <Panel>
-      {store.target ? (
-        <RuleInspector element={store.target} />
-      ) : (
-        <Selector onSelect={store.setTarget} />
-      )}
-    </Panel>
-  );
+  return <Panel>{store.target ? <RuleInspector /> : <Selector />}</Panel>;
 });

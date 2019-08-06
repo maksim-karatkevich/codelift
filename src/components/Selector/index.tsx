@@ -2,11 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 
 import { useStore } from "../App";
 
-type SelectorProps = {
-  onSelect: (element: HTMLElement) => void;
-};
-
-export const Selector: FunctionComponent<SelectorProps> = ({ onSelect }) => {
+export const Selector: FunctionComponent = () => {
   const store = useStore();
   const [rect, setRect] = useState();
 
@@ -14,7 +10,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({ onSelect }) => {
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
-      onSelect(target);
+      store.setTarget(target);
     };
     const handleMouseMove = (event: MouseEvent) => {
       const target = event.target as HTMLElement;

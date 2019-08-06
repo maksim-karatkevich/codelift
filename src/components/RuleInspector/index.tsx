@@ -1,90 +1,41 @@
-import React, { FunctionComponent, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { FunctionComponent } from "react";
 
-import { useRules } from "./useRules";
-import { useElementRules } from "./useElementRules";
-import { Rule } from "../Rule";
+import { useStore } from "../App";
 
-type RuleInspectorProps = {
-  element: HTMLElement;
-};
+import { Rule } from "./Rule";
 
-export const RuleInspector: FunctionComponent<RuleInspectorProps> = ({
-  element
-}) => {
-  const [query, setQuery] = useState();
-  const { filteredRules, groupedRules } = useRules(query);
-  const [elementRules, dispatch] = useElementRules(element, filteredRules);
-
-  const handleClick = (rule: CSSStyleRule) => () => {
-    dispatch({
-      type: elementRules.includes(rule) ? "remove" : "add",
-      rule
-    });
-    setQuery(undefined);
-  };
-
-  const handleMouseEnter = (rule: CSSStyleRule) => () => {
-    dispatch({
-      type: elementRules.includes(rule) ? "hide" : "show",
-      rule
-    });
-  };
-
-  const handleMouseLeave = (rule: CSSStyleRule) => () => {
-    dispatch({
-      type: elementRules.includes(rule) ? "show" : "hide",
-      rule
-    });
-  };
+export const RuleInspector: FunctionComponent = observer(() => {
+  const store = useStore();
 
   return (
     <>
       <input
         autoFocus
         className="text-black shadow-md bg-gray-700 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
-        onChange={event => setQuery(event.target.value)}
-        defaultValue={query}
+        onChange={event => store.setQuery(event.target.value)}
+        defaultValue={store.query}
         placeholder="Search..."
       />
 
       <ul className="pb-2 list-reset overflow-auto">
         <label className="shadow-inner sticky top-0 block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black">
-          Current Styles
+          Element Styles
         </label>
 
-        {elementRules.map((rule: CSSStyleRule) => (
-          <Rule
-            key={rule.selectorText}
-            onClick={handleClick(rule)}
-            onMouseEnter={handleMouseEnter(rule)}
-            onMouseLeave={handleMouseLeave(rule)}
-            rule={rule}
-          />
+        {store.targetRules.map((rule: CSSStyleRule) => (
+          <Rule key={rule.selectorText} rule={rule} />
         ))}
 
-        {groupedRules.map(([name, rules]) => (
-          <li key={name}>
-            <label className="shadow-inner sticky top-0 block text-sm px-2 py-1 my-2 tracking-wide bg-black">
-              {name}
-              <small className="float-right rounded bg-black px-1 py-px bg-gray-900">
-                {rules.length}
-              </small>
-            </label>
+        <label className="shadow-inner sticky top-0 block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black">
+          Other Styles
+        </label>
 
-            <ol>
-              {rules.map(rule => (
-                <Rule
-                  key={rule.selectorText}
-                  onClick={handleClick(rule)}
-                  onMouseEnter={handleMouseEnter(rule)}
-                  onMouseLeave={handleMouseLeave(rule)}
-                  rule={rule}
-                />
-              ))}
-            </ol>
-          </li>
+        {/* @TODO Grouped /classes */}
+        {store.rules.slice(200, 215).map(rule => (
+          <Rule key={rule.selectorText} rule={rule} />
         ))}
       </ul>
     </>
   );
-};
+});
