@@ -1,30 +1,54 @@
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
-import { AppStore } from "./AppStore";
 import { Inspector } from "../Inspector";
+import { Panel } from "../Panel";
+import { Selector } from "../Selector";
 
-const store = AppStore.create({
-  isEnabled: true,
-  rootSelector: "#root",
-  targetSelector: "form button"
-});
-
-export const AppContext = React.createContext(store);
-
-export const useStore = () => {
-  return useContext(AppContext);
+type AppProps = {
+  defaultEnabled?: boolean;
+  defaultTarget?: HTMLElement;
+  root: HTMLElement;
 };
 
-export const App: FunctionComponent = () => {
-  useEffect(() => {
-    window.addEventListener("keydown", store.handleKeyPress);
+export const App: FunctionComponent<AppProps> = ({
+  defaultEnabled = false,
+  defaultTarget,
+  root
+}) => {
+  const [isEnabled, setIsEnabled] = useState(defaultEnabled);
+  const [target, setTarget] = useState(defaultTarget);
 
-    return () => window.removeEventListener("keydown", store.handleKeyPress);
-  }, []);
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const { key } = event;
+
+      if (key === "/" && !isEnabled) {
+        event.preventDefault();
+
+        return setIsEnabled(true);
+      }
+
+      if (key === "Escape") {
+        target ? setTarget(undefined) : setIsEnabled(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [isEnabled, target]);
+
+  if (!isEnabled) {
+    return null;
+  }
 
   return (
-    <AppContext.Provider value={store}>
-      <Inspector />
-    </AppContext.Provider>
+    <Panel>
+      {target ? (
+        <Inspector element={target} />
+      ) : (
+        <Selector onSelect={setTarget} root={root} />
+      )}
+    </Panel>
   );
 };

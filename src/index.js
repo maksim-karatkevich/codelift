@@ -5,7 +5,11 @@ import { App } from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <App />,
+  <App
+    defaultEnabled={true}
+    defaultTarget={document.querySelector("form button")}
+    root={document.querySelector("#root")}
+  />,
   document.body.appendChild(document.createElement("div"))
 );
 

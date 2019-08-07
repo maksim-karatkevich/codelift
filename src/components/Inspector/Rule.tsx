@@ -1,59 +1,45 @@
-import { observer } from "mobx-react-lite";
 import React, { FunctionComponent, useState, useEffect } from "react";
 
-import { useStore } from "../App";
-
 type RuleProps = {
-  rule: CSSStyleRule;
+  className: string;
+  element: HTMLElement;
 };
 
 // @TODO Store classes in the state tree for previewing
 // { "bg-blue-500": false, "bg-pink-900": true }
 // Disable any existing classes that share the same rule cssText
-export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
-  const store = useStore();
+export const Rule: FunctionComponent<RuleProps> = ({ className, element }) => {
   const [preview, setPreview] = useState(false);
   const [toggled, setToggled] = useState(false);
-  const hasRule = store.targetRules.includes(rule);
-  const className = store.getRuleClassName(rule);
+  const [hasRule] = useState([...element.classList].includes(className));
+
+  // const className = store.getRuleClassName(rule);
 
   // Preview class change when rule has not been toggled yet
   useEffect(() => {
-    const { target } = store;
-
-    console.log({ className, preview, toggled });
-
-    if (target && preview && !toggled) {
+    if (preview && !toggled) {
       hasRule
-        ? target.classList.remove(className)
-        : target.classList.add(className);
+        ? element.classList.remove(className)
+        : element.classList.add(className);
     }
-  }, [className, preview, toggled]);
+  }, [className, element, hasRule, preview, toggled]);
 
   // Commit class change when toggled
   useEffect(() => {
-    const { target } = store;
-
-    console.log({ className, toggled });
-
-    if (target && toggled) {
+    if (toggled) {
       hasRule
-        ? target.classList.remove(className)
-        : target.classList.add(className);
+        ? element.classList.remove(className)
+        : element.classList.add(className);
     }
-  }, [className, toggled]);
+  }, [className, element, hasRule, toggled]);
 
   // Re-instate classes that were changed when previewed on unmount
   useEffect(() => {
-    const { target } = store;
-
     return () => {
-      if (target) {
-        if (preview && !toggled) {
-          hasRule
-            ? target.classList.add(className)
-            : target.classList.remove(className);
-        }
+      if (preview && !toggled) {
+        hasRule
+          ? element.classList.add(className)
+          : element.classList.remove(className);
       }
     };
   });
@@ -76,8 +62,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
             : "opacity-50"
         }`}
       >
-        {store.getRuleClassName(rule)}
+        {className}
       </label>
     </li>
   );
-});
+};

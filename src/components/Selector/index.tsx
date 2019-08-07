@@ -1,29 +1,33 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
-import { useStore } from "../App";
+type SelectorProps = {
+  onSelect: (element: HTMLElement) => void;
+  root: HTMLElement;
+};
 
-export const Selector: FunctionComponent = () => {
-  const store = useStore();
+export const Selector: FunctionComponent<SelectorProps> = ({
+  onSelect,
+  root
+}) => {
   const [rect, setRect] = useState();
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-
-      store.setTarget(target);
+      onSelect(event.target as HTMLElement);
     };
+
     const handleMouseMove = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
       setRect(target.getBoundingClientRect());
     };
 
-    store.root.addEventListener("mousemove", handleMouseMove);
-    store.root.addEventListener("click", handleClick);
+    root.addEventListener("mousemove", handleMouseMove);
+    root.addEventListener("click", handleClick);
 
     return () => {
-      store.root.removeEventListener("click", handleClick);
-      store.root.removeEventListener("mousemove", handleMouseMove);
+      root.removeEventListener("click", handleClick);
+      root.removeEventListener("mousemove", handleMouseMove);
     };
   });
 
