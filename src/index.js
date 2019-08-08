@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Inspector } from "./components/Inspector/";
+import { App } from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <Inspector root={document.getElementById("root")} />,
+  <App
+    defaultEnabled={true}
+    defaultTarget={document.querySelector("form button")}
+    root={document.querySelector("#root")}
+  />,
   document.body.appendChild(document.createElement("div"))
 );
 

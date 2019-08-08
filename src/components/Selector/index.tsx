@@ -1,22 +1,21 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
 type SelectorProps = {
-  root: HTMLElement;
   onSelect: (element: HTMLElement) => void;
+  root: HTMLElement;
 };
 
 export const Selector: FunctionComponent<SelectorProps> = ({
-  root,
-  onSelect
+  onSelect,
+  root
 }) => {
   const [rect, setRect] = useState();
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-
-      onSelect(target);
+      onSelect(event.target as HTMLElement);
     };
+
     const handleMouseMove = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
