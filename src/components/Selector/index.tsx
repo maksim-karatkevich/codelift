@@ -1,6 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { Tree } from "./Tree";
+
 type SelectorProps = {
   onSelect: (element: HTMLElement) => void;
   root: HTMLElement;
@@ -11,6 +13,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({
   root
 }) => {
   const [rect, setRect] = useState();
+  const [target, setTarget] = useState();
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -18,9 +21,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-
-      setRect(target.getBoundingClientRect());
+      setTarget(event.target as HTMLElement);
     };
 
     root.addEventListener("mousemove", handleMouseMove);
@@ -31,6 +32,12 @@ export const Selector: FunctionComponent<SelectorProps> = ({
       root.removeEventListener("mousemove", handleMouseMove);
     };
   });
+
+  useEffect(() => {
+    if (target) {
+      setRect(target.getBoundingClientRect());
+    }
+  }, [target]);
 
   return (
     <>
@@ -44,6 +51,13 @@ export const Selector: FunctionComponent<SelectorProps> = ({
           <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
         </svg>
       </p>
+
+      <Tree
+        root={root}
+        onHover={setTarget}
+        onSelect={onSelect}
+        target={target}
+      />
 
       {rect &&
         createPortal(
