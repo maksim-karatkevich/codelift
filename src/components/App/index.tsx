@@ -11,7 +11,7 @@ type AppProps = {
 };
 
 export const App: FunctionComponent<AppProps> = ({
-  defaultEnabled = false,
+  defaultEnabled = true,
   defaultTarget,
   root = document.querySelector("#root") as HTMLElement
 }) => {
