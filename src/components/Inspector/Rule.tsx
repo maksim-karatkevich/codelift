@@ -3,12 +3,17 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 type RuleProps = {
   className: string;
   element: HTMLElement;
+  onAdd?: (className: string) => void;
 };
 
 // @TODO Store classes in the state tree for previewing
 // { "bg-blue-500": false, "bg-pink-900": true }
 // Disable any existing classes that share the same rule cssText
-export const Rule: FunctionComponent<RuleProps> = ({ className, element }) => {
+export const Rule: FunctionComponent<RuleProps> = ({
+  className,
+  element,
+  onAdd
+}) => {
   const [preview, setPreview] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [hasRule] = useState([...element.classList].includes(className));
@@ -27,11 +32,17 @@ export const Rule: FunctionComponent<RuleProps> = ({ className, element }) => {
   // Commit class change when toggled
   useEffect(() => {
     if (toggled) {
-      hasRule
-        ? element.classList.remove(className)
-        : element.classList.add(className);
+      if (hasRule) {
+        element.classList.remove(className);
+      } else {
+        element.classList.add(className);
+
+        if (onAdd) {
+          onAdd(className);
+        }
+      }
     }
-  }, [className, element, hasRule, toggled]);
+  }, [className, element, hasRule, onAdd, toggled]);
 
   // Re-instate classes that were changed when previewed on unmount
   useEffect(() => {
