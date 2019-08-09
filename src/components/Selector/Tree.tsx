@@ -16,8 +16,8 @@ export const Tree: FunctionComponent<TreeProps> = ({
   const children = [...root.children] as HTMLElement[];
   const tagName = root.tagName.toLowerCase();
   const isSelfClosing = children.length === 0;
-  const handleClick = useCallback(() => onSelect(root), [root]);
-  const handleMouseEnter = useCallback(() => onHover(root), [root]);
+  const handleClick = useCallback(() => onSelect(root), [onSelect, root]);
+  const handleMouseEnter = useCallback(() => onHover(root), [onHover, root]);
 
   return (
     <ol
