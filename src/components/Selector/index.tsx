@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type SelectorProps = {
   onSelect: (element: HTMLElement) => void;
@@ -44,21 +45,23 @@ export const Selector: FunctionComponent<SelectorProps> = ({
         </svg>
       </p>
 
-      {rect && (
-        <div
-          className="fixed top-0 left-0 w-full h-full bg-gray-600 opacity-50 pointer-events-none text-black"
-          style={{
-            clipPath: `polygon(0 0, 100% 0, 100% 100%, ${rect.right}px 100%, ${
-              rect.right
-            }px ${rect.top}px, ${rect.left}px ${rect.top}px, ${rect.left}px ${
-              rect.bottom
-            }px, ${rect.right}px ${rect.bottom}px, ${
-              rect.right
-            }px 100%, 0 100%)`,
-            transition: "all 200ms ease-out"
-          }}
-        />
-      )}
+      {rect &&
+        createPortal(
+          <div
+            className="fixed top-0 left-0 w-full h-full bg-gray-600 opacity-50 pointer-events-none text-black z-40"
+            style={{
+              clipPath: `polygon(0 0, 100% 0, 100% 100%, ${
+                rect.right
+              }px 100%, ${rect.right}px ${rect.top}px, ${rect.left}px ${
+                rect.top
+              }px, ${rect.left}px ${rect.bottom}px, ${rect.right}px ${
+                rect.bottom
+              }px, ${rect.right}px 100%, 0 100%)`,
+              transition: "all 200ms ease-out"
+            }}
+          />,
+          root
+        )}
     </>
   );
 };
