@@ -29,7 +29,11 @@ export const searchMeta = cssRules
   })
   .map(rule => {
     const { selectorText } = rule;
-    const className = selectorText.slice(1);
+    const className = selectorText
+      .slice(1)
+      .split("\\/")
+      .join("/");
+
     const words = className.split("-");
 
     let group;
