@@ -7,13 +7,13 @@ import { Selector } from "../Selector";
 type AppProps = {
   defaultEnabled?: boolean;
   defaultTarget?: HTMLElement;
-  root: HTMLElement;
+  root?: HTMLElement;
 };
 
 export const App: FunctionComponent<AppProps> = ({
   defaultEnabled = false,
   defaultTarget,
-  root
+  root = document.querySelector("#root") as HTMLElement
 }) => {
   const [isEnabled, setIsEnabled] = useState(defaultEnabled);
   const [target, setTarget] = useState(defaultTarget);
