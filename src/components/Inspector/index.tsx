@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useCallback, useRef, useState } from "react";
 
 import { Rule } from "./Rule";
 import { useSearch } from "./useSearch";
@@ -10,6 +10,14 @@ type InspectorProps = {
 export const Inspector: FunctionComponent<InspectorProps> = ({ element }) => {
   const [query, setQuery] = useState("");
   const { elementResults, groupedResults } = useSearch(element, query);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const resetQuery = useCallback(() => {
+    setQuery("");
+
+    if (searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, []);
 
   return (
     <>
@@ -17,8 +25,9 @@ export const Inspector: FunctionComponent<InspectorProps> = ({ element }) => {
         autoFocus
         className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
         onChange={event => setQuery(event.target.value)}
-        defaultValue={query}
         placeholder="Search..."
+        ref={searchRef}
+        value={query}
       />
 
       <ul className="pb-2 list-reset overflow-auto">
@@ -62,6 +71,7 @@ export const Inspector: FunctionComponent<InspectorProps> = ({ element }) => {
                     key={`className-${className}`}
                     className={className}
                     element={element}
+                    onAdd={resetQuery}
                   />
                 ))}
               </React.Fragment>
