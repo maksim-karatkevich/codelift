@@ -21,7 +21,6 @@ export const App: FunctionComponent<AppProps> = ({
       const { key } = event;
 
       if (key === "/" && current.matches("hidden")) {
-        // TODO Should this go in the machine?
         event.preventDefault();
         send("SHOW");
       } else if (key === "Escape") {
