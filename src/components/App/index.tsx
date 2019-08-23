@@ -1,53 +1,49 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { useMachine } from "@xstate/react";
+import React, { FunctionComponent, useEffect } from "react";
 
 import { Inspector } from "../Inspector";
+import { machine } from "./machine";
 import { Panel } from "../Panel";
 import { Selector } from "../Selector";
 
 type AppProps = {
-  defaultEnabled?: boolean;
-  defaultTarget?: HTMLElement;
   root?: HTMLElement;
 };
 
 export const App: FunctionComponent<AppProps> = ({
-  defaultEnabled = true,
-  defaultTarget,
   root = document.querySelector("#root") as HTMLElement
 }) => {
-  const [isEnabled, setIsEnabled] = useState(defaultEnabled);
-  const [target, setTarget] = useState(defaultTarget);
+  const [current, send] = useMachine(machine);
+  const target = (current.context.target as unknown) as HTMLElement;
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const { key } = event;
 
-      if (key === "/" && !isEnabled) {
+      if (key === "/" && current.matches("hidden")) {
+        // TODO Should this go in the machine?
         event.preventDefault();
-
-        return setIsEnabled(true);
-      }
-
-      if (key === "Escape") {
-        target ? setTarget(undefined) : setIsEnabled(false);
+        send("SHOW");
+      } else if (key === "Escape") {
+        send("CANCEL");
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
 
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [isEnabled, target]);
+  }, [current, send]);
 
-  if (!isEnabled) {
+  if (current.matches("hidden")) {
     return null;
   }
 
   return (
     <Panel>
-      {target ? (
+      {current.matches("inspecting") ? (
         <Inspector element={target} />
       ) : (
-        <Selector onSelect={setTarget} root={root} />
+        <Selector onSelect={target => send("SELECT", { target })} root={root} />
       )}
     </Panel>
   );
