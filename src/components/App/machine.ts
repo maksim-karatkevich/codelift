@@ -1,6 +1,6 @@
 import { assign, Machine } from "xstate";
 
-export const { machine } = Machine(
+export const machine = Machine(
   {
     id: "app",
     initial: "hidden",
