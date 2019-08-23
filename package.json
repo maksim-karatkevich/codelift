@@ -9,12 +9,14 @@
     "@types/node": "^12.6.9",
     "@types/react": "^16.8.24",
     "@types/react-dom": "^16.8.5",
+    "@xstate/react": "^0.7.0",
     "lodash-es": "^4.17.15",
     "match-sorter": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "xstate": "^4.6.7"
   },
   "scripts": {
     "start": "react-scripts start",
