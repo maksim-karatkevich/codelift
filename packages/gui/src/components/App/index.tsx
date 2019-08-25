@@ -18,8 +18,9 @@ export const App: FunctionComponent = () => {
 
     document.domain = "localhost";
 
-    // @ts-ignore
-    setRoot(iframe.current.contentWindow.document.querySelector("body"));
+    if (iframe && iframe.current && iframe.current.contentWindow) {
+      setRoot(iframe.current.contentWindow.document.querySelector("body"));
+    }
   }, [isLoaded]);
 
   useEffect(() => {
