@@ -4,6 +4,11 @@ import ReactDOM from "react-dom";
 import { App } from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
+// Allow access from GUI on another port
+if (process.env.NODE_ENV === "development") {
+  document.domain = window.location.hostname;
+}
+
 ReactDOM.render(
   <App />,
   document.body.appendChild(document.createElement("div"))
