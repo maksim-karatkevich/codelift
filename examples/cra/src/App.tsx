@@ -132,9 +132,9 @@ const App: React.FC = () => {
 
         <div className="md:w-1/2 rounded shadow-lg bg-white">
           <img
-            className="w-full"
-            src="https://tailwindcss.com/img/card-top.jpg"
             alt="Sunset in the mountains"
+            className="w-full"
+            src={require("./card-top.jpg")}
           />
           <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
