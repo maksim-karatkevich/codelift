@@ -53,7 +53,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({
       {rect &&
         createPortal(
           <div
-            className="fixed top-0 left-0 w-full h-full bg-gray-600 opacity-50 pointer-events-none text-black z-40"
+            className="fixed top-0 left-64 w-full h-full bg-gray-600 opacity-50 pointer-events-none text-black z-40"
             style={{
               clipPath: `polygon(0 0, 100% 0, 100% 100%, ${
                 rect.right
@@ -65,7 +65,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({
               transition: "all 200ms ease-out"
             }}
           />,
-          root
+          document.body
         )}
     </>
   );
