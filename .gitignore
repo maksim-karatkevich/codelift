@@ -1,0 +1,2 @@
+# Ignore yarn workspace modules
+/node_modules
