@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { App } from "./components/App";
+import "tailwindcss/dist/tailwind.css";
+
 import * as serviceWorker from "./serviceWorker";
 
 // Allow access from GUI on another port
@@ -10,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 ReactDOM.render(
-  <App />,
+  <span />,
   document.body.appendChild(document.createElement("div"))
 );
 
