@@ -1,40 +1,15 @@
 {
-  "name": "tailwindcss-gui",
-  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/jest": "^24.0.16",
-    "@types/lodash-es": "^4.17.3",
-    "@types/match-sorter": "^2.3.0",
-    "@types/node": "^12.6.9",
-    "@types/react": "^16.8.24",
-    "@types/react-dom": "^16.8.5",
-    "lodash-es": "^4.17.15",
-    "match-sorter": "^4.0.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
-    "typescript": "^3.5.3"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "concurrently yarn:start-cra yarn:start-gui",
+    "start-cra": "cd examples/cra && PORT=3000 yarn start",
+    "start-gui": "cd packages/gui && PORT=4000 yarn start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "workspaces": [
+    "examples/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^4.1.2"
   }
 }
