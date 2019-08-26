@@ -67,7 +67,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <a
-              href="#"
+              href="#responsive-header"
               className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 md:mt-0"
             >
               Download
@@ -119,7 +119,7 @@ const App: React.FC = () => {
               </button>
               <a
                 className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
+                href="#responsive-header"
               >
                 Lost Password?
               </a>
