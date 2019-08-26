@@ -1,9 +1,19 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
+import { useMutation } from "urql";
 
 type RuleProps = {
   className: string;
   element: HTMLElement;
   onAdd?: (className: string) => void;
+};
+
+const getReactElement = (element: HTMLElement) => {
+  for (const key in element) {
+    if (key.startsWith("__reactInternalInstance$")) {
+      // @ts-ignore
+      return element[key];
+    }
+  }
 };
 
 // @TODO Store classes in the state tree for previewing
@@ -14,6 +24,20 @@ export const Rule: FunctionComponent<RuleProps> = ({
   element,
   onAdd
 }) => {
+  const [res, toggleClassName] = useMutation(`
+    mutation ToggleClassName(
+      $className: String!
+      $fileName: String!
+      $lineNumber: Int!
+    ) {
+      toggleClassName(
+        className: $className
+        fileName: $fileName
+        lineNumber: $lineNumber
+      )
+    }
+  `);
+
   const [preview, setPreview] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [hasRule] = useState([...element.classList].includes(className));
@@ -32,6 +56,21 @@ export const Rule: FunctionComponent<RuleProps> = ({
   // Commit class change when toggled
   useEffect(() => {
     if (toggled) {
+      const reactElement = getReactElement(element);
+
+      if (reactElement) {
+        const { _debugSource } = reactElement;
+
+        if (!_debugSource) {
+          throw new Error(`Selected element is missing _debugSource property`);
+        }
+
+        toggleClassName({
+          ..._debugSource,
+          className
+        });
+      }
+
       if (hasRule) {
         element.classList.remove(className);
       } else {
