@@ -1,4 +1,4 @@
-import { groupBy, intersection } from "lodash-es";
+import { groupBy, intersection } from "lodash";
 import matchSorter, { rankings } from "match-sorter";
 import { useMemo } from "react";
 

@@ -2,31 +2,25 @@
   "name": "gui",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1",
-    "tailwindcss": "^1.1.2"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@types/jscodeshift": "^0.6.2",
+    "@types/lodash": "^4.14.137",
+    "@types/match-sorter": "^2.3.0",
+    "@zeit/next-css": "^1.0.1",
+    "apollo-server-micro": "^2.9.0",
+    "graphql": "^14.5.3",
+    "jscodeshift": "^0.6.4",
+    "lodash": "^4.17.15",
+    "match-sorter": "^4.0.1",
+    "next": "9.0.5",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "tailwindcss": "^1.1.2",
+    "urql": "^1.4.0"
   }
 }

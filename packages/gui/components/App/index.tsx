@@ -1,8 +1,13 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import { createClient, Provider } from "urql";
 
 import { Inspector } from "../Inspector";
 import { Panel } from "../Panel";
 import { Selector } from "../Selector";
+
+const client = createClient({
+  url: "/api"
+});
 
 export const App: FunctionComponent = () => {
   const iframe = useRef<HTMLIFrameElement>(null);
@@ -44,7 +49,7 @@ export const App: FunctionComponent = () => {
   }, [isEnabled, target]);
 
   return (
-    <>
+    <Provider value={client}>
       {isEnabled ? (
         <Panel>
           {target ? (
@@ -66,6 +71,6 @@ export const App: FunctionComponent = () => {
         src="http://localhost:3000/"
         title="Source"
       />
-    </>
+    </Provider>
   );
 };

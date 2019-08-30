@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "concurrently yarn:start-cra yarn:start-gui",
-    "start-cra": "cd examples/cra && PORT=3000 yarn start",
-    "start-gui": "cd packages/gui && PORT=4000 yarn start"
+    "dev": "concurrently yarn:dev-cra yarn:dev-gui",
+    "dev-cra": "cd examples/cra && yarn start",
+    "dev-gui": "cd packages/gui && yarn dev -p 4000"
   },
   "workspaces": [
     "examples/*",
