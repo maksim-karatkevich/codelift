@@ -12,7 +12,7 @@ const typeDefs = gql`
       className: String!
       fileName: String!
       lineNumber: Int!
-    ): String!
+    ): String
   }
 
   type Query {
@@ -31,57 +31,83 @@ const resolvers = {
       }
     ) {
       let updatedClassName;
+
       const { className, fileName, lineNumber } = args;
       const source = readFileSync(fileName, "utf8");
+      const ast = j(source);
+      const nodes = ast.find(j.JSXOpeningElement).filter(path => {
+        return Boolean(
+          path.value.loc && path.value.loc.start.line === lineNumber
+        );
+      });
 
-      const output = j(source)
-        .find(j.JSXOpeningElement)
-        .forEach((path, i) => {
-          if (path.value.loc) {
-            if (path.value.loc.start.line === lineNumber) {
-              const jsxAttributes = j(path).find(j.JSXAttribute, {
-                name: {
-                  name: "className",
-                  type: "JSXIdentifier"
-                }
-              });
+      if (!nodes.length) {
+        throw new Error(
+          `Could not find JSX component at ${fileName}:${lineNumber}`
+        );
+      }
 
-              if (jsxAttributes.size() === 0) {
-                throw new Error("TODO - Create className attribute");
-              } else {
-                jsxAttributes.forEach(jsxAttributePath => {
-                  const literal = jsxAttributePath.value.value;
-
-                  // Toggle class
-                  if (literal && literal.type === "StringLiteral") {
-                    const classNames = literal.value
-                      .split(" ")
-                      .map(className => className.trim())
-                      .filter(Boolean);
-
-                    // Toggle className within list of classes
-                    const classList = classNames.includes(className)
-                      ? classNames.filter(
-                          otherClassName => otherClassName !== className
-                        )
-                      : classNames.concat(className);
-
-                    updatedClassName = classList.join(" ");
-
-                    literal.value = updatedClassName;
-                  } else {
-                    const error = new Error(`TODO - Support literal`);
-                    console.error(error, literal);
-                    throw error;
-                  }
-                });
-              }
-            }
+      nodes.forEach(path => {
+        const classNameAttributes = j(path).find(j.JSXAttribute, {
+          name: {
+            name: "className",
+            type: "JSXIdentifier"
           }
-        })
-        .toSource();
+        });
 
-      writeFileSync(fileName, output, "utf8");
+        // <Component /> does not have a `className`
+        if (classNameAttributes.size() === 0) {
+          path.value.attributes.push(
+            j.jsxAttribute(
+              j.jsxIdentifier("className"),
+              j.stringLiteral(className)
+            )
+          );
+
+          updatedClassName = className;
+
+          return;
+        }
+
+        classNameAttributes.forEach(classNameAttribute => {
+          const literal = classNameAttribute.value.value;
+
+          if (!literal) {
+            throw new Error(`className has no value`);
+          }
+
+          if (literal.type !== "StringLiteral") {
+            const error = new Error(`TODO - Support literal ${literal.type}`);
+            console.error(error, literal);
+
+            throw error;
+          }
+
+          // Toggle class
+          const previousClassNames = literal.value
+            .split(" ")
+            .map(className => className.trim())
+            .filter(Boolean);
+
+          // Toggle className within list of classes
+          const nextClassNames = previousClassNames.includes(className)
+            ? previousClassNames.filter(
+                otherClassName => otherClassName !== className
+              )
+            : previousClassNames.concat(className);
+
+          literal.value = nextClassNames.join(" ");
+
+          // Remove empty `className`
+          if (literal.value) {
+            updatedClassName = literal.value;
+          } else {
+            classNameAttribute.prune();
+          }
+        });
+      });
+
+      writeFileSync(fileName, ast.toSource(), "utf8");
 
       return updatedClassName;
     }
