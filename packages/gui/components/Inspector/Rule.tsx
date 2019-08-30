@@ -38,6 +38,12 @@ export const Rule: FunctionComponent<RuleProps> = ({
     }
   `);
 
+  if (res.error) {
+    console.error(res.error);
+
+    throw new Error(res.error.toString());
+  }
+
   const [preview, setPreview] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [hasRule] = useState([...element.classList].includes(className));
