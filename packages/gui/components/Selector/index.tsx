@@ -12,7 +12,13 @@ export const Selector: FunctionComponent<SelectorProps> = ({
   onSelect,
   root
 }) => {
-  const [rect, setRect] = useState();
+  const [rect, setRect] = useState({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  });
+
   const [target, setTarget] = useState();
 
   useEffect(() => {
@@ -39,6 +45,10 @@ export const Selector: FunctionComponent<SelectorProps> = ({
     }
   }, [target]);
 
+  const { top, right, bottom, left } = rect;
+  const width = right - left;
+  const height = bottom - top;
+
   return (
     <>
       <section className="shadow-inner p-3 pr-0 overflow-auto">
@@ -51,20 +61,28 @@ export const Selector: FunctionComponent<SelectorProps> = ({
       </section>
 
       {rect &&
+        target &&
         createPortal(
           <div
-            className="fixed top-0 left-64 w-full h-full bg-gray-600 opacity-50 pointer-events-none text-black z-40"
+            className="fixed pointer-events-none z-40 border-blue-500 border border-dashed"
             style={{
-              clipPath: `polygon(0 0, 100% 0, 100% 100%, ${
-                rect.right
-              }px 100%, ${rect.right}px ${rect.top}px, ${rect.left}px ${
-                rect.top
-              }px, ${rect.left}px ${rect.bottom}px, ${rect.right}px ${
-                rect.bottom
-              }px, ${rect.right}px 100%, 0 100%)`,
-              transition: "all 200ms ease-out"
+              left: `calc(16rem + ${left}px)`,
+              height,
+              width,
+              top,
+              transition: "all 200ms ease-in-out"
             }}
-          />,
+          >
+            <label className="absolute text-white font-mono text-xs bg-blue-500 px-1 py-px -mt-5 -ml-px rounded-t truncate max-w-full">
+              {target.tagName.toLowerCase()}
+              <small className="text-blue-200">
+                {target.className
+                  ? `.${target.className.split(" ").join(".")}`
+                  : null}
+              </small>
+            </label>
+            <div className="w-full h-full bg-blue-100 opacity-50" />
+          </div>,
           document.body
         )}
     </>
