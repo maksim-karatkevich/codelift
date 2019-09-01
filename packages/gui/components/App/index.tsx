@@ -11,7 +11,6 @@ const client = createClient({
 
 export const App: FunctionComponent = () => {
   const iframe = useRef<HTMLIFrameElement>(null);
-  const [isEnabled, setIsEnabled] = useState(true);
   const [target, setTarget] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [root, setRoot] = useState();
@@ -32,37 +31,27 @@ export const App: FunctionComponent = () => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const { key } = event;
 
-      if (key === "/" && !isEnabled) {
-        event.preventDefault();
-
-        return setIsEnabled(true);
-      }
-
-      if (key === "Escape") {
-        target ? setTarget(undefined) : setIsEnabled(false);
+      if (key === "Escape" && target) {
+        setTarget(undefined);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
 
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [isEnabled, target]);
+  }, [target]);
 
   return (
     <Provider value={client}>
-      {isEnabled ? (
-        <Panel>
-          {target ? (
-            <Inspector element={target} />
-          ) : root ? (
-            <Selector onSelect={setTarget} root={root} />
-          ) : (
-            <div className="m-4 bg-gray-700 p-4 text-center">
-              Loading&hellip;
-            </div>
-          )}
-        </Panel>
-      ) : null}
+      <Panel>
+        {target ? (
+          <Inspector element={target} />
+        ) : root ? (
+          <Selector onSelect={setTarget} root={root} />
+        ) : (
+          <div className="m-4 bg-gray-700 p-4 text-center">Loading&hellip;</div>
+        )}
+      </Panel>
 
       <iframe
         onLoad={() => setIsLoaded(true)}
