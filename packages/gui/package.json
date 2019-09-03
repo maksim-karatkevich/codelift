@@ -8,11 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/jscodeshift": "^0.6.2",
     "@types/lodash": "^4.14.137",
     "@types/match-sorter": "^2.3.0",
     "@zeit/next-css": "^1.0.1",
     "apollo-server-micro": "^2.9.0",
+    "classnames": "^2.2.6",
     "graphql": "^14.5.3",
     "jscodeshift": "^0.6.4",
     "lodash": "^4.17.15",
