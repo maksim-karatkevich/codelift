@@ -3,13 +3,18 @@ import { FunctionComponent, ReactElement, useState } from "react";
 
 type PanelProps = {
   label: string | ReactElement;
+  onToggle?: () => void;
 };
 
 export const useAccordion = (initialSelectedIndex = 0) => {
   const [selectedIndex, setSelectedIndex] = useState(initialSelectedIndex);
   let totalPanels = 0;
 
-  const Panel: FunctionComponent<PanelProps> = ({ children, label }) => {
+  const Panel: FunctionComponent<PanelProps> = ({
+    children,
+    label,
+    onToggle = () => {}
+  }) => {
     const panelIndex = totalPanels++;
     const isOpen = panelIndex === selectedIndex;
     const isCustomLabel = typeof label !== "string";
@@ -17,9 +22,10 @@ export const useAccordion = (initialSelectedIndex = 0) => {
     return (
       <section
         className={cx(
-          "bg-gray-100",
+          "bg-gray-900",
           "relative",
           "shadow-inner",
+          "text-white",
           isOpen && "flex-grow",
           isOpen && "overflow-auto"
         )}
@@ -41,12 +47,15 @@ export const useAccordion = (initialSelectedIndex = 0) => {
             isOpen ? "px-3" : "px-4",
             !isCustomLabel && "uppercase"
           )}
-          onClick={() => setSelectedIndex(panelIndex)}
+          onClick={() => {
+            setSelectedIndex(panelIndex);
+            onToggle();
+          }}
         >
           {label}
         </header>
 
-        {isOpen && <main className="pt-10">{children}</main>}
+        {isOpen && <main className="pt-8">{children}</main>}
       </section>
     );
   };

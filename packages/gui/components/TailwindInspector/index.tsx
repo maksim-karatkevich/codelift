@@ -3,11 +3,11 @@ import React, { FunctionComponent, useCallback, useRef, useState } from "react";
 import { Rule } from "./Rule";
 import { useSearch } from "./useSearch";
 
-type InspectorProps = {
+type Props = {
   element: HTMLElement;
 };
 
-export const Inspector: FunctionComponent<InspectorProps> = ({ element }) => {
+export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
   const [query, setQuery] = useState("");
   const { elementResults, groupedResults } = useSearch(element, query);
   const searchRef = useRef<HTMLInputElement>(null);
