@@ -1,9 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "concurrently yarn:dev-cra yarn:dev-gui",
-    "dev-cra": "cd examples/cra && yarn start",
-    "dev-gui": "cd packages/gui && yarn dev -p 4000"
+    "dev": "cd examples/cra && yarn dev"
   },
   "workspaces": [
     "examples/*",
