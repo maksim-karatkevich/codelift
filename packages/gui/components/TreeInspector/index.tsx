@@ -1,16 +1,16 @@
-import React, { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 
-type TreeProps = {
+type Props = {
   onHover: (target: HTMLElement) => void;
   onSelect: (target: HTMLElement) => void;
   root: HTMLElement;
-  target: HTMLElement;
+  target?: HTMLElement;
 };
 
-export const Tree: FunctionComponent<TreeProps> = ({
+export const TreeInspector: FunctionComponent<Props> = ({
   onHover,
-  root,
   onSelect,
+  root,
   target
 }) => {
   const children = [...root.children] as HTMLElement[];
@@ -21,9 +21,9 @@ export const Tree: FunctionComponent<TreeProps> = ({
 
   return (
     <ol
-      className="font-mono text-xs border-l border-gray-700 pl-3 overflow-y-auto"
+      className="text-white font-mono text-xs pl-3 overflow-y-auto shadow"
       style={{
-        background: "rgba(0, 0, 0, 0.05)"
+        background: "rgba(100%, 100%, 100%, 0.05)"
       }}
     >
       <li
@@ -39,7 +39,7 @@ export const Tree: FunctionComponent<TreeProps> = ({
       {root instanceof SVGElement || isSelfClosing ? null : (
         <>
           {children.map((child, i) => (
-            <Tree
+            <TreeInspector
               key={i}
               onHover={onHover}
               onSelect={onSelect}
