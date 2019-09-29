@@ -1,18 +1,21 @@
 import React, { FunctionComponent, useCallback, useRef, useState } from "react";
 
 import { Rule } from "./Rule";
+import { observer, useStore } from "../Store";
 import { useSearch } from "./useSearch";
 
-type Props = {
-  element: HTMLElement;
-};
+export const TailwindInspector: FunctionComponent = observer(() => {
+  const store = useStore();
+  const { query, target } = store;
 
-export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
-  const [query, setQuery] = useState("");
-  const { elementResults, groupedResults } = useSearch(element, query);
+  if (!target) {
+    return null;
+  }
+
+  const { elementResults, groupedResults } = useSearch(target, query);
   const searchRef = useRef<HTMLInputElement>(null);
   const resetQuery = useCallback(() => {
-    setQuery("");
+    store.resetQuery();
 
     if (searchRef.current) {
       searchRef.current.focus();
@@ -24,7 +27,7 @@ export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
       <input
         autoFocus
         className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
-        onChange={event => setQuery(event.target.value)}
+        onChange={event => store.setQuery(event.target.value)}
         placeholder="Search..."
         ref={searchRef}
         value={query}
@@ -47,7 +50,7 @@ export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
           <Rule
             key={`element-${className}`}
             className={className}
-            element={element}
+            element={target}
           />
         ))}
 
@@ -70,7 +73,7 @@ export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
                   <Rule
                     key={`className-${className}`}
                     className={className}
-                    element={element}
+                    element={target}
                     onAdd={resetQuery}
                   />
                 ))}
@@ -80,4 +83,4 @@ export const TailwindInspector: FunctionComponent<Props> = ({ element }) => {
       </ul>
     </>
   );
-};
+});
