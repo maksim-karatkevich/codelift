@@ -1,26 +1,23 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-type SelectorProps = {
-  onHover: (element: HTMLElement) => void;
-  onSelect: (element: HTMLElement) => void;
-  root: HTMLElement;
-  target?: HTMLElement;
-};
+import { observer, useStore } from "../Store";
 
-export const Selector: FunctionComponent<SelectorProps> = ({
-  onHover,
-  onSelect,
-  root,
-  target
-}) => {
+export const Selector: FunctionComponent = observer(() => {
+  const store = useStore();
+  const { root, target } = store;
+
   useEffect(() => {
+    if (!root) {
+      return;
+    }
+
     const handleClick = (event: MouseEvent) => {
-      onSelect(event.target as HTMLElement);
+      store.handleTargetSelect(event.target as HTMLElement);
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      onHover(event.target as HTMLElement);
+      store.handleTargetHover(event.target as HTMLElement);
     };
 
     root.addEventListener("mousemove", handleMouseMove);
@@ -30,7 +27,7 @@ export const Selector: FunctionComponent<SelectorProps> = ({
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleMouseMove);
     };
-  });
+  }, [root]);
 
   if (!target) {
     return null;
@@ -63,4 +60,4 @@ export const Selector: FunctionComponent<SelectorProps> = ({
     </div>,
     document.body
   );
-};
+});

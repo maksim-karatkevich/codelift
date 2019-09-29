@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useRef,
-  useState,
-  useCallback
-} from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
 
 import { useAccordion } from "../Accordion";
@@ -12,80 +6,43 @@ import { Selector } from "../Selector";
 import { Sidebar } from "../Sidebar";
 import { TailwindInspector } from "../TailwindInspector";
 import { TreeInspector } from "../TreeInspector";
+import { observer, useStore } from "../Store";
 
 const client = createClient({
   url: "/api"
 });
 
-export const App: FunctionComponent = () => {
-  const iframe = useRef<HTMLIFrameElement>(null);
-  const [target, setTarget] = useState();
-  const [isSelected, setIsSelected] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [root, setRoot] = useState();
+export const App: FunctionComponent = observer(() => {
+  const store = useStore();
   const [Panel] = useAccordion();
-
-  const handleHover = useCallback(
-    element => {
-      if (!isSelected) {
-        setTarget(element);
-      }
-    },
-    [isSelected]
-  );
-
-  const handleSelect = useCallback(() => setIsSelected(true), []);
-
-  useEffect(() => {
-    if (!isLoaded) {
-      return;
-    }
-
-    document.domain = "localhost";
-
-    if (iframe && iframe.current && iframe.current.contentWindow) {
-      setRoot(iframe.current.contentWindow.document.querySelector("body"));
-    }
-  }, [isLoaded]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const { key } = event;
 
-      // TODO This is a state machine.
       if (key === "Escape") {
-        if (isSelected) {
-          setIsSelected(false);
-        } else {
-          setIsSelected(false);
-          setTarget(undefined);
-        }
+        store.handleEscape();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
 
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [target]);
+  }, []);
 
   return (
     <Provider value={client}>
       <Sidebar>
-        {root ? (
+        {store.root ? (
           <>
-            {isSelected && target ? (
+            {store.target && store.isTargetLocked ? (
               <Panel label="Tailwind">
-                <TailwindInspector element={target} />
+                <TailwindInspector />
               </Panel>
             ) : null}
 
-            <Panel label="DOM" onToggle={() => setIsSelected(false)}>
-              <TreeInspector
-                onHover={handleHover}
-                onSelect={handleSelect}
-                root={root}
-                target={target}
-              />
+            <Panel label="DOM" onToggle={() => store.unlockTarget()}>
+              <TreeInspector root={store.root} />
             </Panel>
 
             <Panel label={<span className="font-mono">package.json</span>}>
@@ -97,24 +54,16 @@ export const App: FunctionComponent = () => {
         )}
       </Sidebar>
 
-      {root && (
-        <Selector
-          onHover={handleHover}
-          onSelect={handleSelect}
-          root={root}
-          target={target}
-        />
-      )}
+      <Selector />
 
       <main className="h-screen">
         <iframe
-          onLoad={() => setIsLoaded(true)}
+          onLoad={store.handleFrameLoad}
           className="w-full h-full shadow-lg"
-          ref={iframe}
           src="http://localhost:3000/"
           title="Source"
         />
       </main>
     </Provider>
   );
-};
+});

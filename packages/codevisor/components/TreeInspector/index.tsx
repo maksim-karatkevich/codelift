@@ -1,23 +1,20 @@
 import { FunctionComponent, useCallback } from "react";
 
+import { observer, useStore } from "../Store";
+
 type Props = {
-  onHover: (target: HTMLElement) => void;
-  onSelect: (target: HTMLElement) => void;
   root: HTMLElement;
-  target?: HTMLElement;
 };
 
-export const TreeInspector: FunctionComponent<Props> = ({
-  onHover,
-  onSelect,
-  root,
-  target
-}) => {
+export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
+  const store = useStore();
   const children = [...root.children] as HTMLElement[];
   const tagName = root.tagName.toLowerCase();
   const isSelfClosing = children.length === 0;
-  const handleClick = useCallback(() => onSelect(root), [onSelect, root]);
-  const handleMouseEnter = useCallback(() => onHover(root), [onHover, root]);
+  const handleClick = useCallback(() => store.handleTargetSelect(root), [root]);
+  const handleMouseEnter = useCallback(() => store.handleTargetHover(root), [
+    root
+  ]);
 
   return (
     <ol
@@ -28,7 +25,7 @@ export const TreeInspector: FunctionComponent<Props> = ({
     >
       <li
         className={`cursor-pointer ${
-          root === target ? "text-yellow-500" : undefined
+          root === store.target ? "text-yellow-500" : undefined
         }`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
@@ -39,18 +36,12 @@ export const TreeInspector: FunctionComponent<Props> = ({
       {root instanceof SVGElement || isSelfClosing ? null : (
         <>
           {children.map((child, i) => (
-            <TreeInspector
-              key={i}
-              onHover={onHover}
-              onSelect={onSelect}
-              root={child}
-              target={target}
-            />
+            <TreeInspector key={i} root={child} />
           ))}
 
           <li
             className={`cursor-pointer py-1 ${
-              root === target ? "text-yellow-500" : undefined
+              root === store.target ? "text-yellow-500" : undefined
             }`}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
@@ -61,4 +52,4 @@ export const TreeInspector: FunctionComponent<Props> = ({
       )}
     </ol>
   );
-};
+});
