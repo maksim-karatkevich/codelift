@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-import { observer, useStore } from "../Store";
+import { observer, useAppStore } from "../App/store";
 
 export const Selector: FunctionComponent = observer(() => {
-  const store = useStore();
-  const { root, target } = store;
+  const app = useAppStore();
+  const { root, target } = app;
 
   useEffect(() => {
     if (!root) {
@@ -13,11 +13,11 @@ export const Selector: FunctionComponent = observer(() => {
     }
 
     const handleClick = (event: MouseEvent) => {
-      store.handleTargetSelect(event.target as HTMLElement);
+      app.handleTargetSelect(event.target as HTMLElement);
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      store.handleTargetHover(event.target as HTMLElement);
+      app.handleTargetHover(event.target as HTMLElement);
     };
 
     root.addEventListener("mousemove", handleMouseMove);

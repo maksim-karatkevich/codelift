@@ -4,16 +4,15 @@ import { createClient, Provider } from "urql";
 import { useAccordion } from "../Accordion";
 import { Selector } from "../Selector";
 import { Sidebar } from "../Sidebar";
-import { TailwindInspector } from "../TailwindInspector";
+import { TailwindInspector as OldTailwindInspector } from "../OldTailwindInspector";
 import { TreeInspector } from "../TreeInspector";
-import { observer, useStore } from "../Store";
+import { TailWindInspector } from "../TailwindInspector";
+import { observer, useAppStore } from "./store";
 
-const client = createClient({
-  url: "/api"
-});
+const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
-  const store = useStore();
+  const app = useAppStore();
   const [Panel] = useAccordion();
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export const App: FunctionComponent = observer(() => {
       const { key } = event;
 
       if (key === "Escape") {
-        store.handleEscape();
+        app.handleEscape();
       }
     };
 
@@ -33,16 +32,20 @@ export const App: FunctionComponent = observer(() => {
   return (
     <Provider value={client}>
       <Sidebar>
-        {store.root ? (
+        {app.root ? (
           <>
-            {store.target && store.isTargetLocked ? (
-              <Panel label="Tailwind">
-                <TailwindInspector />
+            <Panel label="Tailwind">
+              <TailWindInspector />
+            </Panel>
+
+            {app.target && app.isTargetLocked ? (
+              <Panel label="Old Tailwind">
+                <OldTailwindInspector />
               </Panel>
             ) : null}
 
-            <Panel label="DOM" onToggle={() => store.unlockTarget()}>
-              <TreeInspector root={store.root} />
+            <Panel label="DOM" onToggle={() => app.unlockTarget()}>
+              <TreeInspector root={app.root} />
             </Panel>
 
             <Panel label={<span className="font-mono">package.json</span>}>
@@ -58,7 +61,7 @@ export const App: FunctionComponent = observer(() => {
 
       <main className="h-screen">
         <iframe
-          onLoad={store.handleFrameLoad}
+          onLoad={app.handleFrameLoad}
           className="w-full h-full shadow-lg"
           src="http://localhost:3000/"
           title="Source"

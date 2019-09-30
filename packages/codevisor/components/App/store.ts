@@ -3,8 +3,8 @@ import { createContext, useContext, SyntheticEvent } from "react";
 
 export { observer } from "mobx-react-lite";
 
-export const Store = types
-  .model("Store", {
+export const AppStore = types
+  .model("AppStore", {
     isTargetLocked: false,
     query: ""
   })
@@ -68,6 +68,6 @@ export const Store = types
     }
   }));
 
-export const StoreContext = createContext(Store.create());
+export const AppStoreContext = createContext(AppStore.create());
 
-export const useStore = () => useContext(StoreContext);
+export const useAppStore = () => useContext(AppStoreContext);

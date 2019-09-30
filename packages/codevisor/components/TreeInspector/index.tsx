@@ -1,18 +1,18 @@
 import { FunctionComponent, useCallback } from "react";
 
-import { observer, useStore } from "../Store";
+import { observer, useAppStore } from "../App/store";
 
 type Props = {
   root: HTMLElement;
 };
 
 export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
-  const store = useStore();
+  const app = useAppStore();
   const children = [...root.children] as HTMLElement[];
   const tagName = root.tagName.toLowerCase();
   const isSelfClosing = children.length === 0;
-  const handleClick = useCallback(() => store.handleTargetSelect(root), [root]);
-  const handleMouseEnter = useCallback(() => store.handleTargetHover(root), [
+  const handleClick = useCallback(() => app.handleTargetSelect(root), [root]);
+  const handleMouseEnter = useCallback(() => app.handleTargetHover(root), [
     root
   ]);
 
@@ -25,7 +25,7 @@ export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
     >
       <li
         className={`cursor-pointer ${
-          root === store.target ? "text-yellow-500" : undefined
+          root === app.target ? "text-yellow-500" : undefined
         }`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
@@ -41,7 +41,7 @@ export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
 
           <li
             className={`cursor-pointer py-1 ${
-              root === store.target ? "text-yellow-500" : undefined
+              root === app.target ? "text-yellow-500" : undefined
             }`}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
