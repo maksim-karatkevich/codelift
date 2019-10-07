@@ -1,6 +1,6 @@
 import { groupBy } from "lodash";
 import { observer } from "mobx-react-lite";
-import { types } from "mobx-state-tree";
+import { Instance, types } from "mobx-state-tree";
 import { createContext, useContext, SyntheticEvent } from "react";
 
 import { TailwindRule } from "./TailwindRule";
@@ -50,16 +50,32 @@ export const Store = types
       return null;
     },
 
-    get matchingTailwindRules() {
-      const { query, target } = self;
+    get queriedTailwindRules() {
+      const { query } = self;
+      const { tailwindRules } = this;
 
-      if (!query || !target) {
-        return this.tailwindRules;
+      if (!query) {
+        return tailwindRules;
       }
 
-      return this.tailwindRules.filter(rule => {
-        return rule.className.startsWith(query);
-      });
+      const words = query
+        .split(" ")
+        .map(word => word.trim())
+        .filter(Boolean);
+
+      return words.reduce((filtered, word) => {
+        const tests = [
+          (rule: Instance<typeof TailwindRule>) => {
+            return rule.className.startsWith(word);
+          },
+
+          (rule: Instance<typeof TailwindRule>) => {
+            return rule.cssText.includes(word);
+          }
+        ];
+
+        return filtered.filter(rule => tests.some(test => test(rule)));
+      }, tailwindRules);
     },
 
     get tailwindRules() {
@@ -97,11 +113,19 @@ export const Store = types
         });
 
       return cssStyleRules.map(cssStyleRule => {
-        const { selectorText } = cssStyleRule;
+        const { cssText, selectorText, style } = cssStyleRule;
 
         return TailwindRule.create(
           {
-            selectorText
+            cssText,
+            selectorText,
+            style: Object.values(style).reduce(
+              (acc, property) => ({
+                ...acc,
+                [property]: style[property as any]
+              }),
+              {}
+            )
           },
           {
             parent: self
@@ -113,7 +137,7 @@ export const Store = types
     get groupedTailwindRules() {
       return Object.entries(
         groupBy(
-          this.matchingTailwindRules
+          this.queriedTailwindRules
             // Remove duplicates
             // .filter(match => !this.appliedRules.includes(match))
             // Remove :hover, :active, etc.

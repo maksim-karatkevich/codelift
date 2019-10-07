@@ -4,7 +4,9 @@ import { classNameGroups } from "./classNameGroups";
 
 export const TailwindRule = types
   .model("TailwindRule", {
-    selectorText: types.string
+    cssText: types.string,
+    selectorText: types.string,
+    style: types.frozen()
   })
   .views(self => ({
     get className() {
