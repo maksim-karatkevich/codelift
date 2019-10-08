@@ -25,7 +25,7 @@ export const Store = types
         return [];
       }
 
-      return this.tailwindRules.filter(target.hasRule);
+      return this.queriedTailwindRules.filter(target.hasRule);
     },
 
     get document() {
