@@ -163,18 +163,6 @@ export const Store = types
       self.iframe = event.target;
     },
 
-    handleRuleClick(rule: Instance<typeof TailwindRule>) {
-      console.log("click");
-    },
-
-    handleRuleEnter(rule: Instance<typeof TailwindRule>) {
-      console.log("click");
-    },
-
-    handleRuleLeave(rule: Instance<typeof TailwindRule>) {
-      console.log("click");
-    },
-
     handleTargetHover(element: HTMLElement) {
       if (!self.target.isLocked) {
         self.target.set(element);

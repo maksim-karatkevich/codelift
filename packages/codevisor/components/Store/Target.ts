@@ -2,28 +2,60 @@ import { Instance, types } from "mobx-state-tree";
 
 import { TailwindRule } from "./TailwindRule";
 
+type Rule = Instance<typeof TailwindRule>;
+
 export const Target = types
   .model("Target", {
+    classNames: types.array(types.string),
     isLocked: false
   })
   .volatile(self => ({
     element: undefined as undefined | HTMLElement
   }))
   .views(self => ({
-    hasRule(rule: Instance<typeof TailwindRule>) {
+    hasRule(rule: Rule) {
       if (!self.element) {
         return false;
       }
 
-      return self.element.classList.contains(rule.className);
+      return self.classNames.includes(rule.className);
     }
   }))
   .actions(self => ({
+    applyRule(rule: Rule) {
+      if (self.element) {
+        if (self.hasRule(rule)) {
+          self.element.classList.remove(rule.className);
+        } else {
+          self.element.classList.add(rule.className);
+        }
+
+        self.classNames.replace([...self.element.classList]);
+      }
+    },
+
+    cancelRule(rule: Rule) {
+      if (self.element) {
+        self.element.className = self.classNames.join(" ");
+      }
+    },
+
     lock() {
       self.isLocked = true;
     },
 
+    previewRule(rule: Rule) {
+      if (self.element) {
+        if (self.hasRule(rule)) {
+          self.element.classList.remove(rule.className);
+        } else {
+          self.element.classList.add(rule.className);
+        }
+      }
+    },
+
     set(element: HTMLElement) {
+      self.classNames.replace([...element.classList]);
       self.element = element;
     },
 
