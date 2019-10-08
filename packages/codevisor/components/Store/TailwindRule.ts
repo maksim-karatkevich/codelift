@@ -29,11 +29,7 @@ export const TailwindRule = types
     get isApplied() {
       const { target } = getEnv(self).parent;
 
-      if (!target) {
-        return false;
-      }
-
-      return [...target.classList].includes(this.className);
+      return target.hasRule(this);
     },
 
     get isMatching() {

@@ -4,17 +4,18 @@ import { Instance, types } from "mobx-state-tree";
 import { createContext, useContext, SyntheticEvent } from "react";
 
 import { TailwindRule } from "./TailwindRule";
+import { Target } from "./Target";
 
 export { observer, TailwindRule };
 
 export const Store = types
   .model("Store", {
-    isTargetLocked: false,
-    query: ""
+    query: "",
+    target: types.optional(Target, () => Target.create())
   })
   .volatile(self => ({
     iframe: undefined as undefined | HTMLIFrameElement,
-    target: undefined as undefined | HTMLElement
+    rule: undefined as undefined | Instance<typeof TailwindRule>
   }))
   .views(self => ({
     get appliedTailwindRules() {
@@ -24,9 +25,7 @@ export const Store = types
         return [];
       }
 
-      return this.tailwindRules.filter(match => {
-        return target.classList.contains(match.className);
-      });
+      return this.tailwindRules.filter(target.hasRule);
     },
 
     get document() {
@@ -149,10 +148,10 @@ export const Store = types
   }))
   .actions(self => ({
     handleEscape() {
-      if (self.isTargetLocked) {
-        self.isTargetLocked = false;
+      if (self.target.isLocked) {
+        self.target.unlock();
       } else {
-        self.target = undefined;
+        self.target.unset();
       }
     },
 
@@ -164,14 +163,26 @@ export const Store = types
       self.iframe = event.target;
     },
 
-    handleTargetHover(target: HTMLElement) {
-      if (!self.isTargetLocked) {
-        self.target = target;
+    handleRuleClick(rule: Instance<typeof TailwindRule>) {
+      console.log("click");
+    },
+
+    handleRuleEnter(rule: Instance<typeof TailwindRule>) {
+      console.log("click");
+    },
+
+    handleRuleLeave(rule: Instance<typeof TailwindRule>) {
+      console.log("click");
+    },
+
+    handleTargetHover(element: HTMLElement) {
+      if (!self.target.isLocked) {
+        self.target.set(element);
       }
     },
 
     handleTargetSelect(target: HTMLElement) {
-      self.isTargetLocked = true;
+      self.target.lock();
     },
 
     resetQuery() {
@@ -182,8 +193,9 @@ export const Store = types
       self.query = value;
     },
 
+    // TODO Move these calls to store.target
     unlockTarget() {
-      self.isTargetLocked = false;
+      self.target.unlock();
     }
   }));
 

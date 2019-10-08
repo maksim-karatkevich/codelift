@@ -29,11 +29,11 @@ export const Selector: FunctionComponent = observer(() => {
     };
   }, [root]);
 
-  if (!target) {
+  if (!target.element) {
     return null;
   }
 
-  const { top, right, bottom, left } = target.getBoundingClientRect();
+  const { top, right, bottom, left } = target.element.getBoundingClientRect();
   const width = right - left;
   const height = bottom - top;
 
@@ -49,10 +49,10 @@ export const Selector: FunctionComponent = observer(() => {
       }}
     >
       <label className="absolute text-white font-mono text-xs bg-blue-500 px-1 py-px -mt-5 -ml-px rounded-t truncate max-w-full">
-        {target.tagName.toLowerCase()}
+        {target.element.tagName.toLowerCase()}
         <small className="text-blue-200">
-          {typeof target.className === "string"
-            ? `.${target.className.split(" ").join(".")}`
+          {typeof target.element.className === "string"
+            ? `.${target.element.className.split(" ").join(".")}`
             : null}
         </small>
       </label>
