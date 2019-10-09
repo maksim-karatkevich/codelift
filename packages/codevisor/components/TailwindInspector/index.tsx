@@ -8,10 +8,6 @@ export const TailWindInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const resetQuery = () => {
-    store.resetQuery();
-  };
-
   return (
     <>
       <input
