@@ -37,7 +37,7 @@ export const App: FunctionComponent = observer(() => {
               <TailWindInspector />
             </Panel>
 
-            <Panel label="DOM" onToggle={() => store.unlockTarget()}>
+            <Panel label="DOM Tree" onToggle={() => store.unlockTarget()}>
               <TreeInspector root={store.root} />
             </Panel>
 
