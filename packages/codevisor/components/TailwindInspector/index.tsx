@@ -19,8 +19,10 @@ export const TailWindInspector: FunctionComponent = observer(() => {
         value={store.query}
       />
 
-      <AppliedRules />
-      <GroupedRules />
+      <div className="h-full overflow-y-auto">
+        <AppliedRules />
+        <GroupedRules />
+      </div>
     </>
   );
 });
