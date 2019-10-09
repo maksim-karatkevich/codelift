@@ -16,7 +16,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
 
   return (
     <li
-      className="cursor-pointer font-mono font-hairline text-sm py-1 px-2 hover:bg-gray-600"
+      className="cursor-pointer font-mono font-hairline text-xs py-1 px-2 hover:bg-gray-600"
       onClick={() => target.applyRule(rule)}
       onMouseEnter={() => target.previewRule(rule)}
       onMouseLeave={() => target.cancelRule(rule)}
