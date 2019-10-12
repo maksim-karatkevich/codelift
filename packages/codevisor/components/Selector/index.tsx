@@ -5,7 +5,7 @@ import { observer, useStore } from "../Store";
 
 export const Selector: FunctionComponent = observer(() => {
   const store = useStore();
-  const { root, target } = store;
+  const { document, root, target } = store;
 
   useEffect(() => {
     if (!root) {
@@ -29,22 +29,20 @@ export const Selector: FunctionComponent = observer(() => {
     };
   }, [root]);
 
-  if (!target.element) {
+  if (!document || !target.element) {
     return null;
   }
 
   const { top, right, bottom, left } = target.element.getBoundingClientRect();
-  const width = right - left;
-  const height = bottom - top;
 
   return createPortal(
     <div
-      className="fixed pointer-events-none z-40 border-blue-500 border border-dashed"
+      className="absolute pointer-events-none z-40 border-blue-500 border border-dashed"
       style={{
-        left: `calc(16rem + ${left}px)`,
-        height,
-        width,
-        top,
+        left: left + document.body.scrollLeft,
+        height: bottom - top,
+        width: right - left,
+        top: top + document.body.scrollTop,
         transition: "all 200ms ease-in-out"
       }}
     >
