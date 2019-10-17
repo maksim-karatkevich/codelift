@@ -28,14 +28,20 @@ export const Store = types
       return this.queriedTailwindRules.filter(target.hasRule);
     },
 
-    get document() {
+    get contentWindow() {
       if (self.iframe) {
         // Required to access contentWindow
         document.domain = "localhost";
 
-        if (self.iframe.contentWindow) {
-          return self.iframe.contentWindow.document;
-        }
+        return self.iframe.contentWindow;
+      }
+
+      return null;
+    },
+
+    get document() {
+      if (this.contentWindow) {
+        return this.contentWindow.document;
       }
 
       return null;

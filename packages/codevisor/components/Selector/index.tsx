@@ -5,9 +5,10 @@ import { observer, useStore } from "../Store";
 
 export const Selector: FunctionComponent = observer(() => {
   const store = useStore();
-  const { document, root, target } = store;
 
   useEffect(() => {
+    const { root } = store;
+
     if (!root) {
       return;
     }
@@ -27,35 +28,41 @@ export const Selector: FunctionComponent = observer(() => {
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [root]);
+  }, [store.root]);
 
-  if (!document || !target.element) {
+  if (!store.contentWindow || !store.document || !store.target.element) {
     return null;
   }
 
-  const { top, right, bottom, left } = target.element.getBoundingClientRect();
+  const {
+    top,
+    right,
+    bottom,
+    left
+  } = store.target.element.getBoundingClientRect();
 
   return createPortal(
     <div
       className="absolute pointer-events-none z-40 border-blue-500 border border-dashed"
       style={{
-        left: left + document.body.scrollLeft,
+        left: left + store.contentWindow.scrollX,
         height: bottom - top,
         width: right - left,
-        top: top + document.body.scrollTop,
+        top: top + store.contentWindow.scrollY,
         transition: "all 200ms ease-in-out"
       }}
     >
       <label className="absolute text-white font-mono text-xs bg-blue-500 px-1 py-px -mt-5 -ml-px rounded-t truncate max-w-full">
-        {target.element.tagName.toLowerCase()}
+        {store.target.element.tagName.toLowerCase()}
+
         <small className="text-blue-200">
-          {typeof target.element.className === "string"
-            ? `.${target.element.className.split(" ").join(".")}`
+          {typeof store.target.element.className === "string"
+            ? `.${store.target.element.className.split(" ").join(".")}`
             : null}
         </small>
       </label>
       <div className="w-full h-full bg-blue-100 opacity-50" />
     </div>,
-    document.body
+    store.document.body
   );
 });
