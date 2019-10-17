@@ -90,5 +90,6 @@ export const Target = types
 
     unset() {
       self.element = undefined;
+      self.isLocked = false;
     }
   }));

@@ -14,8 +14,13 @@ export const Store = types
     target: types.optional(Target, () => Target.create())
   })
   .volatile(self => ({
-    iframe: undefined as undefined | HTMLIFrameElement,
-    rule: undefined as undefined | Instance<typeof TailwindRule>
+    // Needed for scrollX/Y
+    contentWindow: null as null | Window,
+    // Needed for document.body
+    document: null as null | HTMLDocument,
+    // Needed for <Selector />
+    root: null as null | HTMLElement,
+    rule: null as null | Instance<typeof TailwindRule>
   }))
   .views(self => ({
     get appliedTailwindRules() {
@@ -26,33 +31,6 @@ export const Store = types
       }
 
       return this.queriedTailwindRules.filter(target.hasRule);
-    },
-
-    get contentWindow() {
-      if (self.iframe) {
-        // Required to access contentWindow
-        document.domain = "localhost";
-
-        return self.iframe.contentWindow;
-      }
-
-      return null;
-    },
-
-    get document() {
-      if (this.contentWindow) {
-        return this.contentWindow.document;
-      }
-
-      return null;
-    },
-
-    get root() {
-      if (this.document) {
-        return this.document.querySelector("body");
-      }
-
-      return null;
     },
 
     get queriedTailwindRules() {
@@ -84,7 +62,7 @@ export const Store = types
     },
 
     get tailwindRules() {
-      if (!this.document) {
+      if (!self.document) {
         return [];
       }
 
@@ -166,7 +144,20 @@ export const Store = types
         throw new Error(`handleLoad expected an iFrame`);
       }
 
-      self.iframe = event.target;
+      const iframe = event.target;
+
+      if (!iframe.contentWindow) {
+        throw new Error("iframe missing contentWindow");
+      }
+
+      document.domain = "localhost";
+
+      self.contentWindow = iframe.contentWindow;
+
+      self.document = iframe.contentWindow.document;
+      self.root = self.document.querySelector("body");
+
+      self.target.unset();
     },
 
     handleTargetHover(element: HTMLElement) {
