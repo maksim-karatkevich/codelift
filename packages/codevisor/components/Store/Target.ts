@@ -13,12 +13,37 @@ export const Target = types
     element: undefined as undefined | HTMLElement
   }))
   .views(self => ({
+    get debugSource() {
+      if (!this.reactElement) {
+        return undefined;
+      }
+
+      if (!this.reactElement._debugSource) {
+        throw new Error(`Selected element is missing _debugSource property`);
+      }
+
+      return this.reactElement._debugSource;
+    },
+
     hasRule(rule: Rule) {
       if (!self.element) {
         return false;
       }
 
       return self.classNames.includes(rule.className);
+    },
+
+    get reactElement() {
+      if (!self.element) {
+        return undefined;
+      }
+
+      for (const key in self.element) {
+        if (key.startsWith("__reactInternalInstance$")) {
+          // @ts-ignore
+          return self.element[key];
+        }
+      }
     }
   }))
   .actions(self => ({
