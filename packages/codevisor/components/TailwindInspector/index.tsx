@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef } from "react";
+import React, { FunctionComponent, useEffect, useRef } from "react";
 
 import { observer, useStore } from "../Store";
 import { AppliedRules } from "./AppliedRules";
@@ -7,6 +7,12 @@ import { GroupedRules } from "./GroupedRules";
 export const TailWindInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (store.target.isLocked && searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [store.target.isLocked]);
 
   return (
     <>
