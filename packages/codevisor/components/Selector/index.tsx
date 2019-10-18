@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { observer, useStore } from "../Store";
 
 export const Selector: FunctionComponent = observer(() => {
   const store = useStore();
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const { root } = store;
@@ -17,16 +18,23 @@ export const Selector: FunctionComponent = observer(() => {
       store.handleTargetSelect(event.target as HTMLElement);
     };
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleLeave = (event: MouseEvent) => {
+      setIsHovering(false);
+    };
+
+    const handleHover = (event: MouseEvent) => {
+      setIsHovering(true);
       store.handleTargetHover(event.target as HTMLElement);
     };
 
-    root.addEventListener("mousemove", handleMouseMove);
+    root.addEventListener("mouseleave", handleLeave);
+    root.addEventListener("mousemove", handleHover);
     root.addEventListener("click", handleClick);
 
     return () => {
+      root.removeEventListener("mouseleave", handleLeave);
       root.removeEventListener("click", handleClick);
-      root.removeEventListener("mousemove", handleMouseMove);
+      root.removeEventListener("mousemove", handleHover);
     };
   }, [store.root]);
 
@@ -45,6 +53,7 @@ export const Selector: FunctionComponent = observer(() => {
     <div
       className="absolute pointer-events-none z-40 border-blue-500 border border-dashed"
       style={{
+        opacity: isHovering ? 1 : 0,
         left: left + store.contentWindow.scrollX,
         height: bottom - top,
         width: right - left,
