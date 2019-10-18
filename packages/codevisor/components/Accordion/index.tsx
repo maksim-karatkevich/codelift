@@ -42,6 +42,7 @@ export const useAccordion = (initialSelectedIndex = 0) => {
             "text-teal-800",
             "tracking-widest",
             "w-64",
+            "z-10",
             isOpen && "border-l-4",
             isOpen && "fixed",
             isOpen ? "px-3" : "px-4",
@@ -55,7 +56,9 @@ export const useAccordion = (initialSelectedIndex = 0) => {
           {label}
         </header>
 
-        {isOpen && <main className="pt-8">{children}</main>}
+        {isOpen && (
+          <main className="max-h-full overflow-y-auto pt-8">{children}</main>
+        )}
       </section>
     );
   };

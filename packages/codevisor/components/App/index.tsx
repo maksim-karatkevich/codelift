@@ -4,13 +4,11 @@ import { createClient, Provider } from "urql";
 import { useAccordion } from "../Accordion";
 import { Selector } from "../Selector";
 import { Sidebar } from "../Sidebar";
-import { TailwindInspector } from "../TailwindInspector";
 import { TreeInspector } from "../TreeInspector";
+import { TailWindInspector } from "../TailwindInspector";
 import { observer, useStore } from "../Store";
 
-const client = createClient({
-  url: "/api"
-});
+const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
   const store = useStore();
@@ -35,13 +33,11 @@ export const App: FunctionComponent = observer(() => {
       <Sidebar>
         {store.root ? (
           <>
-            {store.target && store.isTargetLocked ? (
-              <Panel label="Tailwind">
-                <TailwindInspector />
-              </Panel>
-            ) : null}
+            <Panel label="Tailwind">
+              <TailWindInspector />
+            </Panel>
 
-            <Panel label="DOM" onToggle={() => store.unlockTarget()}>
+            <Panel label="DOM Tree" onToggle={() => store.unlockTarget()}>
               <TreeInspector root={store.root} />
             </Panel>
 

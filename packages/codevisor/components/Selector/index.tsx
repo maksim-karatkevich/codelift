@@ -1,13 +1,15 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { observer, useStore } from "../Store";
 
 export const Selector: FunctionComponent = observer(() => {
   const store = useStore();
-  const { root, target } = store;
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    const { root } = store;
+
     if (!root) {
       return;
     }
@@ -16,48 +18,60 @@ export const Selector: FunctionComponent = observer(() => {
       store.handleTargetSelect(event.target as HTMLElement);
     };
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleLeave = (event: MouseEvent) => {
+      setIsHovering(false);
+    };
+
+    const handleHover = (event: MouseEvent) => {
+      setIsHovering(true);
       store.handleTargetHover(event.target as HTMLElement);
     };
 
-    root.addEventListener("mousemove", handleMouseMove);
+    root.addEventListener("mouseleave", handleLeave);
+    root.addEventListener("mousemove", handleHover);
     root.addEventListener("click", handleClick);
 
     return () => {
+      root.removeEventListener("mouseleave", handleLeave);
       root.removeEventListener("click", handleClick);
-      root.removeEventListener("mousemove", handleMouseMove);
+      root.removeEventListener("mousemove", handleHover);
     };
-  }, [root]);
+  }, [store.root]);
 
-  if (!target) {
+  if (!store.contentWindow || !store.document || !store.target.element) {
     return null;
   }
 
-  const { top, right, bottom, left } = target.getBoundingClientRect();
-  const width = right - left;
-  const height = bottom - top;
+  const {
+    top,
+    right,
+    bottom,
+    left
+  } = store.target.element.getBoundingClientRect();
 
   return createPortal(
     <div
-      className="fixed pointer-events-none z-40 border-blue-500 border border-dashed"
+      className="absolute pointer-events-none z-40 border-blue-500 border border-dashed"
       style={{
-        left: `calc(16rem + ${left}px)`,
-        height,
-        width,
-        top,
+        opacity: isHovering ? 1 : 0,
+        left: left + store.contentWindow.scrollX,
+        height: bottom - top,
+        width: right - left,
+        top: top + store.contentWindow.scrollY,
         transition: "all 200ms ease-in-out"
       }}
     >
       <label className="absolute text-white font-mono text-xs bg-blue-500 px-1 py-px -mt-5 -ml-px rounded-t truncate max-w-full">
-        {target.tagName.toLowerCase()}
+        {store.target.element.tagName.toLowerCase()}
+
         <small className="text-blue-200">
-          {typeof target.className === "string"
-            ? `.${target.className.split(" ").join(".")}`
+          {typeof store.target.element.className === "string"
+            ? `.${store.target.element.className.split(" ").join(".")}`
             : null}
         </small>
       </label>
       <div className="w-full h-full bg-blue-100 opacity-50" />
     </div>,
-    document.body
+    store.document.body
   );
 });

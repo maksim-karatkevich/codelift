@@ -25,7 +25,7 @@ export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
     >
       <li
         className={`cursor-pointer ${
-          root === store.target ? "text-yellow-500" : undefined
+          root === store.target.element ? "text-yellow-500" : undefined
         }`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
@@ -41,7 +41,7 @@ export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
 
           <li
             className={`cursor-pointer py-1 ${
-              root === store.target ? "text-yellow-500" : undefined
+              root === store.target.element ? "text-yellow-500" : undefined
             }`}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}

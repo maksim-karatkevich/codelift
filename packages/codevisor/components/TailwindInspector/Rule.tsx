@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import { Instance } from "mobx-state-tree";
+import { FunctionComponent } from "react";
 import { useMutation } from "urql";
 
+import { observer, TailwindRule, useStore } from "../Store";
+
 type RuleProps = {
-  className: string;
-  element: HTMLElement;
-  onAdd?: (className: string) => void;
+  rule: Instance<typeof TailwindRule>;
 };
 
 const getReactElement = (element: HTMLElement) => {
@@ -16,27 +17,20 @@ const getReactElement = (element: HTMLElement) => {
   }
 };
 
-// @TODO Store classes in the state tree for previewing
-// { "bg-blue-500": false, "bg-pink-900": true }
-// Disable any existing classes that share the same rule cssText
-export const Rule: FunctionComponent<RuleProps> = ({
-  className,
-  element,
-  onAdd
-}) => {
+export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   const [res, toggleClassName] = useMutation(`
-    mutation ToggleClassName(
-      $className: String!
-      $fileName: String!
-      $lineNumber: Int!
+  mutation ToggleClassName(
+    $className: String!
+    $fileName: String!
+    $lineNumber: Int!
     ) {
       toggleClassName(
         className: $className
         fileName: $fileName
         lineNumber: $lineNumber
-      )
-    }
-  `);
+        )
+      }
+      `);
 
   if (res.error) {
     console.error(res.error);
@@ -44,72 +38,31 @@ export const Rule: FunctionComponent<RuleProps> = ({
     throw new Error(res.error.toString());
   }
 
-  const [preview, setPreview] = useState(false);
-  const [toggled, setToggled] = useState(false);
-  const [hasRule] = useState([...element.classList].includes(className));
+  const { target } = useStore();
+  const toggled = false;
+  const toggleRule = (rule: Instance<typeof TailwindRule>) => {
+    const { className } = rule;
+    const { debugSource } = target;
 
-  // const className = store.getRuleClassName(rule);
-
-  // Preview class change when rule has not been toggled yet
-  useEffect(() => {
-    if (preview && !toggled) {
-      hasRule
-        ? element.classList.remove(className)
-        : element.classList.add(className);
+    if (!debugSource) {
+      console.error("Selected element is missing _debugSource property");
     }
-  }, [className, element, hasRule, preview, toggled]);
 
-  // Commit class change when toggled
-  useEffect(() => {
-    if (toggled) {
-      const reactElement = getReactElement(element);
+    toggleClassName({ ...debugSource, className });
 
-      if (reactElement) {
-        const { _debugSource } = reactElement;
-
-        if (!_debugSource) {
-          throw new Error(`Selected element is missing _debugSource property`);
-        }
-
-        toggleClassName({
-          ..._debugSource,
-          className
-        });
-      }
-
-      if (hasRule) {
-        element.classList.remove(className);
-      } else {
-        element.classList.add(className);
-
-        if (onAdd) {
-          onAdd(className);
-        }
-      }
-    }
-  }, [className, element, hasRule, onAdd, toggled]);
-
-  // Re-instate classes that were changed when previewed on unmount
-  useEffect(() => {
-    return () => {
-      if (preview && !toggled) {
-        hasRule
-          ? element.classList.add(className)
-          : element.classList.remove(className);
-      }
-    };
-  });
+    target.applyRule(rule);
+  };
 
   return (
     <li
-      className="cursor-pointer font-mono font-hairline text-sm py-1 px-2 hover:bg-gray-600"
-      onClick={event => setToggled(!toggled)}
-      onMouseEnter={event => setPreview(true)}
-      onMouseLeave={event => setPreview(false)}
+      className="cursor-pointer font-mono font-hairline text-xs py-1 px-2 hover:bg-gray-600"
+      onClick={() => toggleRule(rule)}
+      onMouseEnter={() => target.previewRule(rule)}
+      onMouseLeave={() => target.cancelRule(rule)}
     >
       <label
         className={`cursor-pointer ${
-          hasRule
+          rule.isApplied
             ? toggled
               ? "line-through opacity-50"
               : "opacity-100"
@@ -118,8 +71,8 @@ export const Rule: FunctionComponent<RuleProps> = ({
             : "opacity-50"
         }`}
       >
-        {className}
+        {rule.className}
       </label>
     </li>
   );
-};
+});
