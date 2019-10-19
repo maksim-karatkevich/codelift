@@ -157,7 +157,17 @@ export const Store = types
       self.document = iframe.contentWindow.document;
       self.root = self.document.querySelector("body");
 
-      self.target.unset();
+      const { selector } = self.target;
+
+      const element = selector
+        ? (self.document.querySelector(selector) as HTMLElement)
+        : null;
+
+      if (element) {
+        self.target.set(element);
+      } else {
+        self.target.unset();
+      }
     },
 
     handleTargetHover(element: HTMLElement) {
