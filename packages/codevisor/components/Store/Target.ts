@@ -10,7 +10,7 @@ export const Target = types
     isLocked: false
   })
   .volatile(self => ({
-    element: undefined as undefined | HTMLElement
+    element: null as null | HTMLElement
   }))
   .views(self => ({
     get debugSource() {
@@ -44,6 +44,33 @@ export const Target = types
           return self.element[key];
         }
       }
+    },
+
+    get selector() {
+      let { element } = self;
+
+      if (!element) {
+        return null;
+      }
+
+      const selectors = [];
+
+      while (element) {
+        selectors.unshift(
+          [
+            element.tagName.toLowerCase(),
+            element.className.split(" ").join(".")
+          ]
+            .filter(Boolean)
+            .join(".")
+            .split(":")
+            .join("\\:")
+        );
+
+        element = element.parentElement;
+      }
+
+      return selectors.join(" > ");
     }
   }))
   .actions(self => ({
@@ -89,7 +116,7 @@ export const Target = types
     },
 
     unset() {
-      self.element = undefined;
+      self.element = null;
       self.isLocked = false;
     }
   }));
