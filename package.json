@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "cd examples/cra && yarn dev"
+    "cra": "cd examples/cra && codevisor",
+    "next": "cd examples/next && codevisor dev"
   },
   "workspaces": [
     "examples/*",
