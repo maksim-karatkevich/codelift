@@ -5,7 +5,7 @@ import { useAccordion } from "../Accordion";
 import { Selector } from "../Selector";
 import { Sidebar } from "../Sidebar";
 import { TreeInspector } from "../TreeInspector";
-import { TailWindInspector } from "../TailwindInspector";
+import { CSSInspector } from "../CSSInspector";
 import { observer, useStore } from "../Store";
 
 const client = createClient({ url: "/api" });
@@ -33,8 +33,8 @@ export const App: FunctionComponent = observer(() => {
       <Sidebar>
         {store.root ? (
           <>
-            <Panel label="Tailwind">
-              <TailWindInspector />
+            <Panel label="CSS">
+              <CSSInspector />
             </Panel>
 
             <Panel label="DOM Tree" onToggle={() => store.unlockTarget()}>

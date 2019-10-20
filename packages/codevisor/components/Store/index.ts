@@ -25,22 +25,22 @@ export const Store = types
     rule: null as null | Instance<typeof TailwindRule>
   }))
   .views(self => ({
-    get appliedTailwindRules() {
+    get appliedCSSRules() {
       const { target } = self;
 
       if (!target) {
         return [];
       }
 
-      return this.queriedTailwindRules.filter(target.hasRule);
+      return this.queriedCSSRules.filter(target.hasRule);
     },
 
-    get queriedTailwindRules() {
+    get queriedCSSRules() {
       const { query } = self;
-      const { tailwindRules } = this;
+      const { CSSRules } = this;
 
       if (!query) {
-        return tailwindRules;
+        return CSSRules;
       }
 
       const words = query
@@ -60,15 +60,15 @@ export const Store = types
         ];
 
         return filtered.filter(rule => tests.some(test => test(rule)));
-      }, tailwindRules);
+      }, CSSRules);
     },
 
-    get tailwindRules() {
+    get CSSRules() {
       if (!self.document) {
         return [];
       }
 
-      const cssStyleRules = [...document.styleSheets]
+      const cssStyleRules = [...self.document.styleSheets]
         .filter(styleSheet => styleSheet instanceof CSSStyleSheet)
         .reduce(
           (acc, styleSheet) => {
@@ -119,10 +119,10 @@ export const Store = types
       });
     },
 
-    get groupedTailwindRules() {
+    get groupedCSSRules() {
       return Object.entries(
         groupBy(
-          this.queriedTailwindRules
+          this.queriedCSSRules
             // Remove duplicates
             // .filter(match => !this.appliedRules.includes(match))
             // Remove :hover, :active, etc.

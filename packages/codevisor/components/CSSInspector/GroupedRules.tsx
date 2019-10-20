@@ -8,7 +8,7 @@ export const GroupedRules: FunctionComponent = observer(() => {
 
   return (
     <ul className="list-reset">
-      {store.groupedTailwindRules.map(
+      {store.groupedCSSRules.map(
         ([group, groupedRules]) =>
           !!groupedRules.length && (
             <React.Fragment key={`group-${group}`}>

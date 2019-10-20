@@ -4,7 +4,7 @@ import { observer, useStore } from "../Store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";
 
-export const TailWindInspector: FunctionComponent = observer(() => {
+export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
 
