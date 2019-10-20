@@ -1,3 +1,4 @@
+import "codevisor/register";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -5,11 +6,6 @@ import "tailwindcss/dist/tailwind.css";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-
-// Allow access from GUI on another port
-if (process.env.NODE_ENV === "development") {
-  document.domain = window.location.hostname;
-}
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

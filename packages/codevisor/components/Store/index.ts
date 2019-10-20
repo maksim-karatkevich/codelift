@@ -18,6 +18,8 @@ export const Store = types
     contentWindow: null as null | Window,
     // Needed for document.body
     document: null as null | HTMLDocument,
+    // In-case of an error accessing the iframe
+    error: null as null | Error,
     // Needed for <Selector />
     root: null as null | HTMLElement,
     rule: null as null | Instance<typeof TailwindRule>
@@ -154,7 +156,15 @@ export const Store = types
 
       self.contentWindow = iframe.contentWindow;
 
-      self.document = iframe.contentWindow.document;
+      try {
+        self.document = iframe.contentWindow.document;
+      } catch (error) {
+        self.error = error;
+        console.error(error);
+
+        return;
+      }
+
       self.root = self.document.querySelector("body");
 
       const { selector } = self.target;
