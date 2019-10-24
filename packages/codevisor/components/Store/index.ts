@@ -68,8 +68,11 @@ export const Store = types
         return [];
       }
 
-      const cssStyleRules = [...self.document.styleSheets]
-        .filter(styleSheet => styleSheet instanceof CSSStyleSheet)
+      const styleSheets = [...self.document.styleSheets].filter(
+        styleSheet => styleSheet instanceof CSSStyleSheet
+      );
+
+      const cssStyleRules = styleSheets
         .reduce(
           (acc, styleSheet) => {
             if (styleSheet instanceof CSSStyleSheet) {
@@ -94,7 +97,8 @@ export const Store = types
         //   );
         // })
         .filter(cssStyleRule => {
-          return cssStyleRule.selectorText.startsWith(".");
+          // Only show utility class
+          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
         });
 
       return cssStyleRules.map(cssStyleRule => {
