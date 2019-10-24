@@ -15,6 +15,7 @@ export const Selector: FunctionComponent = observer(() => {
     }
 
     const handleClick = (event: MouseEvent) => {
+      event.preventDefault();
       store.handleTargetSelect(event.target as HTMLElement);
     };
 
