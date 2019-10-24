@@ -19,21 +19,15 @@ export const Selector: FunctionComponent = observer(() => {
       store.handleTargetSelect(event.target as HTMLElement);
     };
 
-    const handleLeave = (event: MouseEvent) => {
-      setIsHovering(false);
-    };
-
     const handleHover = (event: MouseEvent) => {
-      setIsHovering(true);
+      setIsHovering(event.target === store.target.element);
       store.handleTargetHover(event.target as HTMLElement);
     };
 
-    root.addEventListener("mouseleave", handleLeave);
     root.addEventListener("mousemove", handleHover);
     root.addEventListener("click", handleClick);
 
     return () => {
-      root.removeEventListener("mouseleave", handleLeave);
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleHover);
     };
@@ -56,7 +50,6 @@ export const Selector: FunctionComponent = observer(() => {
         border: "1px dashed #4299e1",
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
-        opacity: isHovering ? 1 : 0,
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,
@@ -68,13 +61,13 @@ export const Selector: FunctionComponent = observer(() => {
       <label
         style={{
           background: "#4299e1",
-          borderRadius: "0.25rem 0.25rem 0 0",
+          borderRadius: "4px 4px 0 0",
           color: "#ffffff",
           fontFamily:
             'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
           fontSize: "12px",
           marginLeft: "-1px",
-          marginTop: "-18px",
+          marginTop: "-22px",
           maxWidth: "100%",
           overflow: "hidden",
           position: "absolute",
@@ -95,7 +88,8 @@ export const Selector: FunctionComponent = observer(() => {
         style={{
           background: "#ebf8ff",
           height: "100%",
-          opacity: 0.5,
+          opacity: isHovering ? 0.5 : 0,
+          transition: "all 200ms ease-in-out",
           width: "100%"
         }}
       />
