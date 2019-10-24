@@ -63,7 +63,7 @@ export const App: FunctionComponent = observer(() => {
       <Selector />
 
       <main
-        className="h-screen relative"
+        className="h-screen relative bg-white"
         style={{
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)"
         }}
