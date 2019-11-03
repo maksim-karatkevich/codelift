@@ -14,20 +14,6 @@ export const App: FunctionComponent = observer(() => {
   const store = useStore();
   const [Panel] = useAccordion();
 
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const { key } = event;
-
-      if (key === "Escape") {
-        store.handleEscape();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, []);
-
   return (
     <Provider value={client}>
       <Sidebar>

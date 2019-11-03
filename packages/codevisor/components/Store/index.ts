@@ -137,12 +137,8 @@ export const Store = types
     }
   }))
   .actions(self => ({
-    handleEscape() {
-      if (self.target.isLocked) {
-        self.target.unlock();
-      } else {
-        self.target.unset();
-      }
+    close() {
+      self.isOpen = false;
     },
 
     handleFrameLoad(event: SyntheticEvent) {
@@ -182,6 +178,45 @@ export const Store = types
       } else {
         self.target.unset();
       }
+
+      window.removeEventListener("keydown", this.handleKeyPress);
+      window.addEventListener("keydown", this.handleKeyPress);
+
+      self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
+      self.contentWindow.addEventListener("keydown", this.handleKeyPress);
+    },
+
+    handleKeyPress(event: KeyboardEvent) {
+      const { key, metaKey } = event;
+
+      // CMD+'
+      if (metaKey && key === "'") {
+        if (self.isOpen) {
+          return this.close();
+        } else {
+          return this.open();
+        }
+      }
+
+      // Ignore any other commands until we're open
+      if (!self.isOpen) {
+        return;
+      }
+
+      // While open, intercept events
+      event.preventDefault();
+
+      if (key === "Escape") {
+        if (self.target.isLocked) {
+          return self.target.unlock();
+        }
+
+        if (self.isOpen) {
+          self.target.unset();
+
+          return this.close();
+        }
+      }
     },
 
     handleTargetHover(element: HTMLElement) {
@@ -192,6 +227,10 @@ export const Store = types
 
     handleTargetSelect(target: HTMLElement) {
       self.target.lock();
+    },
+
+    open() {
+      self.isOpen = true;
     },
 
     resetQuery() {
