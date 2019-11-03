@@ -97,7 +97,7 @@ export const Target = types
     },
 
     previewRule(rule: Rule) {
-      if (self.element) {
+      if (self.element && self.isLocked) {
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
         } else {

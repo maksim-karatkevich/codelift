@@ -46,7 +46,7 @@ export const App: FunctionComponent = observer(() => {
         )}
       </Sidebar>
 
-      <Selector />
+      {store.isOpen && <Selector />}
 
       <main
         className="h-screen relative bg-white"

@@ -11,6 +11,7 @@ export { observer, TailwindRule };
 export const Store = types
   .model("Store", {
     query: "",
+    isOpen: true,
     target: types.optional(Target, () => Target.create())
   })
   .volatile(self => ({
