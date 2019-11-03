@@ -3,8 +3,6 @@ import Link from "next/link";
 import Head from "next/head";
 import Nav from "../components/nav";
 
-import "codevisor/register";
-
 const Home = () => (
   <div>
     <Head>

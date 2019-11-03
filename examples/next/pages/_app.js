@@ -1,6 +1,7 @@
 import App from "next/app";
 import React from "react";
 
+import "codevisor/register";
 import "tailwindcss/dist/tailwind.css";
 
 export default class MyApp extends App {
