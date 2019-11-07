@@ -192,6 +192,8 @@ export const Store = types
 
       // CMD+'
       if (metaKey && key === "'") {
+        event.preventDefault();
+
         if (self.isOpen) {
           return this.close();
         } else {
@@ -204,10 +206,9 @@ export const Store = types
         return;
       }
 
-      // While open, intercept events
-      event.preventDefault();
-
       if (key === "Escape") {
+        event.preventDefault();
+
         if (self.target.isLocked) {
           return self.target.unlock();
         }
