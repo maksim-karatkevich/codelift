@@ -14,6 +14,9 @@ export const App: FunctionComponent = observer(() => {
   const store = useStore();
   const [Panel] = useAccordion();
 
+  const { href, origin } = window.location;
+  const path = href.split(origin).pop();
+
   return (
     <Provider value={client}>
       <Sidebar>
@@ -57,7 +60,7 @@ export const App: FunctionComponent = observer(() => {
         <iframe
           onLoad={store.handleFrameLoad}
           className="w-full h-full shadow-lg"
-          src="http://localhost:3000/"
+          src={`http://localhost:3000${path}`}
           title="Source"
         />
       </main>
