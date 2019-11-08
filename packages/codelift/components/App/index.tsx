@@ -41,7 +41,7 @@ export const App: FunctionComponent = observer(() => {
             </p>
 
             <pre className="font-mono text-xs py-2 bg-red-700">
-              import "codevisor/register"
+              import "codelift/register"
             </pre>
           </div>
         ) : (

@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "cra": "cd examples/cra && codevisor",
-    "next": "cd examples/next && codevisor dev"
+    "cra": "cd examples/cra && codelift",
+    "next": "cd examples/next && codelift dev"
   },
   "workspaces": [
     "examples/*",

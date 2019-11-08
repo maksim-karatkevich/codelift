@@ -1,6 +1,6 @@
 {
-  "name": "codevisor",
-  "bin": "./bin/codevisor.js",
+  "name": "codelift",
+  "bin": "./bin/codelift.js",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",

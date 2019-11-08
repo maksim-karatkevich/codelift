@@ -27,7 +27,7 @@ app
 
       const url = `http://localhost:${PORT}`;
 
-      console.log(`> codevisor started on ${url}`);
+      console.log(`> codelift started on ${url}`);
       open(url);
     });
   })
