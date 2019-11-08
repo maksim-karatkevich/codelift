@@ -4,15 +4,16 @@ import { observer, useStore } from "../Store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";
 
-export const TailWindInspector: FunctionComponent = observer(() => {
+export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
+  const className = store.target.classNames.join(" ");
 
   useEffect(() => {
     if (store.target.isLocked && searchRef.current) {
       searchRef.current.focus();
     }
-  }, [store.target.isLocked]);
+  }, [className, store.target.isLocked]);
 
   return (
     <>

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 const { spawn } = require("child_process");
-const [, , command, ...args] = process.argv;
+const [, , ...args] = process.argv;
+
+// TODO Use npm if package-lock.json exists
+const command = "yarn";
 
 // Start subprocess
-spawn(command ? command : "yarn", command ? args : ["start"], {
+spawn(command, args.length ? args : ["start"], {
   stdio: "inherit"
 });
 

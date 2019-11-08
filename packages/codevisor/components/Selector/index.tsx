@@ -15,24 +15,19 @@ export const Selector: FunctionComponent = observer(() => {
     }
 
     const handleClick = (event: MouseEvent) => {
+      event.preventDefault();
       store.handleTargetSelect(event.target as HTMLElement);
     };
 
-    const handleLeave = (event: MouseEvent) => {
-      setIsHovering(false);
-    };
-
     const handleHover = (event: MouseEvent) => {
-      setIsHovering(true);
+      setIsHovering(event.target === store.target.element);
       store.handleTargetHover(event.target as HTMLElement);
     };
 
-    root.addEventListener("mouseleave", handleLeave);
     root.addEventListener("mousemove", handleHover);
     root.addEventListener("click", handleClick);
 
     return () => {
-      root.removeEventListener("mouseleave", handleLeave);
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleHover);
     };
@@ -51,26 +46,53 @@ export const Selector: FunctionComponent = observer(() => {
 
   return createPortal(
     <div
-      className="absolute pointer-events-none z-40 border-blue-500 border border-dashed"
       style={{
-        opacity: isHovering ? 1 : 0,
-        left: left + store.contentWindow.scrollX,
+        border: "1px dashed #4299e1",
         height: bottom - top,
-        width: right - left,
+        left: left + store.contentWindow.scrollX,
+        pointerEvents: "none",
+        position: "absolute",
         top: top + store.contentWindow.scrollY,
-        transition: "all 200ms ease-in-out"
+        transition: "all 200ms ease-in-out",
+        width: right - left,
+        zIndex: 40
       }}
     >
-      <label className="absolute text-white font-mono text-xs bg-blue-500 px-1 py-px -mt-5 -ml-px rounded-t truncate max-w-full">
+      <label
+        style={{
+          background: "#4299e1",
+          borderRadius: "4px 4px 0 0",
+          color: "#ffffff",
+          fontFamily:
+            'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+          fontSize: "12px",
+          marginLeft: "-1px",
+          marginTop: "-22px",
+          maxWidth: "100%",
+          overflow: "hidden",
+          position: "absolute",
+          padding: "2px 4px",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap"
+        }}
+      >
         {store.target.element.tagName.toLowerCase()}
 
-        <small className="text-blue-200">
+        <small style={{ color: "#bee3f8" }}>
           {typeof store.target.element.className === "string"
             ? `.${store.target.element.className.split(" ").join(".")}`
             : null}
         </small>
       </label>
-      <div className="w-full h-full bg-blue-100 opacity-50" />
+      <div
+        style={{
+          background: "#ebf8ff",
+          height: "100%",
+          opacity: isHovering ? 0.5 : 0,
+          transition: "all 200ms ease-in-out",
+          width: "100%"
+        }}
+      />
     </div>,
     store.document.body
   );

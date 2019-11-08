@@ -11,6 +11,7 @@ export { observer, TailwindRule };
 export const Store = types
   .model("Store", {
     query: "",
+    isOpen: true,
     target: types.optional(Target, () => Target.create())
   })
   .volatile(self => ({
@@ -18,27 +19,29 @@ export const Store = types
     contentWindow: null as null | Window,
     // Needed for document.body
     document: null as null | HTMLDocument,
+    // In-case of an error accessing the iframe
+    error: null as null | Error,
     // Needed for <Selector />
     root: null as null | HTMLElement,
     rule: null as null | Instance<typeof TailwindRule>
   }))
   .views(self => ({
-    get appliedTailwindRules() {
+    get appliedCSSRules() {
       const { target } = self;
 
       if (!target) {
         return [];
       }
 
-      return this.queriedTailwindRules.filter(target.hasRule);
+      return this.queriedCSSRules.filter(target.hasRule);
     },
 
-    get queriedTailwindRules() {
+    get queriedCSSRules() {
       const { query } = self;
-      const { tailwindRules } = this;
+      const { CSSRules } = this;
 
       if (!query) {
-        return tailwindRules;
+        return CSSRules;
       }
 
       const words = query
@@ -58,16 +61,19 @@ export const Store = types
         ];
 
         return filtered.filter(rule => tests.some(test => test(rule)));
-      }, tailwindRules);
+      }, CSSRules);
     },
 
-    get tailwindRules() {
+    get CSSRules() {
       if (!self.document) {
         return [];
       }
 
-      const cssStyleRules = [...document.styleSheets]
-        .filter(styleSheet => styleSheet instanceof CSSStyleSheet)
+      const styleSheets = [...self.document.styleSheets].filter(
+        styleSheet => styleSheet instanceof CSSStyleSheet
+      );
+
+      const cssStyleRules = styleSheets
         .reduce(
           (acc, styleSheet) => {
             if (styleSheet instanceof CSSStyleSheet) {
@@ -92,7 +98,8 @@ export const Store = types
         //   );
         // })
         .filter(cssStyleRule => {
-          return cssStyleRule.selectorText.startsWith(".");
+          // Only show utility class
+          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
         });
 
       return cssStyleRules.map(cssStyleRule => {
@@ -117,10 +124,10 @@ export const Store = types
       });
     },
 
-    get groupedTailwindRules() {
+    get groupedCSSRules() {
       return Object.entries(
         groupBy(
-          this.queriedTailwindRules
+          this.queriedCSSRules
             // Remove duplicates
             // .filter(match => !this.appliedRules.includes(match))
             // Remove :hover, :active, etc.
@@ -131,12 +138,8 @@ export const Store = types
     }
   }))
   .actions(self => ({
-    handleEscape() {
-      if (self.target.isLocked) {
-        self.target.unlock();
-      } else {
-        self.target.unset();
-      }
+    close() {
+      self.isOpen = false;
     },
 
     handleFrameLoad(event: SyntheticEvent) {
@@ -154,7 +157,15 @@ export const Store = types
 
       self.contentWindow = iframe.contentWindow;
 
-      self.document = iframe.contentWindow.document;
+      try {
+        self.document = iframe.contentWindow.document;
+      } catch (error) {
+        self.error = error;
+        console.error(error);
+
+        return;
+      }
+
       self.root = self.document.querySelector("body");
 
       const { selector } = self.target;
@@ -168,6 +179,46 @@ export const Store = types
       } else {
         self.target.unset();
       }
+
+      window.removeEventListener("keydown", this.handleKeyPress);
+      window.addEventListener("keydown", this.handleKeyPress);
+
+      self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
+      self.contentWindow.addEventListener("keydown", this.handleKeyPress);
+    },
+
+    handleKeyPress(event: KeyboardEvent) {
+      const { key, metaKey } = event;
+
+      // CMD+'
+      if (metaKey && key === "'") {
+        event.preventDefault();
+
+        if (self.isOpen) {
+          return this.close();
+        } else {
+          return this.open();
+        }
+      }
+
+      // Ignore any other commands until we're open
+      if (!self.isOpen) {
+        return;
+      }
+
+      if (key === "Escape") {
+        event.preventDefault();
+
+        if (self.target.isLocked) {
+          return self.target.unlock();
+        }
+
+        if (self.isOpen) {
+          self.target.unset();
+
+          return this.close();
+        }
+      }
     },
 
     handleTargetHover(element: HTMLElement) {
@@ -178,6 +229,10 @@ export const Store = types
 
     handleTargetSelect(target: HTMLElement) {
       self.target.lock();
+    },
+
+    open() {
+      self.isOpen = true;
     },
 
     resetQuery() {

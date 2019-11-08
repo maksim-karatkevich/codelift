@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent } from "react";
 
 import { observer, useStore } from "../Store";
 
@@ -11,10 +11,8 @@ export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
   const children = [...root.children] as HTMLElement[];
   const tagName = root.tagName.toLowerCase();
   const isSelfClosing = children.length === 0;
-  const handleClick = useCallback(() => store.handleTargetSelect(root), [root]);
-  const handleMouseEnter = useCallback(() => store.handleTargetHover(root), [
-    root
-  ]);
+  const handleClick = () => store.handleTargetSelect(root);
+  const handleMouseEnter = () => store.handleTargetHover(root);
 
   return (
     <ol

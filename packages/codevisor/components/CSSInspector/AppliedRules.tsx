@@ -8,19 +8,19 @@ export const AppliedRules: FunctionComponent = observer(() => {
 
   return (
     <ul className="list-reset">
-      {!!store.appliedTailwindRules.length && (
+      {!!store.appliedCSSRules.length && (
         <label
           key={"Element Styles"}
           className="shadow-inner sticky top-0 block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black"
         >
           Element Styles
           <small className="float-right rounded bg-black px-1 py-px bg-gray-900">
-            {store.appliedTailwindRules.length}
+            {store.appliedCSSRules.length}
           </small>
         </label>
       )}
 
-      {store.appliedTailwindRules.map(rule => (
+      {store.appliedCSSRules.map(rule => (
         <Rule key={`element-${rule.className}`} rule={rule} />
       ))}
     </ul>

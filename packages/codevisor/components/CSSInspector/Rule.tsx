@@ -48,9 +48,9 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       console.error("Selected element is missing _debugSource property");
     }
 
-    toggleClassName({ ...debugSource, className });
-
     target.applyRule(rule);
+
+    toggleClassName({ ...debugSource, className });
   };
 
   return (
