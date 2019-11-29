@@ -1,16 +1,20 @@
 {
+  "name": "codelift",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
-    "release": "yarn workspace codelift release"
+    "prerelease": "yarn workspace codelift build",
+    "release": "np --contents packages/codelift"
   },
   "workspaces": [
     "examples/*",
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "concurrently": "^5.0.0",
+    "np": "^5.1.3"
   }
 }
