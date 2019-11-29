@@ -2,6 +2,7 @@
   "name": "codelift",
   "version": "0.1.1",
   "private": true,
+  "repository": "ericclemmons/codelift",
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
