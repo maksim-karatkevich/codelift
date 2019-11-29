@@ -1,2 +1,3 @@
 # Ignore yarn workspace modules
 /node_modules
+yarn-error.log
