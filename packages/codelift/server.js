@@ -3,8 +3,9 @@ const next = require("next");
 const open = require("open");
 const { parse } = require("url");
 
-const dev = process.env.NODE_ENV !== "production";
 const dir = __dirname;
+// Test if we're in the monorepo
+const dev = __dirname.includes("codelift/packages/codelift");
 const { PORT = 1337 } = process.env;
 
 const app = next({ dev, dir });
