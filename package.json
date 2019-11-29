@@ -1,14 +1,11 @@
 {
-  "name": "codelift",
-  "version": "0.1.2",
   "private": true,
-  "repository": "ericclemmons/codelift",
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
     "prerelease": "yarn workspace codelift build",
-    "release": "np --contents packages/codelift",
+    "release": "yarn workspace codelift np --yolo",
     "test": "echo No Tests"
   },
   "workspaces": [
