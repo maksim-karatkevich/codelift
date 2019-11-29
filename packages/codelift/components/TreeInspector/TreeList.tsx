@@ -14,6 +14,7 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
     const store = useStore();
     const children = [...root.children] as HTMLElement[];
     const tagName = root.tagName.toLowerCase();
+    const id = root.getAttribute("id");
     const handleClick = useCallback(() => store.handleTargetSelect(root), [
       root
     ]);
@@ -60,6 +61,12 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
             verticalAlign="text-bottom"
           >
             <Text>{tagName}</Text>
+
+            {id && (
+              <Text color="gray.400" fontSize="75%" isTruncated>
+                #{id}
+              </Text>
+            )}
 
             {classNames.length > 0 && (
               <Text color="gray.400" fontSize="75%" isTruncated>
