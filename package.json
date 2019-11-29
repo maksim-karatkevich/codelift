@@ -3,7 +3,8 @@
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
-    "next": "cd examples/next && codelift dev"
+    "next": "cd examples/next && codelift dev",
+    "release": "yarn workspace codelift release"
   },
   "workspaces": [
     "examples/*",

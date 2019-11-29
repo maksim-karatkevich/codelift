@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prerelease": "yarn build",
+    "release": "np --contents packages/codelift"
   },
   "dependencies": {
     "@chakra-ui/core": "^0.4.1",
@@ -32,5 +34,8 @@
     "react-dom": "16.12.0",
     "typescript": "^3.7.2",
     "urql": "^1.6.3"
+  },
+  "devDependencies": {
+    "np": "^5.1.3"
   }
 }
