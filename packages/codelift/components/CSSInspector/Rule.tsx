@@ -55,7 +55,6 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   };
 
   return (
-    // @ts-ignore
     <ListItem
       cursor="pointer"
       fontFamily="mono"
@@ -67,6 +66,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       onMouseLeave={() => target.cancelRule(rule)}
       paddingX="2"
       paddingY="1"
+      // @ts-ignore
       _hover={{
         bg: "gray.600"
       }}
