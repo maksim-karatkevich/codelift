@@ -7,7 +7,8 @@
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
     "prerelease": "yarn workspace codelift build",
-    "release": "np --contents packages/codelift"
+    "release": "np --contents packages/codelift",
+    "test": "echo No Tests"
   },
   "workspaces": [
     "examples/*",
