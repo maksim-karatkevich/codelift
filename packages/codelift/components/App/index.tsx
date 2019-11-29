@@ -1,9 +1,30 @@
-import React, { FunctionComponent, useEffect } from "react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Button,
+  CSSReset,
+  Grid,
+  Box,
+  InputGroup,
+  Input,
+  InputRightElement,
+  IconButton,
+  Link,
+  List,
+  ListItem,
+  ListIcon,
+  Text,
+  Textarea,
+  CircularProgress
+} from "@chakra-ui/core";
+import React, { FunctionComponent, useEffect, useCallback } from "react";
 import { createClient, Provider } from "urql";
 
-import { useAccordion } from "../Accordion";
+import { Error } from "./Error";
 import { Selector } from "../Selector";
-import { Sidebar } from "../Sidebar";
+import { Sidebar } from "./Sidebar";
 import { TreeInspector } from "../TreeInspector";
 import { CSSInspector } from "../CSSInspector";
 import { observer, useStore } from "../Store";
@@ -12,90 +33,50 @@ const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
   const store = useStore();
-  const [Panel] = useAccordion();
 
   const { href, origin } = window.location;
   const path = href.split(origin).pop();
 
   return (
     <Provider value={client}>
-      {/* <Sidebar>
-        {store.root ? (
-          <>
-            <Panel label="CSS">
-              <CSSInspector />
-            </Panel>
-
-            <Panel label="DOM Tree" onToggle={() => store.unlockTarget()}>
-              <TreeInspector root={store.root} />
-            </Panel>
-
-            <Panel label={<span className="font-mono">package.json</span>}>
-              <input className="border rounded w-full" type="search" />
-            </Panel>
-          </>
-        ) : store.error ? (
-          <div className="bg-red-600 text-white text-center shadow">
-            <p className="bg-red-600 text-white py-4 shadow">
-              Add this to your app
-            </p>
-
-            <pre className="font-mono text-xs py-2 bg-red-700">
-              import "codelift/register"
-            </pre>
-          </div>
-        ) : (
-          <p className="text-white text-center italic">Loading&hellip;</p>
-        )}
-      </Sidebar> */}
-
       {store.isOpen && <Selector />}
 
-      <section
-        className="bg-gray-100"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "16rem 1fr 16rem"
-        }}
-      >
-        <aside>
-          <h1
-            className="px-4 py-4 text-xl font-serif tracking-wider text-teal-700 font-thin"
-            style={{
-              textShadow: "0 1px 0 #FFFFFF, 0 -1px 0 #00000020"
-            }}
-          >
-            code<em className="ml-px opacity-75">lift</em>
-          </h1>
+      <Grid gridTemplateColumns={store.root ? "16rem 1fr 16rem" : "16rem 1fr"}>
+        <Sidebar>
+          {store.root ? (
+            <TreeInspector />
+          ) : store.error ? (
+            <Error />
+          ) : (
+            <Alert
+              flexDirection="column"
+              paddingY="4"
+              status="info"
+              variant="left-accent"
+            >
+              <AlertTitle color="white" fontSize="xl">
+                <CircularProgress isIndeterminate size="70%" marginRight="2" />
+                Loading
+              </AlertTitle>
+            </Alert>
+          )}
+        </Sidebar>
 
-          <form className="flex items-center bg-transparent border border-gray-400 bg-white focus:shadow-outline rounded-lg px-2 py-1">
-            <input
-              className="appearance-none w-full"
-              placeholder="Filter..."
-              type="search"
-            />
-            <button>Howdy</button>
-          </form>
-        </aside>
+        <Box as="main" boxShadow="lg" height="100vh" overflow="auto">
+          <iframe
+            onLoad={store.handleFrameLoad}
+            src={`http://localhost:3000${path}`}
+            style={{ width: "100%", height: "100%" }}
+            title="Source"
+          />
+        </Box>
 
-        <section className="pt-4 h-screen">
-          <main
-            className="h-full relative bg-white rounded-t overflow-hidden"
-            style={{
-              boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)"
-            }}
-          >
-            <iframe
-              onLoad={store.handleFrameLoad}
-              className="w-full h-full shadow-lg"
-              src={`http://localhost:3000${path}`}
-              title="Source"
-            />
-          </main>
-        </section>
-
-        <aside>Panels</aside>
-      </section>
+        {store.root ? (
+          <Sidebar>
+            <CSSInspector />
+          </Sidebar>
+        ) : null}
+      </Grid>
     </Provider>
   );
 });

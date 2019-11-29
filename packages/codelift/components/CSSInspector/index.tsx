@@ -1,4 +1,17 @@
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import {
+  Box,
+  Input,
+  IconButton,
+  InputGroup,
+  InputRightElement,
+  List
+} from "@chakra-ui/core";
+import React, {
+  FunctionComponent,
+  useEffect,
+  useRef,
+  ChangeEvent
+} from "react";
 
 import { observer, useStore } from "../Store";
 import { AppliedRules } from "./AppliedRules";
@@ -17,19 +30,31 @@ export const CSSInspector: FunctionComponent = observer(() => {
 
   return (
     <>
-      <input
-        autoFocus
-        className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
-        onChange={event => store.search(event.target.value)}
-        placeholder="Search..."
-        ref={searchRef}
-        value={store.query}
-      />
+      <InputGroup>
+        <Input
+          autoFocus
+          bg="gray.600"
+          boxShadow="md"
+          className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
+          color="white"
+          onChange={(event: ChangeEvent) =>
+            store.search((event.target as HTMLInputElement).value)
+          }
+          ref={searchRef}
+          placeholder="Search..."
+          px="2"
+          value={store.query}
+          variant="flushed"
+        />
+        <InputRightElement>
+          <IconButton aria-label="Search" icon="search" variant="ghost" />
+        </InputRightElement>
+      </InputGroup>
 
-      <div className="h-full overflow-y-auto">
+      <List maxHeight="100%" overflow="auto" width="100%">
         <AppliedRules />
         <GroupedRules />
-      </div>
+      </List>
     </>
   );
 });

@@ -1,3 +1,4 @@
+import { ListItem, Text } from "@chakra-ui/core";
 import { Instance } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 import { useMutation } from "urql";
@@ -54,25 +55,25 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   };
 
   return (
-    <li
-      className="cursor-pointer font-mono font-hairline text-xs py-1 px-2 hover:bg-gray-600"
+    // @ts-ignore
+    <ListItem
+      cursor="pointer"
+      fontFamily="mono"
+      fontWeight="hairline"
+      fontSize="xs"
+      textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
       onClick={() => toggleRule(rule)}
       onMouseEnter={() => target.previewRule(rule)}
       onMouseLeave={() => target.cancelRule(rule)}
+      paddingX="2"
+      paddingY="1"
+      _hover={{
+        bg: "gray.600"
+      }}
     >
-      <label
-        className={`cursor-pointer ${
-          rule.isApplied
-            ? toggled
-              ? "line-through opacity-50"
-              : "opacity-100"
-            : toggled
-            ? "opacity-100"
-            : "opacity-50"
-        }`}
-      >
+      <Text color={rule.isApplied ? "white" : "gray.400"}>
         {rule.className}
-      </label>
-    </li>
+      </Text>
+    </ListItem>
   );
 });

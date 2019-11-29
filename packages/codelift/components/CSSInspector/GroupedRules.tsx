@@ -1,3 +1,4 @@
+import { List, ListItem, Tag } from "@chakra-ui/core";
 import React, { FunctionComponent } from "react";
 
 import { Rule } from "./Rule";
@@ -7,21 +8,26 @@ export const GroupedRules: FunctionComponent = observer(() => {
   const store = useStore();
 
   return (
-    <ul className="list-reset">
+    <>
       {store.groupedCSSRules.map(
         ([group, groupedRules]) =>
           !!groupedRules.length && (
             <React.Fragment key={`group-${group}`}>
-              <label
+              <ListItem
+                bg="gray.800"
+                boxShadow="sm"
+                color="white"
                 key={`group-${group}`}
-                className="shadow-inner sticky top-0 block text-sm opacity-75 px-2 py-1 my-2 tracking-wide bg-black"
+                fontSize="sm"
+                paddingY="1"
+                paddingX="2"
+                position="sticky"
               >
                 {group}
-
-                <small className="float-right rounded bg-black px-1 py-px bg-gray-900">
+                <Tag float="right" fontSize="xs" rounded="full" size="sm">
                   {groupedRules.length}
-                </small>
-              </label>
+                </Tag>
+              </ListItem>
 
               {groupedRules.map(rule => (
                 <Rule key={`className-${rule.className}`} rule={rule} />
@@ -29,6 +35,6 @@ export const GroupedRules: FunctionComponent = observer(() => {
             </React.Fragment>
           )
       )}
-    </ul>
+    </>
   );
 });

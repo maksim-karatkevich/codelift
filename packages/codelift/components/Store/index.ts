@@ -74,20 +74,17 @@ export const Store = types
       );
 
       const cssStyleRules = styleSheets
-        .reduce(
-          (acc, styleSheet) => {
-            if (styleSheet instanceof CSSStyleSheet) {
-              const cssRules = [...styleSheet.cssRules].filter(
-                cssRule => cssRule instanceof CSSStyleRule
-              );
+        .reduce((acc, styleSheet) => {
+          if (styleSheet instanceof CSSStyleSheet) {
+            const cssRules = [...styleSheet.cssRules].filter(
+              cssRule => cssRule instanceof CSSStyleRule
+            );
 
-              return acc.concat(cssRules as CSSStyleRule[]);
-            }
+            return acc.concat(cssRules as CSSStyleRule[]);
+          }
 
-            return acc;
-          },
-          [] as CSSStyleRule[]
-        )
+          return acc;
+        }, [] as CSSStyleRule[])
         // ? Sorting doesn't seem very useful (yet)
         // .sort((a, b) => {
         //   const [aString, aNumber] = a.selectorText.split(/(\d+$)/);
@@ -159,6 +156,7 @@ export const Store = types
 
       try {
         self.document = iframe.contentWindow.document;
+        self.error = null;
       } catch (error) {
         self.error = error;
         console.error(error);
