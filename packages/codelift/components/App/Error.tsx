@@ -11,10 +11,8 @@ import { FunctionComponent } from "react";
 import { observer, useStore } from "../Store";
 
 const code = `
-if (process.env.NODE_ENV === "development" && typeof window === "object") {
-  // Allow access from GUI on another port
-  document.domain = window.location.hostname;
-}`.trim();
+import "codelift/register";
+`.trim();
 
 export const Error: FunctionComponent = observer(() => {
   const store = useStore();
@@ -36,13 +34,13 @@ export const Error: FunctionComponent = observer(() => {
         {store.error.message}
       </AlertTitle>
       <AlertDescription fontWeight="normal" marginY="2" textAlign="center">
-        Add this to the top of your app:
+        Add to the top of your app:
       </AlertDescription>
       <Textarea
         bg="black"
         fontSize="xs"
         fontFamily="mono"
-        height="5rem"
+        minHeight="2rem"
         opacity={0.5}
         padding="2"
         overflow="auto"
