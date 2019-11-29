@@ -1,31 +1,39 @@
-# [Tailwind CSS][tailwind] + GUI
+# code<sup>_lift_</sup>
 
-> Rapidly style your design with the leading utility-first CSS framework, [Tailwind][tailwind].
+![Create React App Example](/cra.png)
 
-![Picture of Selector](Selector.png)
-
----
-
-1. Hover & Select an element.
-1. **Find-as-you-type** all [Tailwind][tailwind] CSS utilties.
-1. **Hover to preview** before applying.
-1. **Click to toggle** utilities:
-
-   > ![Picture of Inspector](Inspector.png)
-
-1. Press <kbd>Esc</kbd> to select another element, again to close the GUI entirely, and <kbd>/</kbd> to re-enable the GUI.
-1. Use your browser's DevTools to copy _Outer HTML_:
-
-   > ![Picture of DevTools](copy-html.png)
+> A "No Code" GUI for your existing React app.
 
 ## Getting Started
 
-_This project is based on [create-react-app][cra] for familiarity_
+Within your [create-react-app][cra] project:
+
+1. `yarn add codelift --dev`
+1. `yarn codelift start`
+1. Add `import "codelift/register"` to the top of your `src/App.tsx`.
+
+## Examples
+
+- [Create React App + Tailwind CSS](/examples/cra)
+- [Next.js + Tailwind CSS](examples/next)
+
+## Features
+
+### CSS Inspector
+
+1. Hover & Select an element.
+1. **Find-as-you-type** CSS classes.
+1. **Hover to preview** before applying.
+1. **Click to toggle** in your source code.
+
+### Upcoming
+
+1. Package Installation
+
+## Contributing
 
 1. Clone this repo.
-1. `yarn start`.
-1. <http://localhost:3000/>
-1. 🎉Get stylin'!
+1. `yarn cra` or `yarn next` to run the CRA or Next.js examples, respectively.
 
 ## Author
 
