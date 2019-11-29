@@ -6,7 +6,7 @@
     "next": "cd examples/next && codelift dev",
     "prerelease": "yarn workspace codelift build",
     "release": "yarn workspace codelift publish",
-    "postrelease": "git push --tags",
+    "postrelease": "git push --follow-tags",
     "test": "echo No Tests"
   },
   "workspaces": [
