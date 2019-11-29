@@ -4,6 +4,9 @@
   "version": "0.1.2",
   "files": [
     "./bin",
+    "./next",
+    "register.dev.js",
+    "register.js",
     "server.js"
   ],
   "scripts": {
