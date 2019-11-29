@@ -164,7 +164,13 @@ export const Store = types
         return;
       }
 
-      self.root = self.document.querySelector("body");
+      self.root =
+        // CRA
+        self.document.querySelector("#root") ||
+        // Next.js
+        self.document.querySelector("#__next") ||
+        // Whatever
+        self.document.querySelector("body");
 
       const { selector } = self.target;
 

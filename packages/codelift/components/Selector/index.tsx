@@ -46,6 +46,7 @@ export const Selector: FunctionComponent = observer(() => {
 
   return createPortal(
     <div
+      id="__codelift-selector"
       style={{
         border: "1px dashed #4299e1",
         height: bottom - top,
