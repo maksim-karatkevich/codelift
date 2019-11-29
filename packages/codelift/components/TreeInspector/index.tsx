@@ -1,53 +1,42 @@
-import { FunctionComponent } from "react";
+import {
+  Box,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement
+} from "@chakra-ui/core";
+import { FunctionComponent, useState, ChangeEvent } from "react";
 
 import { observer, useStore } from "../Store";
 
-type Props = {
-  root: HTMLElement;
-};
+import { TreeList } from "./TreeList";
 
-export const TreeInspector: FunctionComponent<Props> = observer(({ root }) => {
+export const TreeInspector: FunctionComponent = observer(() => {
   const store = useStore();
-  const children = [...root.children] as HTMLElement[];
-  const tagName = root.tagName.toLowerCase();
-  const isSelfClosing = children.length === 0;
-  const handleClick = () => store.handleTargetSelect(root);
-  const handleMouseEnter = () => store.handleTargetHover(root);
+
+  if (!store.root) {
+    return null;
+  }
 
   return (
-    <ol
-      className="text-white font-mono text-xs pl-3 overflow-y-auto shadow"
-      style={{
-        background: "rgba(100%, 100%, 100%, 0.05)"
-      }}
-    >
-      <li
-        className={`cursor-pointer ${
-          root === store.target.element ? "text-yellow-500" : undefined
-        }`}
-        onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-      >
-        {isSelfClosing ? `<${tagName}/>` : `<${tagName}>`}
-      </li>
+    <>
+      {/* TODO Re-enable and filter through Node models  */}
+      {/* e..g node.matchesFilter(filter), node.childrenMatchesFilter(filter) */}
+      {/* <InputGroup>
+        <Input
+          color="white"
+          placeholder="Filter DOM..."
+          px="2"
+          variant="flushed"
+        />
+        <InputRightElement>
+          <IconButton aria-label="Search" icon="search" variant="ghost" />
+        </InputRightElement>
+      </InputGroup> */}
 
-      {root instanceof SVGElement || isSelfClosing ? null : (
-        <>
-          {children.map((child, i) => (
-            <TreeInspector key={i} root={child} />
-          ))}
-
-          <li
-            className={`cursor-pointer py-1 ${
-              root === store.target.element ? "text-yellow-500" : undefined
-            }`}
-            onClick={handleClick}
-            onMouseEnter={handleMouseEnter}
-          >
-            {`</${tagName}>`}
-          </li>
-        </>
-      )}
-    </ol>
+      <Box paddingY="2" maxHeight="100%" overflow="auto" width="100%">
+        <TreeList root={store.root} />
+      </Box>
+    </>
   );
 });

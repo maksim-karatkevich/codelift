@@ -1,6 +1,5 @@
+import { CSSReset, DarkMode, ThemeProvider } from "@chakra-ui/core";
 import dynamic from "next/dynamic";
-
-import "tailwindcss/dist/tailwind.css";
 
 const AppClient = dynamic(
   async () => {
@@ -13,4 +12,12 @@ const AppClient = dynamic(
   }
 );
 
-export default () => <AppClient />;
+export default () => (
+  <ThemeProvider>
+    <CSSReset />
+
+    <DarkMode>
+      <AppClient />
+    </DarkMode>
+  </ThemeProvider>
+);
