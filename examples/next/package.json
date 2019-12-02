@@ -9,12 +9,9 @@
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
-    "next": "9.1.1",
-    "react": "16.10.2",
-    "react-dom": "16.10.2",
-    "tailwindcss": "^1.1.3"
-  },
-  "devDependencies": {
-    "codelift": "*"
+    "next": "^9.1.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "tailwindcss": "^1.1.4"
   }
 }
