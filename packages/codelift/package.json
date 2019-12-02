@@ -5,6 +5,7 @@
   "files": [
     "./bin",
     ".next",
+    "node_modules",
     "register.dev.js",
     "register.js",
     "server.js"
