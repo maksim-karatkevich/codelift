@@ -10,6 +10,7 @@ export { observer, TailwindRule };
 
 export const Store = types
   .model("Store", {
+    cssRules: types.array(TailwindRule),
     query: "",
     isOpen: true,
     target: types.optional(Target, () => Target.create())
@@ -37,11 +38,10 @@ export const Store = types
     },
 
     get queriedCSSRules() {
-      const { query } = self;
-      const { CSSRules } = this;
+      const { cssRules, query } = self;
 
       if (!query) {
-        return CSSRules;
+        return cssRules;
       }
 
       const words = query
@@ -49,72 +49,22 @@ export const Store = types
         .map(word => word.trim())
         .filter(Boolean);
 
-      return words.reduce((filtered, word) => {
-        const tests = [
-          (rule: Instance<typeof TailwindRule>) => {
-            return rule.className.startsWith(word);
-          },
+      return words.reduce(
+        (filtered, word) => {
+          const tests = [
+            (rule: Instance<typeof TailwindRule>) => {
+              return rule.className.startsWith(word);
+            },
 
-          (rule: Instance<typeof TailwindRule>) => {
-            return rule.cssText.includes(word);
-          }
-        ];
+            (rule: Instance<typeof TailwindRule>) => {
+              return rule.cssText.includes(word);
+            }
+          ];
 
-        return filtered.filter(rule => tests.some(test => test(rule)));
-      }, CSSRules);
-    },
-
-    get CSSRules() {
-      if (!self.document) {
-        return [];
-      }
-
-      const styleSheets = [...self.document.styleSheets].filter(
-        styleSheet => styleSheet.constructor.name === "CSSStyleSheet"
+          return filtered.filter(rule => tests.some(test => test(rule)));
+        },
+        [...cssRules]
       );
-
-      const cssStyleRules = styleSheets
-        .reduce((acc, styleSheet) => {
-          const cssRules = [...(styleSheet as CSSStyleSheet).cssRules].filter(
-            cssRule => cssRule.constructor.name === "CSSStyleRule"
-          );
-
-          return acc.concat(cssRules as CSSStyleRule[]);
-        }, [] as CSSStyleRule[])
-        // ? Sorting doesn't seem very useful (yet)
-        // .sort((a, b) => {
-        //   const [aString, aNumber] = a.selectorText.split(/(\d+$)/);
-        //   const [bString, bNumber] = b.selectorText.split(/(\d+$)/);
-
-        //   return (
-        //     aString.localeCompare(bString) || Number(aNumber) - Number(bNumber)
-        //   );
-        // })
-        .filter(cssStyleRule => {
-          // Only show utility class
-          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
-        });
-
-      return cssStyleRules.map(cssStyleRule => {
-        const { cssText, selectorText, style } = cssStyleRule;
-
-        return TailwindRule.create(
-          {
-            cssText,
-            selectorText,
-            style: Object.values(style).reduce(
-              (acc, property) => ({
-                ...acc,
-                [property]: style[property as any]
-              }),
-              {}
-            )
-          },
-          {
-            parent: self
-          }
-        );
-      });
     },
 
     get groupedCSSRules() {
@@ -185,6 +135,8 @@ export const Store = types
 
       self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
       self.contentWindow.addEventListener("keydown", this.handleKeyPress);
+
+      this.initCSSRules();
     },
 
     handleKeyPress(event: KeyboardEvent) {
@@ -229,6 +181,60 @@ export const Store = types
 
     handleTargetSelect(target: HTMLElement) {
       self.target.lock();
+    },
+
+    initCSSRules() {
+      if (!self.document) {
+        return;
+      }
+
+      if (self.cssRules.length) {
+        return;
+      }
+
+      const styleSheets = [...self.document.styleSheets].filter(
+        styleSheet => styleSheet.constructor.name === "CSSStyleSheet"
+      );
+
+      const cssStyleRules = styleSheets
+        .reduce((acc, styleSheet) => {
+          const cssRules = [...(styleSheet as CSSStyleSheet).cssRules].filter(
+            cssRule => cssRule.constructor.name === "CSSStyleRule"
+          );
+
+          return acc.concat(cssRules as CSSStyleRule[]);
+        }, [] as CSSStyleRule[])
+        // ? Sorting doesn't seem very useful (yet)
+        // .sort((a, b) => {
+        //   const [aString, aNumber] = a.selectorText.split(/(\d+$)/);
+        //   const [bString, bNumber] = b.selectorText.split(/(\d+$)/);
+
+        //   return (
+        //     aString.localeCompare(bString) || Number(aNumber) - Number(bNumber)
+        //   );
+        // })
+        .filter(cssStyleRule => {
+          // Only show utility class
+          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
+        });
+
+      const tailwindRules = cssStyleRules.map(cssStyleRule => {
+        const { cssText, selectorText, style } = cssStyleRule;
+
+        return TailwindRule.create({
+          cssText,
+          selectorText,
+          style: Object.values(style).reduce(
+            (acc, property) => ({
+              ...acc,
+              [property]: style[property as any]
+            }),
+            {}
+          )
+        });
+      });
+
+      self.cssRules.replace(tailwindRules);
     },
 
     open() {

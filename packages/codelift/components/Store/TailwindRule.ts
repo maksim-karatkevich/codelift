@@ -1,4 +1,4 @@
-import { getEnv, getRoot, types } from "mobx-state-tree";
+import { getRoot, types } from "mobx-state-tree";
 
 import { classNameGroups } from "./classNameGroups";
 
@@ -27,13 +27,13 @@ export const TailwindRule = types
     },
 
     get isApplied() {
-      const { target } = getEnv(self).parent;
+      const { target } = getRoot(self);
 
       return target.hasRule(this);
     },
 
     get isMatching() {
-      const { query } = getEnv(self).parent;
+      const { query } = getRoot(self);
 
       if (!query) {
         return true;
