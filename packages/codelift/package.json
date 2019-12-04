@@ -1,7 +1,7 @@
 {
   "name": "codelift",
   "bin": "./dist/index.js",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "files": [
     "dist",
     "register.dev.js",
@@ -23,7 +23,7 @@
     "@zeit/next-css": "^1.0.1",
     "apollo-server-micro": "^2.9.12",
     "classnames": "^2.2.6",
-    "core-js": "^3.4.7",
+    "core-js": "^2.6.10",
     "emotion-theming": "^10.0.19",
     "graphql": "^14.5.8",
     "jscodeshift": "^0.6.4",
