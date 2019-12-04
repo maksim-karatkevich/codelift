@@ -1,6 +1,6 @@
 {
   "name": "codelift",
-  "bin": "./bin/codelift.js",
+  "bin": "./dist/index.js",
   "version": "0.1.11",
   "files": [
     "./bin",
@@ -11,7 +11,9 @@
   ],
   "scripts": {
     "dev": "next dev",
+    "prebuild": "ncc build ./bin/codelift.js -o dist",
     "build": "next build",
+    "postbuild": "mv .next dist",
     "start": "NODE_ENV=production next start"
   },
   "dependencies": {
@@ -40,6 +42,7 @@
     "@types/jscodeshift": "^0.6.3",
     "@types/lodash": "^4.14.149",
     "@types/match-sorter": "^2.3.0",
+    "@zeit/ncc": "^0.20.5",
     "typescript": "^3.7.2"
   }
 }
