@@ -34,7 +34,7 @@ export const TreeInspector: FunctionComponent = observer(() => {
         </InputRightElement>
       </InputGroup> */}
 
-      <Box paddingY="2" maxHeight="100%" overflow="auto" width="100%">
+      <Box paddingY="2" height="100%" overflow="auto" width="100%">
         <TreeList root={store.root} />
       </Box>
     </>
