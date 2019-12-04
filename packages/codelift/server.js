@@ -8,6 +8,8 @@ const dir = __dirname;
 const dev =
   process.env.NODE_ENV === "production"
     ? false
+    : __dirname.includes("dist")
+    ? false
     : __dirname.includes("codelift/packages/codelift");
 
 const { PORT = 1337 } = process.env;

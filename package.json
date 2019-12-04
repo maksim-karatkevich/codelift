@@ -10,7 +10,6 @@
     "test": "echo No Tests"
   },
   "workspaces": [
-    "examples/*",
     "packages/*"
   ],
   "devDependencies": {
