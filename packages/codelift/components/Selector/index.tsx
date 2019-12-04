@@ -51,6 +51,7 @@ export const Selector: FunctionComponent = observer(() => {
         border: "1px dashed #4299e1",
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
+        opacity: store.target.isPreviewing ? 0 : 1,
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,

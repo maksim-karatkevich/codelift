@@ -7,7 +7,8 @@ type Rule = Instance<typeof TailwindRule>;
 export const Target = types
   .model("Target", {
     classNames: types.array(types.string),
-    isLocked: false
+    isLocked: false,
+    isPreviewing: false
   })
   .volatile(self => ({
     element: null as null | HTMLElement
@@ -90,6 +91,8 @@ export const Target = types
       if (self.element) {
         self.element.className = self.classNames.join(" ");
       }
+
+      self.isPreviewing = false;
     },
 
     lock() {
@@ -103,6 +106,8 @@ export const Target = types
         } else {
           self.element.classList.add(rule.className);
         }
+
+        self.isPreviewing = true;
       }
     },
 
