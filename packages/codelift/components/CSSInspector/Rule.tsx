@@ -20,18 +20,18 @@ const getReactElement = (element: HTMLElement) => {
 
 export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   const [res, toggleClassName] = useMutation(`
-  mutation ToggleClassName(
-    $className: String!
-    $fileName: String!
-    $lineNumber: Int!
-    ) {
-      toggleClassName(
-        className: $className
-        fileName: $fileName
-        lineNumber: $lineNumber
-        )
-      }
-      `);
+    mutation ToggleClassName(
+      $className: String!
+      $fileName: String!
+      $lineNumber: Int!
+      ) {
+        toggleClassName(
+          className: $className
+          fileName: $fileName
+          lineNumber: $lineNumber
+          )
+        }
+  `);
 
   if (res.error) {
     console.error(res.error);
@@ -39,7 +39,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     throw new Error(res.error.toString());
   }
 
-  const { target } = useStore();
+  const store = useStore();
+  const { target } = store;
   const toggled = false;
   const toggleRule = (rule: Instance<typeof TailwindRule>) => {
     const { className } = rule;
@@ -50,6 +51,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     }
 
     target.applyRule(rule);
+    store.resetQuery();
 
     toggleClassName({ ...debugSource, className });
   };
