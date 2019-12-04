@@ -11,8 +11,10 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "prebuild": "ncc build ./bin/codelift.js -o dist",
-    "build": "next build",
+    "prebuild": "rimraf .next dist",
+    "build": "run-p --print-label build:*",
+    "build:bin": "ncc build ./bin/codelift.js -o dist",
+    "build:next": "next build",
     "postbuild": "mv .next dist",
     "start": "NODE_ENV=production next start"
   },
@@ -43,6 +45,8 @@
     "@types/lodash": "^4.14.149",
     "@types/match-sorter": "^2.3.0",
     "@zeit/ncc": "^0.20.5",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.0",
     "typescript": "^3.7.2"
   }
 }
