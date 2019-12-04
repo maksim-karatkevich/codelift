@@ -14,8 +14,8 @@ const command = "yarn";
   });
 
   // Wait until the server is listening
-  await waitForLocalhost({ port: 3000 });
   console.log(`☁️  codelift waiting on localhost:3000...`);
+  await waitForLocalhost({ port: 3000 });
 
   // Start codelift
   require("../server");
