@@ -34,7 +34,7 @@ app
 
       const url = `http://localhost:${PORT}`;
 
-      console.log(`> codelift started on ${url}`);
+      console.log(`☁️  codelift started on ${url}`);
       open(url);
     });
   })
