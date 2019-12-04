@@ -2,6 +2,7 @@ const { createServer } = require("http");
 const next = require("next");
 const open = require("open");
 const { parse } = require("url");
+const waitForLocalhost = require("wait-for-localhost");
 
 const dir = __dirname;
 // Test if we're in the monorepo
@@ -29,8 +30,13 @@ app
       } else {
         app.render(req, res, "/", query);
       }
-    }).listen(PORT, err => {
+    }).listen(PORT, async err => {
       if (err) throw err;
+
+      console.log(
+        `☁️  codelift waiting for http://localhost:3000/ to start...`
+      );
+      await waitForLocalhost({ port: 3000 });
 
       const url = `http://localhost:${PORT}`;
 

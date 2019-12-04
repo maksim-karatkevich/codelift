@@ -70,20 +70,16 @@ export const Store = types
       }
 
       const styleSheets = [...self.document.styleSheets].filter(
-        styleSheet => styleSheet instanceof CSSStyleSheet
+        styleSheet => styleSheet.constructor.name === "CSSStyleSheet"
       );
 
       const cssStyleRules = styleSheets
         .reduce((acc, styleSheet) => {
-          if (styleSheet instanceof CSSStyleSheet) {
-            const cssRules = [...styleSheet.cssRules].filter(
-              cssRule => cssRule instanceof CSSStyleRule
-            );
+          const cssRules = [...(styleSheet as CSSStyleSheet).cssRules].filter(
+            cssRule => cssRule.constructor.name === "CSSStyleRule"
+          );
 
-            return acc.concat(cssRules as CSSStyleRule[]);
-          }
-
-          return acc;
+          return acc.concat(cssRules as CSSStyleRule[]);
         }, [] as CSSStyleRule[])
         // ? Sorting doesn't seem very useful (yet)
         // .sort((a, b) => {
