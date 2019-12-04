@@ -3,11 +3,9 @@
   "bin": "./dist/index.js",
   "version": "0.1.12",
   "files": [
-    "./bin",
-    ".next",
+    "dist",
     "register.dev.js",
-    "register.js",
-    "server.js"
+    "register.js"
   ],
   "scripts": {
     "dev": "next dev",
