@@ -1,7 +1,7 @@
 {
   "name": "codelift",
   "bin": "./bin/codelift.js",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "files": [
     ".next",
     "bin",
