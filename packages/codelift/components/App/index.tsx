@@ -41,7 +41,7 @@ export const App: FunctionComponent = observer(() => {
     <Provider value={client}>
       {store.isOpen && <Selector />}
 
-      <Grid gridTemplateColumns={store.root ? "16rem 1fr 16rem" : "16rem 1fr"}>
+      <Grid gridTemplateColumns="16rem 1fr 16rem">
         <Sidebar>
           {store.root ? (
             <TreeInspector />
@@ -71,11 +71,9 @@ export const App: FunctionComponent = observer(() => {
           />
         </Box>
 
-        {store.root ? (
-          <Sidebar>
-            <CSSInspector />
-          </Sidebar>
-        ) : null}
+        <Sidebar>
+          <CSSInspector />
+        </Sidebar>
       </Grid>
     </Provider>
   );

@@ -78,6 +78,21 @@ export const Store = types
           ({ group = "Other " }) => group
         )
       );
+    },
+
+    get root() {
+      if (!self.document) {
+        return null;
+      }
+
+      return (
+        // CRA
+        self.document.querySelector("#root") ||
+        // Next.js
+        self.document.querySelector("#__next") ||
+        // Whatever
+        self.document.querySelector("body")
+      );
     }
   }))
   .actions(self => ({
@@ -110,14 +125,6 @@ export const Store = types
         return;
       }
 
-      self.root =
-        // CRA
-        self.document.querySelector("#root") ||
-        // Next.js
-        self.document.querySelector("#__next") ||
-        // Whatever
-        self.document.querySelector("body");
-
       const { selector } = self.target;
 
       const element = selector
@@ -136,7 +143,14 @@ export const Store = types
       self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
       self.contentWindow.addEventListener("keydown", this.handleKeyPress);
 
+      self.contentWindow.addEventListener("unload", this.handleFrameUnload);
+
       this.initCSSRules();
+    },
+
+    handleFrameUnload() {
+      self.contentWindow = null;
+      self.document = null;
     },
 
     handleKeyPress(event: KeyboardEvent) {
