@@ -33,10 +33,9 @@ export const CSSInspector: FunctionComponent = observer(() => {
       <InputGroup>
         <Input
           autoFocus
-          bg="gray.600"
+          bg="white"
           boxShadow="md"
-          className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
-          color="white"
+          color="black"
           onChange={(event: ChangeEvent) =>
             store.search((event.target as HTMLInputElement).value)
           }
