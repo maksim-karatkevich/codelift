@@ -52,7 +52,7 @@ export const Selector: FunctionComponent<SelectorProps> = observer(
           border: "1px dashed #4299e1",
           height: bottom - top,
           left: left + store.contentWindow.scrollX,
-          opacity: node.isPreviewing ? 0 : 1,
+          opacity: store.selected.isPreviewing ? 0 : 1,
           pointerEvents: "none",
           position: "absolute",
           top: top + store.contentWindow.scrollY,
