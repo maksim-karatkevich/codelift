@@ -41,7 +41,12 @@ export const App: FunctionComponent = observer(() => {
     <Provider value={client}>
       {store.isOpen && <Selector />}
 
-      <Grid gridTemplateColumns="16rem 1fr 16rem">
+      <Grid
+        gridTemplateColumns={`${store.isOpen ? "16rem" : 0} 1fr ${
+          store.isOpen ? "16rem" : 0
+        }`}
+        style={{ transition: "all 200ms ease-in-out" }}
+      >
         <Sidebar>
           {store.root ? (
             <TreeInspector />
