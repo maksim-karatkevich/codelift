@@ -20,23 +20,22 @@ import { GroupedRules } from "./GroupedRules";
 export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
-  const className = store.target.classNames.join(" ");
+  const className = store.selected.classNames.join(" ");
 
   useEffect(() => {
-    if (store.target.isLocked && searchRef.current) {
+    if (searchRef.current) {
       searchRef.current.focus();
     }
-  }, [className, store.target.isLocked]);
+  }, [className]);
 
   return (
     <>
       <InputGroup>
         <Input
           autoFocus
-          bg="gray.600"
+          bg="white"
           boxShadow="md"
-          className="text-black shadow-md bg-gray-200 focus:bg-white border-transparent focus:border-blue-light p-2 static w-full"
-          color="white"
+          color="black"
           onChange={(event: ChangeEvent) =>
             store.search((event.target as HTMLInputElement).value)
           }

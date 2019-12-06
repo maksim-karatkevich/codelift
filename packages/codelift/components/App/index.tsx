@@ -39,9 +39,14 @@ export const App: FunctionComponent = observer(() => {
 
   return (
     <Provider value={client}>
-      {store.isOpen && <Selector />}
+      {store.isOpen && <Selector node={store.selected} />}
 
-      <Grid gridTemplateColumns="16rem 1fr 16rem">
+      <Grid
+        gridTemplateColumns={`${store.isOpen ? "16rem" : 0} 1fr ${
+          store.isOpen ? "16rem" : 0
+        }`}
+        style={{ transition: "all 200ms ease-in-out" }}
+      >
         <Sidebar>
           {store.root ? (
             <TreeInspector />
@@ -62,7 +67,7 @@ export const App: FunctionComponent = observer(() => {
           )}
         </Sidebar>
 
-        <Box as="main" boxShadow="lg" height="100vh" overflow="auto">
+        <Box as="main" boxShadow="lg" height="100vh" overflow="auto" zIndex={1}>
           <iframe
             onLoad={store.handleFrameLoad}
             src={`http://localhost:3000${path}`}

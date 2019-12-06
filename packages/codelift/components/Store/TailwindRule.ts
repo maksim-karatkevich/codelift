@@ -2,6 +2,8 @@ import { getRoot, types } from "mobx-state-tree";
 
 import { classNameGroups } from "./classNameGroups";
 
+// TODO This isn't really tailwind-specific anymore, besides classNameGroups.
+// Actually, those groups should be created based on their properties.
 export const TailwindRule = types
   .model("TailwindRule", {
     cssText: types.string,
