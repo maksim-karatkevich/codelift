@@ -62,7 +62,7 @@ export const App: FunctionComponent = observer(() => {
           )}
         </Sidebar>
 
-        <Box as="main" boxShadow="lg" height="100vh" overflow="auto">
+        <Box as="main" boxShadow="lg" height="100vh" overflow="auto" zIndex={1}>
           <iframe
             onLoad={store.handleFrameLoad}
             src={`http://localhost:3000${path}`}
