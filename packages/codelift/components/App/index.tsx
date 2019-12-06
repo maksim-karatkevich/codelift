@@ -39,7 +39,7 @@ export const App: FunctionComponent = observer(() => {
 
   return (
     <Provider value={client}>
-      {store.isOpen && <Selector />}
+      {store.isOpen && <Selector node={store.selected} />}
 
       <Grid
         gridTemplateColumns={`${store.isOpen ? "16rem" : 0} 1fr ${

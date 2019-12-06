@@ -4,7 +4,7 @@ import { Instance, types } from "mobx-state-tree";
 import { createContext, useContext, SyntheticEvent } from "react";
 
 import { TailwindRule } from "./TailwindRule";
-import { Target } from "./Target";
+import { Node } from "./Node";
 
 export { observer, TailwindRule };
 
@@ -13,7 +13,8 @@ export const Store = types
     cssRules: types.array(TailwindRule),
     query: "",
     isOpen: true,
-    target: types.optional(Target, () => Target.create())
+    target: types.optional(Node, () => Node.create()),
+    selected: types.optional(Node, () => Node.create())
   })
   .volatile(self => ({
     // Needed for scrollX/Y
@@ -28,13 +29,13 @@ export const Store = types
   }))
   .views(self => ({
     get appliedCSSRules() {
-      const { target } = self;
+      const { selected } = self;
 
-      if (!target) {
+      if (!selected) {
         return [];
       }
 
-      return this.queriedCSSRules.filter(target.hasRule);
+      return this.queriedCSSRules.filter(selected.hasRule);
     },
 
     get queriedCSSRules() {
@@ -98,6 +99,8 @@ export const Store = types
   .actions(self => ({
     close() {
       self.isOpen = false;
+      self.selected.unset();
+      self.target.unset();
     },
 
     handleFrameLoad(event: SyntheticEvent) {
@@ -136,7 +139,7 @@ export const Store = types
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
       this.initCSSRules();
-      this.reselectTarget();
+      this.reselect();
     },
 
     handleFrameUnload() {
@@ -166,12 +169,12 @@ export const Store = types
       if (key === "Escape") {
         event.preventDefault();
 
-        if (self.target.isLocked) {
-          return self.target.unlock();
+        if (self.selected.element) {
+          return self.selected.unset();
         }
 
         if (self.isOpen) {
-          self.target.unset();
+          self.selected.unset();
 
           return this.close();
         }
@@ -182,20 +185,20 @@ export const Store = types
       if (
         status === "idle" &&
         self.document &&
-        !self.document.contains(self.target.element)
+        !self.document.contains(self.selected.element)
       ) {
-        this.reselectTarget();
+        this.reselect();
       }
     },
 
     handleTargetHover(element: HTMLElement) {
-      if (!self.target.isLocked) {
+      if (!self.selected.element) {
         self.target.set(element);
       }
     },
 
     handleTargetSelect(target: HTMLElement) {
-      self.target.lock();
+      self.selected.set(target);
     },
 
     initCSSRules() {
@@ -256,20 +259,20 @@ export const Store = types
       self.isOpen = true;
     },
 
-    reselectTarget() {
+    reselect() {
       if (self.document) {
-        const { selector } = self.target;
+        const { selector } = self.selected;
 
         if (selector) {
           const element = self.document.querySelector(selector) as HTMLElement;
 
           if (element) {
-            return self.target.set(element);
+            return self.selected.set(element);
           }
         }
       }
 
-      self.target.unset();
+      self.selected.unset();
     },
 
     resetQuery() {
@@ -278,11 +281,6 @@ export const Store = types
 
     search(value: string) {
       self.query = value;
-    },
-
-    // TODO Move these calls to store.target
-    unlockTarget() {
-      self.target.unlock();
     }
   }));
 

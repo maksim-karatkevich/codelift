@@ -20,13 +20,13 @@ import { GroupedRules } from "./GroupedRules";
 export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const searchRef = useRef<HTMLInputElement>(null);
-  const className = store.target.classNames.join(" ");
+  const className = store.selected.classNames.join(" ");
 
   useEffect(() => {
-    if (store.target.isLocked && searchRef.current) {
+    if (searchRef.current) {
       searchRef.current.focus();
     }
-  }, [className, store.target.isLocked]);
+  }, [className]);
 
   return (
     <>

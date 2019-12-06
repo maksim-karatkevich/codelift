@@ -40,22 +40,22 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   }
 
   const store = useStore();
-  const { target } = store;
+  const { selected } = store;
   const toggled = false;
   const toggleRule = (rule: Instance<typeof TailwindRule>) => {
     const { className } = rule;
-    const { debugSource } = target;
+    const { debugSource } = selected;
 
     if (!debugSource) {
       const error = new Error(
         "Selected element is missing _debugSource property"
       );
 
-      console.error(error, target);
+      console.error(error, selected);
       throw error;
     }
 
-    target.applyRule(rule);
+    selected.applyRule(rule);
     store.resetQuery();
 
     toggleClassName({ ...debugSource, className });
@@ -69,8 +69,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       fontSize="xs"
       textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
       onClick={() => toggleRule(rule)}
-      onMouseEnter={() => target.previewRule(rule)}
-      onMouseLeave={() => target.cancelRule(rule)}
+      onMouseEnter={() => selected.previewRule(rule)}
+      onMouseLeave={() => selected.cancelRule(rule)}
       paddingX="2"
       paddingY="1"
       // @ts-ignore

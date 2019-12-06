@@ -4,10 +4,9 @@ import { TailwindRule } from "./TailwindRule";
 
 type Rule = Instance<typeof TailwindRule>;
 
-export const Target = types
-  .model("Target", {
+export const Node = types
+  .model("Node", {
     classNames: types.array(types.string),
-    isLocked: false,
     isPreviewing: false
   })
   .volatile(self => ({
@@ -101,12 +100,8 @@ export const Target = types
       self.isPreviewing = false;
     },
 
-    lock() {
-      self.isLocked = true;
-    },
-
     previewRule(rule: Rule) {
-      if (self.element && self.isLocked) {
+      if (self.element) {
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
         } else {
@@ -122,12 +117,7 @@ export const Target = types
       self.element = element;
     },
 
-    unlock() {
-      self.isLocked = false;
-    },
-
     unset() {
       self.element = null;
-      self.isLocked = false;
     }
   }));

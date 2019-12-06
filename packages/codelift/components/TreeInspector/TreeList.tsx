@@ -15,16 +15,15 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
     const children = [...root.children] as HTMLElement[];
     const tagName = root.tagName.toLowerCase();
     const id = root.getAttribute("id");
-    const handleClick = useCallback(() => store.handleTargetSelect(root), [
-      root
-    ]);
+    const handleClick = useCallback(() => store.selected.set(root), [root]);
     const handleMouseEnter = useCallback(
       (event: MouseEvent) => {
         root.scrollIntoView({
           behavior: "smooth",
           block: "center"
         });
-        store.handleTargetHover(root);
+
+        store.target.set(root);
       },
       [root]
     );
@@ -57,7 +56,13 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
             height="1.5rem"
             rounded="0"
             size="sm"
-            variant={store.target.element === root ? "solid" : "ghost"}
+            variant={
+              store.selected.element === root
+                ? "outline"
+                : store.target.element === root
+                ? "solid"
+                : "ghost"
+            }
             verticalAlign="text-bottom"
           >
             <Text>{tagName}</Text>
