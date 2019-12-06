@@ -1,8 +1,7 @@
-import { List, ListItem, Tag } from "@chakra-ui/core";
+import { ListItem, Tag } from "@chakra-ui/core";
 import React, { FunctionComponent } from "react";
-
-import { Rule } from "./Rule";
 import { observer, useStore } from "../Store";
+import { Rule } from "./Rule";
 
 export const GroupedRules: FunctionComponent = observer(() => {
   const store = useStore();

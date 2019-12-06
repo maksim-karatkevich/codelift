@@ -1,10 +1,9 @@
 import { groupBy } from "lodash";
 import { observer } from "mobx-react-lite";
 import { Instance, types } from "mobx-state-tree";
-import { createContext, useContext, SyntheticEvent } from "react";
-
-import { TailwindRule } from "./TailwindRule";
+import { createContext, SyntheticEvent, useContext } from "react";
 import { Node } from "./Node";
+import { TailwindRule } from "./TailwindRule";
 
 export { observer, TailwindRule };
 

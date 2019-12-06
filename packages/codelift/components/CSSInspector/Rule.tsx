@@ -2,7 +2,6 @@ import { ListItem, Text } from "@chakra-ui/core";
 import { Instance } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 import { useMutation } from "urql";
-
 import { observer, TailwindRule, useStore } from "../Store";
 
 type RuleProps = {

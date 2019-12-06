@@ -1,33 +1,18 @@
 import {
   Alert,
-  AlertDescription,
-  AlertIcon,
   AlertTitle,
-  Button,
-  CSSReset,
-  Grid,
   Box,
-  InputGroup,
-  Input,
-  InputRightElement,
-  IconButton,
-  Link,
-  List,
-  ListItem,
-  ListIcon,
-  Text,
-  Textarea,
-  CircularProgress
+  CircularProgress,
+  Grid
 } from "@chakra-ui/core";
-import React, { FunctionComponent, useEffect, useCallback } from "react";
+import React, { FunctionComponent } from "react";
 import { createClient, Provider } from "urql";
-
-import { Error } from "./Error";
-import { Selector } from "../Selector";
-import { Sidebar } from "./Sidebar";
-import { TreeInspector } from "../TreeInspector";
 import { CSSInspector } from "../CSSInspector";
+import { Selector } from "../Selector";
 import { observer, useStore } from "../Store";
+import { TreeInspector } from "../TreeInspector";
+import { Error } from "./Error";
+import { Sidebar } from "./Sidebar";
 
 const client = createClient({ url: "/api" });
 

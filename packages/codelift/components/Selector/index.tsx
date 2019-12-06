@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
 import { Instance } from "mobx-state-tree";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-
 import { observer, useStore } from "../Store";
 import { Node } from "../Store/Node";
 

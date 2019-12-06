@@ -1,15 +1,7 @@
-import {
-  Box,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement
-} from "@chakra-ui/core";
-import { ChangeEvent, FunctionComponent, useCallback, useState } from "react";
-
-import { observer, useStore } from "../Store";
-
+import { Box } from "@chakra-ui/core";
+import { FunctionComponent, useCallback } from "react";
 import { Selector } from "../Selector";
+import { observer, useStore } from "../Store";
 import { TreeList } from "./TreeList";
 
 export const TreeInspector: FunctionComponent = observer(() => {

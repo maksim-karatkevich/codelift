@@ -1,18 +1,16 @@
 import {
-  Box,
-  Input,
   IconButton,
+  Input,
   InputGroup,
   InputRightElement,
   List
 } from "@chakra-ui/core";
 import React, {
+  ChangeEvent,
   FunctionComponent,
   useEffect,
-  useRef,
-  ChangeEvent
+  useRef
 } from "react";
-
 import { observer, useStore } from "../Store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";

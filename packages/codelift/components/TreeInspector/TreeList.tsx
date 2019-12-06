@@ -1,6 +1,5 @@
 import { Button, List, ListItem, Text } from "@chakra-ui/core";
-import { FunctionComponent, useCallback, MouseEvent } from "react";
-
+import { FunctionComponent, MouseEvent, useCallback } from "react";
 import { observer, useStore } from "../Store";
 
 type TreeListProps = {

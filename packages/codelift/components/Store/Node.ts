@@ -1,5 +1,4 @@
 import { Instance, types } from "mobx-state-tree";
-
 import { TailwindRule } from "./TailwindRule";
 
 type Rule = Instance<typeof TailwindRule>;

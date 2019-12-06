@@ -1,5 +1,4 @@
 import { getRoot, types } from "mobx-state-tree";
-
 import { classNameGroups } from "./classNameGroups";
 
 // TODO This isn't really tailwind-specific anymore, besides classNameGroups.
