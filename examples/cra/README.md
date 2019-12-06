@@ -3,8 +3,11 @@
 This example shows how [Create React App](https://github.com/facebook/create-react-app) and [Tailwind CSS](https://tailwindcss.com/) work with `codelift`.
 
 1. `yarn create react-app my-app --typescript`
+1. `cd my-app`
 1. `yarn add tailwindcss`
+1. `yarn add codelift --dev`
 1. Add `import "tailwindcss/dist/tailwind.css";` to `src/App.tsx`
+1. `yarn codelift start`
 
 ---
 
