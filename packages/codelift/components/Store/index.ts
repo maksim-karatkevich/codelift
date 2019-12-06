@@ -114,6 +114,8 @@ export const Store = types
       document.domain = "localhost";
 
       self.contentWindow = iframe.contentWindow;
+      // @ts-ignore
+      self.contentWindow["__CODELIFT__"] = self;
 
       try {
         self.document = iframe.contentWindow.document;
@@ -125,18 +127,6 @@ export const Store = types
         return;
       }
 
-      const { selector } = self.target;
-
-      const element = selector
-        ? (self.document.querySelector(selector) as HTMLElement)
-        : null;
-
-      if (element) {
-        self.target.set(element);
-      } else {
-        self.target.unset();
-      }
-
       window.removeEventListener("keydown", this.handleKeyPress);
       window.addEventListener("keydown", this.handleKeyPress);
 
@@ -146,6 +136,7 @@ export const Store = types
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
       this.initCSSRules();
+      this.reselectTarget();
     },
 
     handleFrameUnload() {
@@ -184,6 +175,16 @@ export const Store = types
 
           return this.close();
         }
+      }
+    },
+
+    handleStatus(status: string) {
+      if (
+        status === "idle" &&
+        self.document &&
+        !self.document.contains(self.target.element)
+      ) {
+        this.reselectTarget();
       }
     },
 
@@ -253,6 +254,22 @@ export const Store = types
 
     open() {
       self.isOpen = true;
+    },
+
+    reselectTarget() {
+      if (self.document) {
+        const { selector } = self.target;
+
+        if (selector) {
+          const element = self.document.querySelector(selector) as HTMLElement;
+
+          if (element) {
+            return self.target.set(element);
+          }
+        }
+      }
+
+      self.target.unset();
     },
 
     resetQuery() {

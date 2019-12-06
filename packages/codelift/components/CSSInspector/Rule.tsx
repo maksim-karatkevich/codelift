@@ -29,8 +29,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
           className: $className
           fileName: $fileName
           lineNumber: $lineNumber
-          )
-        }
+        )
+      }
   `);
 
   if (res.error) {
@@ -47,7 +47,12 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     const { debugSource } = target;
 
     if (!debugSource) {
-      console.error("Selected element is missing _debugSource property");
+      const error = new Error(
+        "Selected element is missing _debugSource property"
+      );
+
+      console.error(error, target);
+      throw error;
     }
 
     target.applyRule(rule);

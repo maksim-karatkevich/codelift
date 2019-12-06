@@ -1,4 +1,3 @@
-import unique from "unique-selector";
 import { Instance, types } from "mobx-state-tree";
 
 import { TailwindRule } from "./TailwindRule";
@@ -55,9 +54,30 @@ export const Target = types
         return null;
       }
 
-      return unique(element, {
-        selectorTypes: ["ID", "Tag", "NthChild"]
-      });
+      const selectors = [];
+
+      while (element) {
+        const nthChild = element.parentNode
+          ? [...element.parentNode.childNodes]
+              .filter(node => node.nodeType === 1)
+              .indexOf(element) + 1
+          : null;
+        const { id, tagName } = element;
+
+        selectors.unshift(
+          [
+            tagName.toLowerCase(),
+            id && `#${element.id}`,
+            !id && nthChild && `:nth-child(${nthChild})`
+          ]
+            .filter(Boolean)
+            .join("")
+        );
+
+        element = element.parentElement;
+      }
+
+      return selectors.join(" > ");
     }
   }))
   .actions(self => ({
@@ -100,6 +120,8 @@ export const Target = types
     set(element: HTMLElement) {
       self.classNames.replace([...element.classList]);
       self.element = element;
+
+      console.log(self.selector);
     },
 
     unlock() {
