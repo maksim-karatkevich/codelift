@@ -38,6 +38,7 @@ export const Error: FunctionComponent = observer(() => {
       </AlertDescription>
       <Textarea
         bg="black"
+        defaultValue={code}
         fontSize="xs"
         fontFamily="mono"
         minHeight="2rem"
@@ -49,9 +50,7 @@ export const Error: FunctionComponent = observer(() => {
         roundedBottom="none"
         whiteSpace="pre"
         width="full"
-      >
-        {code}
-      </Textarea>
+      />
       <Button
         leftIcon={hasCopied ? "check-circle" : "copy"}
         onClick={onCopy}
