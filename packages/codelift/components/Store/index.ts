@@ -125,18 +125,6 @@ export const Store = types
         return;
       }
 
-      const { selector } = self.target;
-
-      const element = selector
-        ? (self.document.querySelector(selector) as HTMLElement)
-        : null;
-
-      if (element) {
-        self.target.set(element);
-      } else {
-        self.target.unset();
-      }
-
       window.removeEventListener("keydown", this.handleKeyPress);
       window.addEventListener("keydown", this.handleKeyPress);
 
@@ -146,6 +134,7 @@ export const Store = types
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
       this.initCSSRules();
+      this.reselectTarget();
     },
 
     handleFrameUnload() {
@@ -253,6 +242,22 @@ export const Store = types
 
     open() {
       self.isOpen = true;
+    },
+
+    reselectTarget() {
+      if (self.document) {
+        const { selector } = self.target;
+
+        if (selector) {
+          const element = self.document.querySelector(selector) as HTMLElement;
+
+          if (element) {
+            return self.target.set(element);
+          }
+        }
+      }
+
+      self.target.unset();
     },
 
     resetQuery() {
