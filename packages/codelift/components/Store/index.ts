@@ -114,6 +114,8 @@ export const Store = types
       document.domain = "localhost";
 
       self.contentWindow = iframe.contentWindow;
+      // @ts-ignore
+      self.contentWindow["__CODELIFT__"] = self;
 
       try {
         self.document = iframe.contentWindow.document;
@@ -173,6 +175,16 @@ export const Store = types
 
           return this.close();
         }
+      }
+    },
+
+    handleStatus(status: string) {
+      if (
+        status === "idle" &&
+        self.document &&
+        !self.document.contains(self.target.element)
+      ) {
+        this.reselectTarget();
       }
     },
 
