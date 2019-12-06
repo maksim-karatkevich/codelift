@@ -120,8 +120,6 @@ export const Target = types
     set(element: HTMLElement) {
       self.classNames.replace([...element.classList]);
       self.element = element;
-
-      console.log(self.selector);
     },
 
     unlock() {
