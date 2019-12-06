@@ -57,15 +57,21 @@ export const Target = types
       const selectors = [];
 
       while (element) {
+        const nthChild = element.parentNode
+          ? [...element.parentNode.childNodes]
+              .filter(node => node.nodeType === 1)
+              .indexOf(element) + 1
+          : null;
+        const { id, tagName } = element;
+
         selectors.unshift(
           [
-            element.tagName.toLowerCase(),
-            element.className.split(" ").join(".")
+            tagName.toLowerCase(),
+            id && `#${element.id}`,
+            !id && nthChild && `:nth-child(${nthChild})`
           ]
             .filter(Boolean)
-            .join(".")
-            .split(":")
-            .join("\\:")
+            .join("")
         );
 
         element = element.parentElement;
@@ -114,6 +120,8 @@ export const Target = types
     set(element: HTMLElement) {
       self.classNames.replace([...element.classList]);
       self.element = element;
+
+      console.log(self.selector);
     },
 
     unlock() {
