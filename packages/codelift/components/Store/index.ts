@@ -53,7 +53,7 @@ export const Store = types
         (filtered, word) => {
           const tests = [
             (rule: Instance<typeof TailwindRule>) => {
-              return rule.className.startsWith(word);
+              return rule.className.includes(word);
             },
 
             (rule: Instance<typeof TailwindRule>) => {
