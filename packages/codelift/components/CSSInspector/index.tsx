@@ -24,7 +24,7 @@ export const CSSInspector: FunctionComponent = observer(() => {
     if (searchRef.current) {
       searchRef.current.focus();
     }
-  }, [className]);
+  }, [className, store.selected.element]);
 
   return (
     <>
