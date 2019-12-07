@@ -3,9 +3,10 @@ import {
   AlertTitle,
   Box,
   CircularProgress,
-  Grid
+  Grid,
+  useToast
 } from "@chakra-ui/core";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
 import { CSSInspector } from "../CSSInspector";
 import { Selector } from "../Selector";
@@ -18,9 +19,22 @@ const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
   const store = useStore();
-
+  const toast = useToast();
   const { href, origin } = window.location;
   const path = href.split(origin).pop();
+
+  useEffect(() => {
+    if (!store.isOpen) {
+      toast({
+        description: "Press ⌘+' to re-open",
+        duration: 2000,
+        isClosable: true,
+        position: "bottom-left",
+        status: "info",
+        title: "Codelift hidden"
+      });
+    }
+  }, [store.isOpen]);
 
   return (
     <Provider value={client}>
