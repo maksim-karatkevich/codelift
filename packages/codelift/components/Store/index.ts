@@ -258,11 +258,11 @@ export const Store = types
     },
 
     reselect() {
-      if (self.document) {
+      if (self.root) {
         const { selector } = self.selected;
 
         if (selector) {
-          const element = self.document.querySelector(selector) as HTMLElement;
+          const element = self.root.querySelector(selector) as HTMLElement;
 
           if (element) {
             return self.selected.set(element);
