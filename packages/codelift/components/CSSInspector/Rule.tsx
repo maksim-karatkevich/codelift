@@ -67,12 +67,12 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
 
   return (
     <ListItem
-      cursor={selected.element ? "pointer" : "not-allowed"}
+      cursor="pointer"
       fontFamily="mono"
       fontWeight="hairline"
       fontSize="xs"
       textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
-      onClick={selected.element ? () => toggleRule(rule) : undefined}
+      onClick={() => toggleRule(rule)}
       onMouseEnter={() => selected.previewRule(rule)}
       onMouseLeave={() => selected.cancelRule(rule)}
       paddingX="2"
