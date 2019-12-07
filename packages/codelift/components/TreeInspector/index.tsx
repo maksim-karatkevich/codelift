@@ -14,10 +14,11 @@ export const TreeInspector: FunctionComponent = observer(() => {
     return null;
   }
 
+  // Ignore root, since it has no `_debugSource`
+  const children = [...store.root.children] as HTMLElement[];
+
   return (
     <>
-      {store.isOpen && <Selector node={store.target} />}
-
       {/* TODO Re-enable and filter through Node models  */}
       {/* e..g node.matchesFilter(filter), node.childrenMatchesFilter(filter) */}
       {/* <InputGroup>
@@ -39,7 +40,9 @@ export const TreeInspector: FunctionComponent = observer(() => {
         overflow="auto"
         width="100%"
       >
-        <TreeList root={store.root} />
+        {children.map((child, i) => (
+          <TreeList key={i} root={child} />
+        ))}
       </Box>
     </>
   );
