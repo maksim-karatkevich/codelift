@@ -32,7 +32,7 @@ export const App: FunctionComponent = observer(() => {
         }`}
         style={{ transition: "all 200ms ease-in-out" }}
       >
-        <Sidebar>
+        <Sidebar key="Tree">
           {store.root ? (
             <TreeInspector />
           ) : store.error ? (
@@ -61,7 +61,7 @@ export const App: FunctionComponent = observer(() => {
           />
         </Box>
 
-        <Sidebar>
+        <Sidebar key="CSS">
           <CSSInspector />
         </Sidebar>
       </Grid>
