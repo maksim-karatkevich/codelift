@@ -50,7 +50,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
         "Selected element is missing _debugSource property"
       );
 
-      console.error(error, selected);
+      console.error(error, selected.element);
       throw error;
     }
 
@@ -62,12 +62,12 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
 
   return (
     <ListItem
-      cursor="pointer"
+      cursor={selected.element ? "pointer" : "not-allowed"}
       fontFamily="mono"
       fontWeight="hairline"
       fontSize="xs"
       textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
-      onClick={() => toggleRule(rule)}
+      onClick={selected.element ? () => toggleRule(rule) : undefined}
       onMouseEnter={() => selected.previewRule(rule)}
       onMouseLeave={() => selected.cancelRule(rule)}
       paddingX="2"
