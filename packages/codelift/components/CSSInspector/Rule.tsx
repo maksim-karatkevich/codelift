@@ -42,6 +42,11 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   const { selected } = store;
   const toggled = false;
   const toggleRule = (rule: Instance<typeof TailwindRule>) => {
+    if (!selected.element) {
+      console.warn("Cannot apply rule without an element selected");
+      return;
+    }
+
     const { className } = rule;
     const { debugSource } = selected;
 
