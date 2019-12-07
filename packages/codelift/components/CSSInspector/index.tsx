@@ -17,13 +17,20 @@ import { GroupedRules } from "./GroupedRules";
 
 export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
+  const listRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const className = store.selected.classNames.join(" ");
 
   useEffect(() => {
-    if (searchRef.current) {
-      searchRef.current.focus();
+    if (listRef.current) {
+      listRef.current.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "smooth"
+      });
     }
+
+    if (searchRef.current) searchRef.current.focus();
   }, [className, store.selected.element]);
 
   return (
@@ -48,7 +55,7 @@ export const CSSInspector: FunctionComponent = observer(() => {
         </InputRightElement>
       </InputGroup>
 
-      <List maxHeight="100%" overflow="auto" width="100%">
+      <List maxHeight="100%" overflow="auto" ref={listRef} width="100%">
         <AppliedRules />
         <GroupedRules />
       </List>
