@@ -1,4 +1,4 @@
-import { groupBy } from "lodash";
+import { groupBy, sortBy } from "lodash";
 import { observer } from "mobx-react-lite";
 import { Instance, types } from "mobx-state-tree";
 import { createContext, SyntheticEvent, useContext } from "react";
@@ -49,11 +49,11 @@ export const Store = types
         .map(word => word.trim())
         .filter(Boolean);
 
-      return words.reduce(
+      const matching = words.reduce(
         (filtered, word) => {
           const tests = [
             (rule: Instance<typeof TailwindRule>) => {
-              return rule.className.startsWith(word);
+              return rule.className.includes(word);
             },
 
             (rule: Instance<typeof TailwindRule>) => {
@@ -65,6 +65,15 @@ export const Store = types
         },
         [...cssRules]
       );
+
+      return sortBy(matching, [
+        ...words.map(word => (rule: Instance<typeof TailwindRule>) => {
+          return rule.className.startsWith(word) ? -1 : 0;
+        }),
+        (rule: Instance<typeof TailwindRule>) => {
+          return rule.className.replace(/[\d+]/g, "");
+        }
+      ]);
     },
 
     get groupedCSSRules() {
