@@ -190,16 +190,6 @@ export const Store = types
       }
     },
 
-    handleTargetHover(element: HTMLElement) {
-      if (!self.selected.element) {
-        self.target.set(element);
-      }
-    },
-
-    handleTargetSelect(target: HTMLElement) {
-      self.selected.set(target);
-    },
-
     initCSSRules() {
       if (!self.document) {
         return;
