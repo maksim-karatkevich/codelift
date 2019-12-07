@@ -16,13 +16,13 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
   }
 
   const { top, right, bottom, left } = node.element.getBoundingClientRect();
-  const isSelected = node === store.selected;
+  const labelPosition = top > 22 ? "top" : "bottom";
 
   return createPortal(
     <div
       style={{
         border: "1px dashed #4299e1",
-        filter: `grayscale(${isSelected ? 0 : 1})`,
+        filter: `grayscale(${node === store.selected ? 0 : 1})`,
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
         opacity: store.selected.isPreviewing ? 0 : 1,
@@ -36,14 +36,14 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
     >
       <label
         style={{
+          [labelPosition]: "-22px",
           background: "#4299e1",
-          borderRadius: "4px 4px 0 0",
+          borderRadius: labelPosition === "top" ? "4px 4px 0 0" : "0 0 4px 4px",
           color: "#ffffff",
           fontFamily:
             'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
           fontSize: "12px",
           marginLeft: "-1px",
-          marginTop: "-22px",
           maxWidth: "100%",
           overflow: "hidden",
           position: "absolute",
