@@ -1,5 +1,5 @@
 import { Instance } from "mobx-state-tree";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent } from "react";
 import { createPortal } from "react-dom";
 import { observer, useStore } from "../Store";
 import { Node } from "../Store/Node";
@@ -10,33 +10,6 @@ type PortalProps = {
 
 export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
   const store = useStore();
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    const { root } = store;
-
-    if (!root || store.selected.element) {
-      return;
-    }
-    const handleClick = (event: MouseEvent) => {
-      event.preventDefault();
-      store.selected.set(event.target as HTMLElement);
-      store.target.unset();
-    };
-
-    const handleHover = (event: MouseEvent) => {
-      setIsHovering(event.target === node.element);
-      store.target.set(event.target as HTMLElement);
-    };
-
-    root.addEventListener("mousemove", handleHover);
-    root.addEventListener("click", handleClick);
-
-    return () => {
-      root.removeEventListener("click", handleClick);
-      root.removeEventListener("mousemove", handleHover);
-    };
-  }, [store.selected.element]);
 
   if (!store.contentWindow || !store.document || !node.element) {
     return null;
@@ -87,15 +60,6 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
             : null}
         </small>
       </label>
-      <div
-        style={{
-          background: "#ebf8ff",
-          height: "100%",
-          opacity: isHovering ? 0.5 : 0,
-          transition: "all 200ms ease-in-out",
-          width: "100%"
-        }}
-      />
     </div>,
     store.document.body
   );
