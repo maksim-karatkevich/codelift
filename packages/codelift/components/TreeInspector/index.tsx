@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/core";
 import { FunctionComponent, useCallback } from "react";
-import { Selector } from "../Selector";
 import { observer, useStore } from "../Store";
 import { TreeList } from "./TreeList";
 
