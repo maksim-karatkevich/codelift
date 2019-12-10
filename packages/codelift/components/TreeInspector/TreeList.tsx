@@ -1,33 +1,33 @@
 import { Button, List, ListItem, Text } from "@chakra-ui/core";
 import { FunctionComponent, MouseEvent, useCallback } from "react";
-import { observer, useStore } from "../Store";
+import { observer, useStore } from "../../store";
+
+import { INode } from "../../models/Node";
 
 type TreeListProps = {
   depth?: number;
   filter?: string;
-  root: HTMLElement;
+  node: INode;
 };
 
 export const TreeList: FunctionComponent<TreeListProps> = observer(
-  ({ depth = 0, root }) => {
+  ({ depth = 0, node }) => {
     const store = useStore();
-    const children = [...root.children] as HTMLElement[];
-    const tagName = root.tagName.toLowerCase();
-    const id = root.getAttribute("id");
-    const handleClick = useCallback(() => store.selected.set(root), [root]);
+    const { classNames, id, tagName } = node;
+    const handleClick = useCallback(() => {
+      store.selectNode(node);
+    }, [node]);
     const handleMouseEnter = useCallback(
       (event: MouseEvent) => {
-        root.scrollIntoView({
+        node.element.scrollIntoView({
           behavior: "smooth",
           block: "center"
         });
 
-        store.target.set(root);
+        store.targetNode(node);
       },
-      [root]
+      [node]
     );
-
-    const classNames = [...root.classList];
 
     // Don't allow navigation to these tags
     if (
@@ -56,11 +56,7 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
             rounded="0"
             size="sm"
             variant={
-              store.selected.element === root
-                ? "outline"
-                : store.target.element === root
-                ? "solid"
-                : "ghost"
+              node.isSelected ? "outline" : node.isTargeted ? "solid" : "ghost"
             }
             verticalAlign="text-bottom"
           >
@@ -83,8 +79,8 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
           {/* TODO This should be blocked on hover as well to target the SVG, and not path/g */}
           {["svg"].includes(tagName)
             ? null
-            : children.map((child, i) => (
-                <TreeList depth={depth + 1} key={i} root={child} />
+            : node.childNodes.map((childNode, i) => (
+                <TreeList depth={depth + 1} key={i} node={childNode} />
               ))}
         </ListItem>
       </List>

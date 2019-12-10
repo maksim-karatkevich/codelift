@@ -8,7 +8,7 @@ import {
   Button
 } from "@chakra-ui/core";
 import { FunctionComponent } from "react";
-import { observer, useStore } from "../Store";
+import { observer, useStore } from "../../store";
 
 const code = `
 import "codelift/register";

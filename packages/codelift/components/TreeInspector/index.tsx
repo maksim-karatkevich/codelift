@@ -1,21 +1,19 @@
 import { Box } from "@chakra-ui/core";
 import { FunctionComponent, useCallback } from "react";
-import { observer, useStore } from "../Store";
+
+import { observer, useStore } from "../../store";
 import { TreeList } from "./TreeList";
 
 export const TreeInspector: FunctionComponent = observer(() => {
   const store = useStore();
 
   const handleMouseLeave = useCallback(() => {
-    store.target.unset();
+    store.clearTarget();
   }, [store.root]);
 
   if (!store.root) {
     return null;
   }
-
-  // Ignore root, since it has no `_debugSource`
-  const children = [...store.root.children] as HTMLElement[];
 
   return (
     <>
@@ -40,8 +38,8 @@ export const TreeInspector: FunctionComponent = observer(() => {
         overflow="auto"
         width="100%"
       >
-        {children.map((child, i) => (
-          <TreeList key={i} root={child} />
+        {store.nodes.map((node, i) => (
+          <TreeList key={i} node={node} />
         ))}
       </Box>
     </>

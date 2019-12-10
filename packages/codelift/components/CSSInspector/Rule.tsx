@@ -2,10 +2,11 @@ import { ListItem, Text } from "@chakra-ui/core";
 import { Instance } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 import { useMutation } from "urql";
-import { observer, TailwindRule, useStore } from "../Store";
+import { observer, useStore } from "../../store";
+import { ICSSRule } from "../../models/CSSRule";
 
 type RuleProps = {
-  rule: Instance<typeof TailwindRule>;
+  rule: ICSSRule;
 };
 
 const getReactElement = (element: HTMLElement) => {

@@ -1,10 +1,10 @@
-import { getRoot, types } from "mobx-state-tree";
+import { Instance, getRoot, types } from "mobx-state-tree";
 import { classNameGroups } from "./classNameGroups";
 
-// TODO This isn't really tailwind-specific anymore, besides classNameGroups.
-// Actually, those groups should be created based on their properties.
-export const TailwindRule = types
-  .model("TailwindRule", {
+export interface ICSSRule extends Instance<typeof CSSRule> {}
+
+export const CSSRule = types
+  .model("CSSRule", {
     cssText: types.string,
     selectorText: types.string,
     style: types.frozen()

@@ -11,7 +11,8 @@ import React, {
   useEffect,
   useRef
 } from "react";
-import { observer, useStore } from "../Store";
+
+import { observer, useStore } from "../../store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";
 
