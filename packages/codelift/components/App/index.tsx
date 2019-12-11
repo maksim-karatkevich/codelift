@@ -9,7 +9,7 @@ import {
 import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
 
-// import { CSSInspector } from "../CSSInspector";
+import { CSSInspector } from "../CSSInspector";
 import { Selector } from "../Selector";
 import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
@@ -76,7 +76,9 @@ export const App: FunctionComponent = observer(() => {
           />
         </Box>
 
-        <Sidebar key="CSS">{/* <CSSInspector /> */}</Sidebar>
+        <Sidebar key="CSS">
+          <CSSInspector />
+        </Sidebar>
       </Grid>
     </Provider>
   );

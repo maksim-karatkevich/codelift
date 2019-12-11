@@ -31,7 +31,7 @@ export const App = types
     rule: null as null | ICSSRule
   }))
   .views(self => ({
-    get appliedCSSRules() {
+    get appliedCSSRules(): ICSSRule[] {
       const { selected } = self;
 
       if (!selected) {
@@ -45,7 +45,7 @@ export const App = types
       return this.nodes.find(node => node.element === element);
     },
 
-    get queriedCSSRules() {
+    get queriedCSSRules(): ICSSRule[] {
       const { cssRules, query } = self;
 
       if (!query) {

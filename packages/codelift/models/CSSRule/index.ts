@@ -1,6 +1,8 @@
 import { Instance, getRoot, types } from "mobx-state-tree";
 import { classNameGroups } from "./classNameGroups";
 
+import { IApp } from "../App";
+
 export interface ICSSRule extends Instance<typeof CSSRule> {}
 
 export const CSSRule = types
@@ -27,19 +29,25 @@ export const CSSRule = types
       return "Other";
     },
 
-    get isApplied() {
-      const { target } = getRoot(self);
+    get isApplied(): boolean {
+      if (!this.store.target) {
+        return false;
+      }
 
-      return target.hasRule(this);
+      return this.store.target.hasRule(this as ICSSRule);
     },
 
-    get isMatching() {
-      const { query } = getRoot(self);
+    get isMatching(): boolean {
+      const { query } = this.store;
 
-      if (!query) {
+      if (!this.store.query) {
         return true;
       }
 
       return this.className.startsWith(query);
+    },
+
+    get store(): IApp {
+      return getRoot(self);
     }
   }));

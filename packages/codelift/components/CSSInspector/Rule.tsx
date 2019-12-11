@@ -1,7 +1,7 @@
 import { ListItem, Text } from "@chakra-ui/core";
-import { Instance } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 import { useMutation } from "urql";
+
 import { observer, useStore } from "../../store";
 import { ICSSRule } from "../../models/CSSRule";
 
@@ -42,8 +42,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   const store = useStore();
   const { selected } = store;
   const toggled = false;
-  const toggleRule = (rule: Instance<typeof TailwindRule>) => {
-    if (!selected.element) {
+  const toggleRule = (rule: ICSSRule) => {
+    if (!selected) {
       console.warn("Cannot apply rule without an element selected");
       return;
     }
@@ -67,6 +67,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
   };
 
   return (
+    // @ts-ignore
     <ListItem
       cursor="pointer"
       fontFamily="mono"
@@ -74,8 +75,16 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       fontSize="xs"
       textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
       onClick={() => toggleRule(rule)}
-      onMouseEnter={() => selected.previewRule(rule)}
-      onMouseLeave={() => selected.cancelRule(rule)}
+      onMouseEnter={() => {
+        if (selected) {
+          selected.previewRule(rule);
+        }
+      }}
+      onMouseLeave={() => {
+        if (selected) {
+          selected.cancelRule(rule);
+        }
+      }}
       paddingX="2"
       paddingY="1"
       // @ts-ignore

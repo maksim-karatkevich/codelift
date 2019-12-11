@@ -60,16 +60,21 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
             }
             verticalAlign="text-bottom"
           >
-            <Text>{tagName}</Text>
+            <Text key="node-tagName">{tagName}</Text>
 
             {id && (
-              <Text color="gray.400" fontSize="75%" isTruncated>
+              <Text color="gray.400" fontSize="75%" key="node-id" isTruncated>
                 #{id}
               </Text>
             )}
 
             {classNames.length > 0 && (
-              <Text color="gray.400" fontSize="75%" isTruncated>
+              <Text
+                color="gray.400"
+                fontSize="75%"
+                key="node-classNames"
+                isTruncated
+              >
                 .{classNames.join(".")}
               </Text>
             )}
@@ -79,8 +84,12 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
           {/* TODO This should be blocked on hover as well to target the SVG, and not path/g */}
           {["svg"].includes(tagName)
             ? null
-            : node.childNodes.map((childNode, i) => (
-                <TreeList depth={depth + 1} key={i} node={childNode} />
+            : node.childNodes.map(childNode => (
+                <TreeList
+                  depth={depth + 1}
+                  key={childNode.uuid}
+                  node={childNode}
+                />
               ))}
         </ListItem>
       </List>

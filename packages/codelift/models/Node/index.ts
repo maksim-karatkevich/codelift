@@ -7,19 +7,13 @@ export interface INode extends Instance<typeof Node> {}
 
 export const Node = types
   .model("Node", {
+    classNames: types.array(types.string),
     childNodes: types.array(types.late((): IAnyModelType => Node)),
     isPreviewing: false,
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
     element: document.createElement("null")
-  }))
-  .actions(self => ({
-    setElement(element: HTMLElement) {
-      self.element = element;
-
-      self.childNodes.replace(createChildNodes(element));
-    }
   }))
   .views(self => ({
     get debugSource() {
@@ -34,12 +28,8 @@ export const Node = types
       return this.reactElement._debugSource;
     },
 
-    get classNames() {
-      return [...self.element.classList];
-    },
-
     hasRule(rule: ICSSRule) {
-      return this.classNames.includes(rule.className);
+      return self.classNames.includes(rule.className);
     },
 
     get id() {
@@ -98,6 +88,46 @@ export const Node = types
 
     get tagName() {
       return self.element.tagName.toLowerCase();
+    }
+  }))
+  .actions(self => ({
+    applyRule(rule: ICSSRule) {
+      if (self.element) {
+        if (self.hasRule(rule)) {
+          self.element.classList.remove(rule.className);
+        } else {
+          self.element.classList.add(rule.className);
+        }
+
+        self.classNames.replace([...self.element.classList]);
+      }
+    },
+
+    cancelRule(rule: ICSSRule) {
+      if (self.element) {
+        self.element.className = self.classNames.join(" ");
+      }
+
+      self.isPreviewing = false;
+    },
+
+    previewRule(rule: ICSSRule) {
+      if (self.element) {
+        if (self.hasRule(rule)) {
+          self.element.classList.remove(rule.className);
+        } else {
+          self.element.classList.add(rule.className);
+        }
+
+        self.isPreviewing = true;
+      }
+    },
+
+    setElement(element: HTMLElement) {
+      self.element = element;
+
+      self.childNodes.replace(createChildNodes(element));
+      self.classNames.replace([...element.classList]);
     }
   }));
 
