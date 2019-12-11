@@ -37,16 +37,6 @@ export const CSSRule = types
       return this.store.target.hasRule(this as ICSSRule);
     },
 
-    get isMatching(): boolean {
-      const { query } = this.store;
-
-      if (!this.store.query) {
-        return true;
-      }
-
-      return this.className.startsWith(query);
-    },
-
     get store(): IApp {
       return getRoot(self);
     }
