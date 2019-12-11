@@ -17,7 +17,8 @@ export const App = types
       "VISIBLE"
     ),
     target: types.maybe(types.safeReference(Node)),
-    selected: types.maybe(types.safeReference(Node))
+    selected: types.maybe(types.safeReference(Node)),
+    selector: types.maybe(types.string)
   })
   .volatile(self => ({
     // Needed for scrollX/Y
@@ -288,13 +289,11 @@ export const App = types
     },
 
     reselect() {
-      if (!self.root || !self.selected) {
-        return;
+      const { selector } = self;
+
+      if (self.root && selector) {
+        self.selected = self.nodes.find(node => node.selector === selector);
       }
-
-      const { selector } = self.selected;
-
-      self.selected = self.nodes.find(node => node.selector === selector);
     },
 
     resetQuery() {
@@ -307,6 +306,7 @@ export const App = types
 
     selectNode(node: INode) {
       self.selected = node;
+      self.selector = node.selector;
     },
 
     targetNode(node: INode) {
