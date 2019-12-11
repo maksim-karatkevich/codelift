@@ -8,9 +8,10 @@ import {
 } from "@chakra-ui/core";
 import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
+
 import { CSSInspector } from "../CSSInspector";
 import { Selector } from "../Selector";
-import { observer, useStore } from "../Store";
+import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
 import { Error } from "./Error";
 import { Sidebar } from "./Sidebar";
@@ -24,7 +25,7 @@ export const App: FunctionComponent = observer(() => {
   const path = href.split(origin).pop();
 
   useEffect(() => {
-    if (!store.isOpen) {
+    if (store.state === "HIDDEN") {
       toast({
         description: "Press ⌘+' to re-open",
         duration: 2000,
@@ -34,15 +35,15 @@ export const App: FunctionComponent = observer(() => {
         title: "Codelift hidden"
       });
     }
-  }, [store.isOpen]);
+  }, [store.state]);
 
   return (
     <Provider value={client}>
-      {store.isOpen && <Selector />}
+      {store.state === "VISIBLE" && <Selector />}
 
       <Grid
-        gridTemplateColumns={`${store.isOpen ? "16rem" : 0} 1fr ${
-          store.isOpen ? "16rem" : 0
+        gridTemplateColumns={`${store.state === "VISIBLE" ? "16rem" : 0} 1fr ${
+          store.state === "VISIBLE" ? "16rem" : 0
         }`}
         style={{ transition: "all 200ms ease-in-out" }}
       >

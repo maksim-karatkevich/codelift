@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Portal } from "./Portal";
-import { observer, useStore } from "../Store";
+import { observer, useStore } from "../../store";
 
 export const Selector = observer(() => {
   const store = useStore();
@@ -13,17 +13,26 @@ export const Selector = observer(() => {
 
     const handleClick = (event: MouseEvent) => {
       event.preventDefault();
-      store.selected.set(event.target as HTMLElement);
-      store.target.unset();
+
+      const node = store.findElementNode(event.target as HTMLElement);
+
+      if (node) {
+        store.selectNode(node);
+        store.clearTarget();
+      }
     };
 
     const handleHover = (event: MouseEvent) => {
-      store.target.set(event.target as HTMLElement);
+      const node = store.findElementNode(event.target as HTMLElement);
+
+      if (node) {
+        store.targetNode(node);
+      }
     };
 
     // When nothing is selected, allow the user to click to choose.
     // Otherwise, target is only set by the TreeInspector
-    if (!store.selected.element) {
+    if (!store.selected) {
       root.addEventListener("mousemove", handleHover);
     }
 
@@ -33,12 +42,12 @@ export const Selector = observer(() => {
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleHover);
     };
-  }, [root, store.selected.element]);
+  }, [root, store.selected]);
 
   return (
     <>
-      <Portal key="selected" node={store.selected} />
-      <Portal key="target" node={store.target} />
+      {store.selected && <Portal key="selected" node={store.selected} />}
+      {store.target && <Portal key="target" node={store.target} />}
     </>
   );
 });

@@ -1,19 +1,24 @@
 import { groupBy, sortBy } from "lodash";
-import { observer } from "mobx-react-lite";
 import { Instance, types } from "mobx-state-tree";
-import { createContext, SyntheticEvent, useContext } from "react";
-import { Node } from "./Node";
-import { TailwindRule } from "./TailwindRule";
+import { SyntheticEvent } from "react";
 
-export { observer, TailwindRule };
+import { CSSRule, ICSSRule } from "../CSSRule";
+import { createChildNodes, INode, Node, flattenNodes } from "../Node";
 
-export const Store = types
-  .model("Store", {
-    cssRules: types.array(TailwindRule),
+export interface IApp extends Instance<typeof App> {}
+
+export const App = types
+  .model("App", {
+    childNodes: types.array(Node),
+    cssRules: types.array(CSSRule),
     query: "",
-    isOpen: true,
-    target: types.optional(Node, () => Node.create()),
-    selected: types.optional(Node, () => Node.create())
+    state: types.optional(
+      types.enumeration("State", ["HIDDEN", "VISIBLE"]),
+      "VISIBLE"
+    ),
+    target: types.maybe(types.safeReference(Node)),
+    selected: types.maybe(types.safeReference(Node)),
+    selector: types.maybe(types.string)
   })
   .volatile(self => ({
     // Needed for scrollX/Y
@@ -24,10 +29,10 @@ export const Store = types
     error: null as null | Error,
     // Needed for <Selector />
     root: null as null | HTMLElement,
-    rule: null as null | Instance<typeof TailwindRule>
+    rule: null as null | ICSSRule
   }))
   .views(self => ({
-    get appliedCSSRules() {
+    get appliedCSSRules(): ICSSRule[] {
       const { selected } = self;
 
       if (!selected) {
@@ -37,12 +42,12 @@ export const Store = types
       return this.queriedCSSRules.filter(selected.hasRule);
     },
 
-    get queriedCSSRules() {
-      const { cssRules, query } = self;
+    findElementNode(element: HTMLElement) {
+      return this.nodes.find(node => node.element === element);
+    },
 
-      if (!query) {
-        return cssRules;
-      }
+    get queriedCSSRules(): ICSSRule[] {
+      const { cssRules, query } = self;
 
       const words = query
         .split(" ")
@@ -52,11 +57,11 @@ export const Store = types
       const matching = words.reduce(
         (filtered, word) => {
           const tests = [
-            (rule: Instance<typeof TailwindRule>) => {
+            (rule: ICSSRule) => {
               return rule.className.includes(word);
             },
 
-            (rule: Instance<typeof TailwindRule>) => {
+            (rule: ICSSRule) => {
               return rule.cssText.includes(word);
             }
           ];
@@ -67,10 +72,10 @@ export const Store = types
       );
 
       return sortBy(matching, [
-        ...words.map(word => (rule: Instance<typeof TailwindRule>) => {
+        ...words.map(word => (rule: ICSSRule) => {
           return rule.className.startsWith(word) ? -1 : 0;
         }),
-        (rule: Instance<typeof TailwindRule>) => {
+        (rule: ICSSRule) => {
           return rule.className.replace(/[\d+]/g, "");
         }
       ]);
@@ -89,6 +94,10 @@ export const Store = types
       );
     },
 
+    get nodes() {
+      return flattenNodes(self.childNodes);
+    },
+
     get root() {
       if (!self.document) {
         return null;
@@ -105,10 +114,18 @@ export const Store = types
     }
   }))
   .actions(self => ({
+    clearSelected() {
+      self.selected = undefined;
+    },
+
+    clearTarget() {
+      self.target = undefined;
+    },
+
     close() {
-      self.isOpen = false;
-      self.selected.unset();
-      self.target.unset();
+      self.state = "HIDDEN";
+      self.selected = undefined;
+      self.target = undefined;
     },
 
     handleFrameLoad(event: SyntheticEvent) {
@@ -147,6 +164,7 @@ export const Store = types
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
       this.initCSSRules();
+      this.initNodes();
       this.reselect();
     },
 
@@ -162,7 +180,7 @@ export const Store = types
       if (metaKey && key === "'") {
         event.preventDefault();
 
-        if (self.isOpen) {
+        if (self.state === "VISIBLE") {
           return this.close();
         } else {
           return this.open();
@@ -170,20 +188,19 @@ export const Store = types
       }
 
       // Ignore any other commands until we're open
-      if (!self.isOpen) {
+      if (self.state === "HIDDEN") {
         return;
       }
 
       if (key === "Escape") {
         event.preventDefault();
 
-        if (self.selected.element) {
-          return self.selected.unset();
+        if (self.selected) {
+          self.selected = undefined;
+          return;
         }
 
-        if (self.isOpen) {
-          self.selected.unset();
-
+        if (self.state === "VISIBLE") {
           return this.close();
         }
       }
@@ -193,8 +210,10 @@ export const Store = types
       if (
         status === "idle" &&
         self.document &&
+        self.selected &&
         !self.document.contains(self.selected.element)
       ) {
+        this.initNodes();
         this.reselect();
       }
     },
@@ -234,10 +253,10 @@ export const Store = types
           return cssStyleRule.selectorText.lastIndexOf(".") === 0;
         });
 
-      const tailwindRules = cssStyleRules.map(cssStyleRule => {
+      const cssRules = cssStyleRules.map(cssStyleRule => {
         const { cssText, selectorText, style } = cssStyleRule;
 
-        return TailwindRule.create({
+        return CSSRule.create({
           cssText,
           selectorText,
           style: Object.values(style).reduce(
@@ -250,27 +269,28 @@ export const Store = types
         });
       });
 
-      self.cssRules.replace(tailwindRules);
+      self.cssRules.replace(cssRules);
+    },
+
+    initNodes() {
+      if (!self.root) {
+        self.childNodes.clear();
+        return;
+      }
+
+      self.childNodes.replace(createChildNodes(self.root));
     },
 
     open() {
-      self.isOpen = true;
+      self.state = "VISIBLE";
     },
 
     reselect() {
-      if (self.root) {
-        const { selector } = self.selected;
+      const { selector } = self;
 
-        if (selector) {
-          const element = self.root.querySelector(selector) as HTMLElement;
-
-          if (element) {
-            return self.selected.set(element);
-          }
-        }
+      if (self.root && selector) {
+        self.selected = self.nodes.find(node => node.selector === selector);
       }
-
-      self.selected.unset();
     },
 
     resetQuery() {
@@ -279,8 +299,14 @@ export const Store = types
 
     search(value: string) {
       self.query = value;
+    },
+
+    selectNode(node: INode) {
+      self.selected = node;
+      self.selector = node.selector;
+    },
+
+    targetNode(node: INode) {
+      self.target = node;
     }
   }));
-
-export const StoreContext = createContext(Store.create());
-export const useStore = () => useContext(StoreContext);

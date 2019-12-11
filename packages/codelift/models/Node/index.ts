@@ -1,15 +1,19 @@
-import { Instance, types } from "mobx-state-tree";
-import { TailwindRule } from "./TailwindRule";
+import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 
-type Rule = Instance<typeof TailwindRule>;
+import { ICSSRule } from "../CSSRule";
+import { IApp } from "../App";
+
+export interface INode extends Instance<typeof Node> {}
 
 export const Node = types
   .model("Node", {
     classNames: types.array(types.string),
-    isPreviewing: false
+    childNodes: types.array(types.late((): IAnyModelType => Node)),
+    isPreviewing: false,
+    uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
-    element: null as null | HTMLElement
+    element: document.createElement("null")
   }))
   .views(self => ({
     get debugSource() {
@@ -24,19 +28,23 @@ export const Node = types
       return this.reactElement._debugSource;
     },
 
-    hasRule(rule: Rule) {
-      if (!self.element) {
-        return false;
-      }
-
+    hasRule(rule: ICSSRule) {
       return self.classNames.includes(rule.className);
     },
 
-    get reactElement() {
-      if (!self.element) {
-        return undefined;
-      }
+    get id() {
+      return self.element.getAttribute("id");
+    },
 
+    get isSelected(): boolean {
+      return this.store.selected === self;
+    },
+
+    get isTargeted(): boolean {
+      return this.store.target === self;
+    },
+
+    get reactElement() {
       for (const key in self.element) {
         if (key.startsWith("__reactInternalInstance$")) {
           // @ts-ignore
@@ -46,11 +54,7 @@ export const Node = types
     },
 
     get selector() {
-      let { element } = self;
-
-      if (!element) {
-        return null;
-      }
+      let element: HTMLElement | null = self.element;
 
       const selectors = [];
 
@@ -76,10 +80,18 @@ export const Node = types
       }
 
       return selectors.join(" > ");
+    },
+
+    get store(): IApp {
+      return getRoot(self);
+    },
+
+    get tagName() {
+      return self.element.tagName.toLowerCase();
     }
   }))
   .actions(self => ({
-    applyRule(rule: Rule) {
+    applyRule(rule: ICSSRule) {
       if (self.element) {
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
@@ -91,7 +103,7 @@ export const Node = types
       }
     },
 
-    cancelRule(rule: Rule) {
+    cancelRule(rule: ICSSRule) {
       if (self.element) {
         self.element.className = self.classNames.join(" ");
       }
@@ -99,7 +111,7 @@ export const Node = types
       self.isPreviewing = false;
     },
 
-    previewRule(rule: Rule) {
+    previewRule(rule: ICSSRule) {
       if (self.element) {
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
@@ -111,12 +123,32 @@ export const Node = types
       }
     },
 
-    set(element: HTMLElement) {
-      self.classNames.replace([...element.classList]);
+    setElement(element: HTMLElement) {
       self.element = element;
-    },
 
-    unset() {
-      self.element = null;
+      self.childNodes.replace(createChildNodes(element));
+      self.classNames.replace([...element.classList]);
     }
   }));
+
+export const createNode = (element: HTMLElement) => {
+  const node = Node.create();
+  node.setElement(element);
+
+  return node;
+};
+
+export const createChildNodes = (element: HTMLElement) => {
+  const children = [...element.children] as HTMLElement[];
+
+  return children.map((child: HTMLElement) => createNode(child));
+};
+
+export const flattenNodes = (nodes: INode[]) => {
+  return nodes.reduce((acc, node) => {
+    acc.push(node);
+    acc.push(...flattenNodes(node.childNodes));
+
+    return acc;
+  }, [] as INode[]);
+};

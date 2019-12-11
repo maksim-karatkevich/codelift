@@ -11,7 +11,8 @@ import React, {
   useEffect,
   useRef
 } from "react";
-import { observer, useStore } from "../Store";
+
+import { observer, useStore } from "../../store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";
 
@@ -19,7 +20,6 @@ export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
   const listRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const className = store.selected.classNames.join(" ");
 
   useEffect(() => {
     if (listRef.current) {
@@ -31,7 +31,7 @@ export const CSSInspector: FunctionComponent = observer(() => {
     }
 
     if (searchRef.current) searchRef.current.focus();
-  }, [className, store.selected.element]);
+  }, [store.selected && store.selected.classNames.join(" ")]);
 
   return (
     <>

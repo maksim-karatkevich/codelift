@@ -1,23 +1,16 @@
 import { ListItem, Text } from "@chakra-ui/core";
-import { Instance } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 import { useMutation } from "urql";
-import { observer, TailwindRule, useStore } from "../Store";
+
+import { observer, useStore } from "../../store";
+import { ICSSRule } from "../../models/CSSRule";
 
 type RuleProps = {
-  rule: Instance<typeof TailwindRule>;
-};
-
-const getReactElement = (element: HTMLElement) => {
-  for (const key in element) {
-    if (key.startsWith("__reactInternalInstance$")) {
-      // @ts-ignore
-      return element[key];
-    }
-  }
+  rule: ICSSRule;
 };
 
 export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
+  const store = useStore();
   const [res, toggleClassName] = useMutation(`
     mutation ToggleClassName(
       $className: String!
@@ -38,43 +31,48 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     throw new Error(res.error.toString());
   }
 
-  const store = useStore();
-  const { selected } = store;
-  const toggled = false;
-  const toggleRule = (rule: Instance<typeof TailwindRule>) => {
-    if (!selected.element) {
+  const toggleRule = (rule: ICSSRule) => {
+    if (!store.selected) {
       console.warn("Cannot apply rule without an element selected");
       return;
     }
 
     const { className } = rule;
-    const { debugSource } = selected;
+    const { debugSource } = store.selected;
 
     if (!debugSource) {
       const error = new Error(
         "Selected element is missing _debugSource property"
       );
 
-      console.error(error, selected.element);
+      console.error(error, store.selected.element);
       throw error;
     }
 
-    selected.applyRule(rule);
-    store.resetQuery();
-
     toggleClassName({ ...debugSource, className });
+
+    store.selected.applyRule(rule);
+    store.resetQuery();
   };
 
   return (
+    // @ts-ignore
     <ListItem
       cursor="pointer"
       fontFamily="mono"
       fontWeight="hairline"
       fontSize="xs"
-      textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
       onClick={() => toggleRule(rule)}
-      onMouseEnter={() => selected.previewRule(rule)}
-      onMouseLeave={() => selected.cancelRule(rule)}
+      onMouseEnter={() => {
+        if (store.selected) {
+          store.selected.previewRule(rule);
+        }
+      }}
+      onMouseLeave={() => {
+        if (store.selected) {
+          store.selected.cancelRule(rule);
+        }
+      }}
       paddingX="2"
       paddingY="1"
       // @ts-ignore

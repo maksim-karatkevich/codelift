@@ -1,8 +1,8 @@
 import { Instance } from "mobx-state-tree";
 import React, { FunctionComponent } from "react";
 import { createPortal } from "react-dom";
-import { observer, useStore } from "../Store";
-import { Node } from "../Store/Node";
+import { observer, useStore } from "../../store";
+import { Node } from "../../models/Node";
 
 type PortalProps = {
   node: Instance<typeof Node>;
@@ -25,7 +25,7 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
         filter: `grayscale(${node === store.selected ? 0 : 1})`,
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
-        opacity: store.selected.isPreviewing ? 0 : 1,
+        opacity: store.selected && store.selected.isPreviewing ? 0 : 1,
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,
