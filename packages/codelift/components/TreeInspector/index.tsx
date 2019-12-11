@@ -38,7 +38,7 @@ export const TreeInspector: FunctionComponent = observer(() => {
         overflow="auto"
         width="100%"
       >
-        {store.nodes.map((node, i) => (
+        {store.childNodes.map((node, i) => (
           <TreeList key={i} node={node} />
         ))}
       </Box>
