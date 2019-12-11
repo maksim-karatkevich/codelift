@@ -49,10 +49,6 @@ export const App = types
     get queriedCSSRules(): ICSSRule[] {
       const { cssRules, query } = self;
 
-      if (!query) {
-        return cssRules;
-      }
-
       const words = query
         .split(" ")
         .map(word => word.trim())
@@ -217,6 +213,7 @@ export const App = types
         self.selected &&
         !self.document.contains(self.selected.element)
       ) {
+        this.initNodes();
         this.reselect();
       }
     },

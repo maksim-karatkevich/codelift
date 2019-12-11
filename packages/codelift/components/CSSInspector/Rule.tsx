@@ -9,16 +9,8 @@ type RuleProps = {
   rule: ICSSRule;
 };
 
-const getReactElement = (element: HTMLElement) => {
-  for (const key in element) {
-    if (key.startsWith("__reactInternalInstance$")) {
-      // @ts-ignore
-      return element[key];
-    }
-  }
-};
-
 export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
+  const store = useStore();
   const [res, toggleClassName] = useMutation(`
     mutation ToggleClassName(
       $className: String!
@@ -39,31 +31,28 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     throw new Error(res.error.toString());
   }
 
-  const store = useStore();
-  const { selected } = store;
-  const toggled = false;
   const toggleRule = (rule: ICSSRule) => {
-    if (!selected) {
+    if (!store.selected) {
       console.warn("Cannot apply rule without an element selected");
       return;
     }
 
     const { className } = rule;
-    const { debugSource } = selected;
+    const { debugSource } = store.selected;
 
     if (!debugSource) {
       const error = new Error(
         "Selected element is missing _debugSource property"
       );
 
-      console.error(error, selected.element);
+      console.error(error, store.selected.element);
       throw error;
     }
 
-    selected.applyRule(rule);
-    store.resetQuery();
-
     toggleClassName({ ...debugSource, className });
+
+    store.selected.applyRule(rule);
+    store.resetQuery();
   };
 
   return (
@@ -73,16 +62,15 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       fontFamily="mono"
       fontWeight="hairline"
       fontSize="xs"
-      textDecoration={rule.isApplied && toggled ? "line-through" : undefined}
       onClick={() => toggleRule(rule)}
       onMouseEnter={() => {
-        if (selected) {
-          selected.previewRule(rule);
+        if (store.selected) {
+          store.selected.previewRule(rule);
         }
       }}
       onMouseLeave={() => {
-        if (selected) {
-          selected.cancelRule(rule);
+        if (store.selected) {
+          store.selected.cancelRule(rule);
         }
       }}
       paddingX="2"

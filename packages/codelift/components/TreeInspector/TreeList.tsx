@@ -3,6 +3,7 @@ import { FunctionComponent, MouseEvent, useCallback } from "react";
 import { observer, useStore } from "../../store";
 
 import { INode } from "../../models/Node";
+import { isAlive } from "mobx-state-tree";
 
 type TreeListProps = {
   depth?: number;
@@ -13,10 +14,6 @@ type TreeListProps = {
 export const TreeList: FunctionComponent<TreeListProps> = observer(
   ({ depth = 0, node }) => {
     const store = useStore();
-    const { classNames, id, tagName } = node;
-    const handleClick = useCallback(() => {
-      store.selectNode(node);
-    }, [node]);
     const handleMouseEnter = useCallback(
       (event: MouseEvent) => {
         node.element.scrollIntoView({
@@ -29,10 +26,14 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
       [node]
     );
 
+    if (!isAlive(node)) {
+      return null;
+    }
+
     // Don't allow navigation to these tags
     if (
       ["com-1password-op-button", "noscript", "script", "style"].includes(
-        tagName
+        node.tagName
       )
     ) {
       return null;
@@ -48,7 +49,7 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
       >
         <ListItem>
           <Button
-            onClick={handleClick}
+            onClick={() => store.selectNode(node)}
             onMouseEnter={handleMouseEnter}
             fontSize="xs"
             fontWeight="lighter"
@@ -60,29 +61,29 @@ export const TreeList: FunctionComponent<TreeListProps> = observer(
             }
             verticalAlign="text-bottom"
           >
-            <Text key="node-tagName">{tagName}</Text>
+            <Text key="node-tagName">{node.tagName}</Text>
 
-            {id && (
+            {node.id && (
               <Text color="gray.400" fontSize="75%" key="node-id" isTruncated>
-                #{id}
+                #{node.id}
               </Text>
             )}
 
-            {classNames.length > 0 && (
+            {node.classNames.length > 0 && (
               <Text
                 color="gray.400"
                 fontSize="75%"
                 key="node-classNames"
                 isTruncated
               >
-                .{classNames.join(".")}
+                .{node.classNames.join(".")}
               </Text>
             )}
           </Button>
 
           {/* Block traversal further */}
           {/* TODO This should be blocked on hover as well to target the SVG, and not path/g */}
-          {["svg"].includes(tagName)
+          {["svg"].includes(node.tagName)
             ? null
             : node.childNodes.map(childNode => (
                 <TreeList
