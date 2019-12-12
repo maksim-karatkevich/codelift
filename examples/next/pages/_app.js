@@ -2,7 +2,7 @@ import App from "next/app";
 import React from "react";
 
 import "codelift/register";
-import "tailwindcss/dist/tailwind.css";
+import "../styles/index.css";
 
 export default class MyApp extends App {
   // Only uncomment this method if you have blocking data requirements for
