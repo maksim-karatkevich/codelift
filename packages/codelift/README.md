@@ -26,9 +26,14 @@ Within your [create-react-app][cra] project:
 1. **Hover to preview** before applying.
 1. **Click to toggle** in your source code.
 
-### Upcoming
+### Feature Requests
 
-1. Package Installation
+- [ ] Install missing dependencies
+- [ ] Click tag to open in editor
+- [ ] Add/Wrap elements
+- [ ] Convert element to Component
+- [ ] `:hover`, etc. classes
+- [New Feature Request](https://github.com/ericclemmons/codelift/issues/new)
 
 ## Contributing
 
