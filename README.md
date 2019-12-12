@@ -6,10 +6,19 @@
 
 ## Getting Started
 
-Within your [create-react-app][cra] project:
+Within your project:
 
 1. `yarn add codelift --dev`
-1. `yarn codelift start`
+1. For [create-react-app][cra]:
+
+   `yarn codelift start`
+
+   For [Next.js][next]:
+
+   `yarn codelift dev`
+
+   _(`codelift` runs `yarn ____` with whatever you provide)_
+
 1. Add `import "codelift/register"` to the top of your `src/App.tsx`.
 
 ## Examples
@@ -45,4 +54,5 @@ Within your [create-react-app][cra] project:
 - Eric Clemmons
 
 [cra]: https://github.com/facebook/create-react-app
+[next]: https://github.com/zeit/next.js/
 [tailwind]: https://tailwindcss.com/
