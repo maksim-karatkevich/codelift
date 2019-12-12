@@ -1,6 +1,6 @@
 # code<sup>_lift_</sup>
 
-![Create React App Example](/cra.png)
+![Create React App Example](/codelift.next.gif)
 
 > A "No Code" GUI for your existing React app.
 
