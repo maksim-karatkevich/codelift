@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { spawn } = require("child_process");
+const spawn = require("cross-spawn");
 const [, , ...args] = process.argv;
 // TODO Use npm if package-lock.json exists
 const command = "yarn";
