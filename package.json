@@ -4,6 +4,7 @@
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
+    "parcel": "cd examples/parcel && codelift dev",
     "prerelease": "yarn workspace codelift build",
     "release": "yarn workspace codelift publish",
     "postrelease": "git push --follow-tags",
