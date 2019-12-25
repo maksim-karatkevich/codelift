@@ -101,14 +101,13 @@ export const App = types
         return null;
       }
 
-      return (
-        // CRA
-        self.document.querySelector("#root") ||
-        // Next.js
-        self.document.querySelector("#__next") ||
-        // Whatever
-        self.document.querySelector("body")
-      );
+      for (const node of [...self.document.all]) {
+        if ("_reactRootContainer" in node) {
+          return node;
+        }
+      }
+
+      throw new Error(`codelift could not find React's root container`);
     }
   }))
   .actions(self => ({
