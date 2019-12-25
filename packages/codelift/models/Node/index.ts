@@ -5,6 +5,15 @@ import { IApp } from "../App";
 
 export interface INode extends Instance<typeof Node> {}
 
+export const getReactInstance = (element: HTMLElement) => {
+  for (const key in element) {
+    if (key.startsWith("__reactInternalInstance$")) {
+      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'HTMLElement'.ts(7053)
+      return element[key];
+    }
+  }
+};
+
 export const Node = types
   .model("Node", {
     classNames: types.array(types.string),
@@ -53,12 +62,7 @@ export const Node = types
     },
 
     get reactElement() {
-      for (const key in self.element) {
-        if (key.startsWith("__reactInternalInstance$")) {
-          // @ts-ignore
-          return self.element[key];
-        }
-      }
+      return getReactInstance(self.element);
     },
 
     get selector() {
