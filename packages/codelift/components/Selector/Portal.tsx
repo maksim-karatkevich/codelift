@@ -55,7 +55,7 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
         {node.element.tagName.toLowerCase()}
 
         <small style={{ color: "#bee3f8" }}>
-          {String(node.element.className).length
+          {typeof node.element.className === "string"
             ? `.${node.element.className.split(" ").join(".")}`
             : null}
         </small>
