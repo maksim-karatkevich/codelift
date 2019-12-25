@@ -16,6 +16,14 @@ export const Node = types
     element: document.createElement("null")
   }))
   .views(self => ({
+    get componentName() {
+      if (!this.reactElement) {
+        return undefined;
+      }
+
+      return this.reactElement.return.type.name;
+    },
+
     get debugSource() {
       if (!this.reactElement) {
         return undefined;
