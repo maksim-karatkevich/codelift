@@ -27,8 +27,6 @@ export const App = types
     document: null as null | HTMLDocument,
     // In-case of an error accessing the iframe
     error: null as null | Error,
-    // Needed for <Selector />
-    root: null as null | HTMLElement,
     rule: null as null | ICSSRule
   }))
   .views(self => ({
@@ -98,7 +96,7 @@ export const App = types
       return flattenNodes(self.childNodes);
     },
 
-    get root() {
+    get root(): null | HTMLElement {
       if (!self.document) {
         return null;
       }
