@@ -3,21 +3,29 @@ import { Instance, types } from "mobx-state-tree";
 import { SyntheticEvent } from "react";
 
 import { CSSRule, ICSSRule } from "../CSSRule";
-import { createChildNodes, INode, Node, flattenNodes } from "../Node";
+import {
+  createChildNodes,
+  ElementNode,
+  flattenNodes,
+  IElementNode
+} from "../ElementNode";
+import { createReactNode, getReactInstance, ReactNode } from "../ReactNode";
 
 export interface IApp extends Instance<typeof App> {}
 
 export const App = types
   .model("App", {
-    childNodes: types.array(Node),
+    childNodes: types.array(ElementNode),
     cssRules: types.array(CSSRule),
     query: "",
+    // TODO Keep or remove this?  rootInstance = createReactNode(...) throws
+    // rootInstance: types.maybe(types.safeReference(ReactNode)),
     state: types.optional(
       types.enumeration("State", ["HIDDEN", "VISIBLE"]),
       "VISIBLE"
     ),
-    target: types.maybe(types.safeReference(Node)),
-    selected: types.maybe(types.safeReference(Node)),
+    target: types.maybe(types.safeReference(ElementNode)),
+    selected: types.maybe(types.safeReference(ElementNode)),
     selector: types.maybe(types.string)
   })
   .volatile(self => ({
@@ -108,6 +116,15 @@ export const App = types
       }
 
       throw new Error(`codelift could not find React's root container`);
+    },
+
+    // TODO This doesn't seem to change with this.root via HMR
+    get rootInstance(): null | Instance<typeof ReactNode> {
+      if (this.root) {
+        return createReactNode(getReactInstance(this.root));
+      }
+
+      return null;
     }
   }))
   .actions(self => ({
@@ -275,6 +292,14 @@ export const App = types
         return;
       }
 
+      // TODO Convert Node to ReactNode
+      // _debugID can work for the ID
+      // _debugSource indicate whether or not it's disabled/rendered
+      // stateNode is the reference to the HTMLElement for clicking.
+      // (stateNode is null when there's not a DOM node associated with it)
+      // _debugSource is `null` for most of these!
+      // inspect(element) may work in Chrome!
+
       self.childNodes.replace(createChildNodes(self.root));
     },
 
@@ -298,12 +323,12 @@ export const App = types
       self.query = value;
     },
 
-    selectNode(node: INode) {
+    selectNode(node: IElementNode) {
       self.selected = node;
       self.selector = node.selector;
     },
 
-    targetNode(node: INode) {
+    targetNode(node: IElementNode) {
       self.target = node;
     }
   }));

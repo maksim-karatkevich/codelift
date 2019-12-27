@@ -3,21 +3,14 @@ import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 import { ICSSRule } from "../CSSRule";
 import { IApp } from "../App";
 
-export interface INode extends Instance<typeof Node> {}
+export interface IElementNode extends Instance<typeof ElementNode> {}
 
-export const getReactInstance = (element: HTMLElement) => {
-  for (const key in element) {
-    if (key.startsWith("__reactInternalInstance$")) {
-      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'HTMLElement'.ts(7053)
-      return element[key];
-    }
-  }
-};
+import { getReactInstance } from "../ReactNode";
 
-export const Node = types
-  .model("Node", {
+export const ElementNode = types
+  .model("ElementNode", {
     classNames: types.array(types.string),
-    childNodes: types.array(types.late((): IAnyModelType => Node)),
+    childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
     isPreviewing: false,
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
@@ -144,7 +137,7 @@ export const Node = types
   }));
 
 export const createNode = (element: HTMLElement) => {
-  const node = Node.create();
+  const node = ElementNode.create();
   node.setElement(element);
 
   return node;
@@ -156,11 +149,11 @@ export const createChildNodes = (element: HTMLElement) => {
   return children.map((child: HTMLElement) => createNode(child));
 };
 
-export const flattenNodes = (nodes: INode[]) => {
+export const flattenNodes = (nodes: IElementNode[]) => {
   return nodes.reduce((acc, node) => {
     acc.push(node);
     acc.push(...flattenNodes(node.childNodes));
 
     return acc;
-  }, [] as INode[]);
+  }, [] as IElementNode[]);
 };

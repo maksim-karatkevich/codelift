@@ -1,14 +1,14 @@
 import { Button, List, ListItem, Text } from "@chakra-ui/core";
+import { isAlive } from "mobx-state-tree";
 import { FunctionComponent, MouseEvent, useCallback } from "react";
 import { observer, useStore } from "../../store";
 
-import { INode } from "../../models/Node";
-import { isAlive } from "mobx-state-tree";
+import { IElementNode } from "../../models/ElementNode";
 
 type TreeListProps = {
   depth?: number;
   filter?: string;
-  node: INode;
+  node: IElementNode;
 };
 
 export const TreeList: FunctionComponent<TreeListProps> = observer(

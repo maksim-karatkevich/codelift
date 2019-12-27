@@ -1,9 +1,10 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 const links = [
-  { href: 'https://github.com/zeit/next.js', label: 'GitHub' },
-  { href: 'https://nextjs.org/docs', label: 'Docs' },
-]
+  { href: "https://github.com/ericclemmons/codelift", label: "codelift" },
+  { href: "https://github.com/zeit/next.js", label: "Next.js GitHub" },
+  { href: "https://nextjs.org/docs", label: "Next.js Docs" }
+];
 
 export default function Nav() {
   return (
@@ -25,5 +26,5 @@ export default function Nav() {
         </ul>
       </ul>
     </nav>
-  )
+  );
 }

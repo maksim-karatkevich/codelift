@@ -2,10 +2,10 @@ import { Instance } from "mobx-state-tree";
 import React, { FunctionComponent } from "react";
 import { createPortal } from "react-dom";
 import { observer, useStore } from "../../store";
-import { Node } from "../../models/Node";
+import { ElementNode } from "../../models/ElementNode";
 
 type PortalProps = {
-  node: Instance<typeof Node>;
+  node: Instance<typeof ElementNode>;
 };
 
 export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
