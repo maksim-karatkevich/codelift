@@ -10,7 +10,6 @@ import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
 
 import { CSSInspector } from "../CSSInspector";
-import { ComponentInspector } from "../ComponentInspector";
 import { Selector } from "../Selector";
 import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
@@ -51,7 +50,6 @@ export const App: FunctionComponent = observer(() => {
         <Sidebar key="Tree">
           {store.root ? (
             <>
-              <ComponentInspector />
               <TreeInspector />
             </>
           ) : store.error ? (
