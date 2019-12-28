@@ -216,14 +216,7 @@ export const App = types
     },
 
     handleStatus(status: string) {
-      if (
-        status === "idle" &&
-        self.document
-        // &&
-        // self.selected &&
-        // self.selected.element &&
-        // !self.document.contains(self.selected.element.element)
-      ) {
+      if (status === "idle" && self.document) {
         this.initNodes();
         this.reselect();
       }
