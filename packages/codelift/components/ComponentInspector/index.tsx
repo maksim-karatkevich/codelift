@@ -56,7 +56,7 @@ const List: FunctionComponent<NodeProps> = observer(({ node }) => {
 
   // TODO Track depth and change border color to be lighter
   return (
-    <ol className="border-l border-gray-800 -ml-3 pl-6 list-disc">
+    <ol className="border-l border-gray-800 -ml-3 pl-6">
       <li>
         <div className="flex">
           <Label node={node} />
