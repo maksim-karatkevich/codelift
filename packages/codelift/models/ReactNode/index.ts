@@ -1,48 +1,18 @@
-import { Instance, types } from "mobx-state-tree";
+import { Instance, types, IAnyModelType } from "mobx-state-tree";
+import { createNode, ElementNode } from "../ElementNode";
 
 export interface IReactNode extends Instance<typeof ReactNode> {}
 
 export const ReactNode = types
   .model("ReactNode", {
-    id: types.optional(types.identifierNumber, () => Math.random())
+    children: types.array(types.late((): IAnyModelType => ReactNode)),
+    element: types.maybe(ElementNode),
+    uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
     instance: null as any
   }))
   .views(self => ({
-    // TODO elementId
-    // TODO elementClassNames?
-    get children(): IReactNode[] {
-      const children = [];
-      let child = self.instance.child;
-
-      // child/sibling are a linked list, so children = child + siblings
-      while (child) {
-        children.push(createReactNode(child));
-        child = child.sibling;
-      }
-
-      return children;
-    },
-
-    get classNames(): string[] {
-      if (!this.element) {
-        return [];
-      }
-
-      return [...this.element.classList];
-    },
-
-    // TODO Create an ElementNode, which should be Node
-    // This would remove classNames/id & other concerns from this
-    get element(): null | HTMLElement {
-      if (!this.isElement) {
-        return null;
-      }
-
-      return self.instance.stateNode;
-    },
-
     get isComponent() {
       return typeof self.instance.elementType !== "string";
     },
@@ -71,18 +41,38 @@ export const ReactNode = types
   }))
   .actions(self => ({
     setInstance(instance: any) {
+      self.children.clear();
       self.instance = instance;
+
+      if (self.isElement) {
+        // @ts-ignore Weird af error here with type.maybe not matching the ElementNode
+        self.element = createNode(self.instance.stateNode);
+      }
+
+      let child = self.instance.child;
+
+      // child/sibling are a linked list, so children = child + siblings
+      while (child) {
+        self.children.push(createReactNode(child));
+        child = child.sibling;
+      }
     }
   }));
 
 export const createReactNode = (instance: any) => {
-  const node = ReactNode.create({
-    id: instance._debugID
-  });
-
+  const node = ReactNode.create();
   node.setInstance(instance);
 
   return node;
+};
+
+export const flattenReactNodes = (nodes: IReactNode[]) => {
+  return nodes.reduce((acc, node) => {
+    acc.push(node);
+    acc.push(...flattenReactNodes(node.children));
+
+    return acc;
+  }, [] as IReactNode[]);
 };
 
 export const getReactInstance = (element: HTMLElement) => {

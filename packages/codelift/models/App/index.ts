@@ -13,7 +13,8 @@ import {
   createReactNode,
   getReactInstance,
   IReactNode,
-  ReactNode
+  ReactNode,
+  flattenReactNodes
 } from "../ReactNode";
 
 export interface IApp extends Instance<typeof App> {}
@@ -23,16 +24,16 @@ export const App = types
     childNodes: types.array(ElementNode),
     cssRules: types.array(CSSRule),
     query: "",
-    // TODO Keep or remove this?  rootInstance = createReactNode(...) throws
-    // rootInstance: types.maybe(types.safeReference(ReactNode)),
+    reactNodes: types.array(types.safeReference(ReactNode)),
+    rootInstance: types.maybe(ReactNode),
     state: types.optional(
       types.enumeration("State", ["HIDDEN", "VISIBLE"]),
       "VISIBLE"
     ),
     target: types.maybe(types.safeReference(ElementNode)),
-    targetedReactNode: types.maybe(ReactNode),
+    targetedReactNode: types.maybe(types.safeReference(ReactNode)),
     selected: types.maybe(types.safeReference(ElementNode)),
-    selectedReactNode: types.maybe(ReactNode),
+    selectedReactNode: types.maybe(types.safeReference(ReactNode)),
     selector: types.maybe(types.string)
   })
   .volatile(self => ({
@@ -123,15 +124,6 @@ export const App = types
       }
 
       throw new Error(`codelift could not find React's root container`);
-    },
-
-    // TODO This doesn't seem to change with this.root via HMR
-    get rootInstance(): null | Instance<typeof ReactNode> {
-      if (this.root) {
-        return createReactNode(getReactInstance(this.root));
-      }
-
-      return null;
     }
   }))
   .actions(self => ({
@@ -299,15 +291,9 @@ export const App = types
         return;
       }
 
-      // TODO Convert Node to ReactNode
-      // _debugID can work for the ID
-      // _debugSource indicate whether or not it's disabled/rendered
-      // stateNode is the reference to the HTMLElement for clicking.
-      // (stateNode is null when there's not a DOM node associated with it)
-      // _debugSource is `null` for most of these!
-      // inspect(element) may work in Chrome!
-
       self.childNodes.replace(createChildNodes(self.root));
+      self.rootInstance = createReactNode(getReactInstance(self.root));
+      self.reactNodes.replace(flattenReactNodes(self.rootInstance.children));
     },
 
     open() {
