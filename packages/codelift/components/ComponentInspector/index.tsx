@@ -25,7 +25,8 @@ const Label: FunctionComponent<NodeProps> = observer(({ node }) => {
       {node.name}
       <small className="text-xs text-gray-600 font-normal">
         {node.element && node.element.id && `#${node.element.id}`}
-        {node.classNames.length > 0 && `.${node.classNames.join(".")}`}
+        {node.element &&
+          node.element.classNames.map(className => `.${className}`).join("")}
       </small>
     </button>
   );
@@ -36,13 +37,12 @@ const List: FunctionComponent<NodeProps> = observer(({ node }) => {
     return (
       <>
         {node.children.map(child => (
-          <List key={child.id} node={child} />
+          <List key={child.uuid} node={child} />
         ))}
       </>
     );
   }
 
-  // TODO Track depth and change border color to be lighter
   return (
     <ol className="border-l border-gray-800 -ml-3 pl-6">
       <li>
@@ -52,7 +52,7 @@ const List: FunctionComponent<NodeProps> = observer(({ node }) => {
         </div>
 
         {node.children.map(child => (
-          <List key={child.id} node={child} />
+          <List key={child.uuid} node={child} />
         ))}
       </li>
     </ol>
@@ -89,44 +89,4 @@ export const ComponentInspector: FunctionComponent = observer(() => {
       <List node={store.rootInstance} />
     </nav>
   );
-
-  // return (
-  //     <ol className="ml-6">
-  //       <li>
-  //         <a href="#">
-  //           div
-  //           <small className="text-xs text-gray-600">#root</small>
-  //         </a>
-  //         <ol className="border-l border-gray-800 -ml-3 pl-6 list-disc">
-  //           <a href="#" className="text-white font-bold">
-  //             Nav
-  //           </a>
-  //           <ol className="-ml-3 pl-6 border-l border-gray-700">
-  //             <li className="flex">
-  //               <a href="#" className="truncate">
-  //                 ol
-  //                 <small className="text-xs text-gray-600 whitespace-no-wrap">
-  //                   .-ml-3.pl-6.border-l.border-gray-700.text-xs.text-gray-600
-  //                 </small>
-  //               </a>
-  //               <button className="px-2 font-mono fill-current">
-  //                 <svg
-  //                   xmlns="http://www.w3.org/2000/svg"
-  //                   viewBox="0 0 24 24"
-  //                   width="24"
-  //                   height="24"
-  //                 >
-  //                   <path
-  //                     className="heroicon-ui"
-  //                     d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z"
-  //                   />
-  //                 </svg>
-  //               </button>
-  //             </li>
-  //           </ol>
-  //         </ol>
-  //       </li>
-  //     </ol>
-  //   </nav>
-  // );
 });
