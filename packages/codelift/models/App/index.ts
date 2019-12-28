@@ -220,8 +220,8 @@ export const App = types
       if (key === "Escape") {
         event.preventDefault();
 
-        if (self.selected) {
-          self.selected = undefined;
+        if (self.selectedReactNode) {
+          self.selectedReactNode = undefined;
           return;
         }
 
@@ -343,6 +343,7 @@ export const App = types
 
     selectReactNode(node: IReactNode) {
       self.selectedReactNode = node;
+      self.targetedReactNode = undefined;
       // TODO self.selector = node.selector
     },
 
