@@ -60,6 +60,18 @@ export const App = types
       return this.nodes.find(node => node.element === element);
     },
 
+    findReactNodeByElement(element: HTMLElement) {
+      const reactNode = self.reactNodes.find(reactNode => {
+        return (
+          reactNode &&
+          reactNode.element &&
+          reactNode.element.element === element
+        );
+      });
+
+      return reactNode;
+    },
+
     get queriedCSSRules(): ICSSRule[] {
       const { cssRules, query } = self;
 
@@ -316,6 +328,14 @@ export const App = types
       self.query = value;
     },
 
+    selectDOMNode(element: HTMLElement) {
+      const reactNode = self.findReactNodeByElement(element);
+
+      if (reactNode) {
+        this.selectReactNode(reactNode);
+      }
+    },
+
     selectNode(node: IElementNode) {
       self.selected = node;
       self.selector = node.selector;
@@ -324,6 +344,14 @@ export const App = types
     selectReactNode(node: IReactNode) {
       self.selectedReactNode = node;
       // TODO self.selector = node.selector
+    },
+
+    targetDOMNode(element: HTMLElement) {
+      const reactNode = self.findReactNodeByElement(element);
+
+      if (reactNode) {
+        this.targetReactNode(reactNode);
+      }
     },
 
     targetNode(node: IElementNode) {

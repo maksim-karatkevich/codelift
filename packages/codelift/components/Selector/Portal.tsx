@@ -1,11 +1,10 @@
-import { Instance } from "mobx-state-tree";
 import React, { FunctionComponent } from "react";
 import { createPortal } from "react-dom";
 import { observer, useStore } from "../../store";
-import { ElementNode } from "../../models/ElementNode";
+import { IReactNode } from "../../models/ReactNode";
 
 type PortalProps = {
-  node: Instance<typeof ElementNode>;
+  node: IReactNode;
 };
 
 export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
@@ -22,7 +21,7 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
     <div
       style={{
         border: "1px dashed #4299e1",
-        filter: `grayscale(${node === store.selected ? 0 : 1})`,
+        filter: `grayscale(${node === store.selectedReactNode ? 0 : 1})`,
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
         opacity: store.selected && store.selected.isPreviewing ? 0 : 1,
@@ -55,9 +54,7 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
         {node.element.tagName.toLowerCase()}
 
         <small style={{ color: "#bee3f8" }}>
-          {typeof node.element.className === "string"
-            ? `.${node.element.className.split(" ").join(".")}`
-            : null}
+          {node.element.classNames.map(className => `.${className}`).join("")}
         </small>
       </label>
     </div>,
