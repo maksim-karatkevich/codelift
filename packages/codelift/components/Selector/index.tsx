@@ -22,7 +22,7 @@ export const Selector = observer(() => {
 
     // When nothing is selected, allow the user to click to choose.
     // Otherwise, target is only set by the TreeInspector
-    if (!store.selectedReactNode) {
+    if (!store.selected) {
       root.addEventListener("mousemove", handleHover);
     }
 
@@ -32,17 +32,12 @@ export const Selector = observer(() => {
       root.removeEventListener("click", handleClick);
       root.removeEventListener("mousemove", handleHover);
     };
-  }, [root, store.selectedReactNode]);
+  }, [root, store.selected]);
 
   return (
     <>
-      {store.selectedReactNode && (
-        <Portal key="selected" node={store.selectedReactNode} />
-      )}
-
-      {store.targetedReactNode && (
-        <Portal key="targeted" node={store.targetedReactNode} />
-      )}
+      {store.selected && <Portal key="selected" node={store.selected} />}
+      {store.targeted && <Portal key="targeted" node={store.targeted} />}
     </>
   );
 });

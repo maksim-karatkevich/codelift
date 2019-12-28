@@ -3,12 +3,7 @@ import { Instance, types } from "mobx-state-tree";
 import { SyntheticEvent } from "react";
 
 import { CSSRule, ICSSRule } from "../CSSRule";
-import {
-  createChildNodes,
-  ElementNode,
-  flattenNodes,
-  IElementNode
-} from "../ElementNode";
+import { ElementNode } from "../ElementNode";
 import {
   createReactNode,
   getReactInstance,
@@ -21,7 +16,6 @@ export interface IApp extends Instance<typeof App> {}
 
 export const App = types
   .model("App", {
-    childNodes: types.array(ElementNode),
     cssRules: types.array(CSSRule),
     query: "",
     reactNodes: types.array(types.safeReference(ReactNode)),
@@ -30,10 +24,8 @@ export const App = types
       types.enumeration("State", ["HIDDEN", "VISIBLE"]),
       "VISIBLE"
     ),
-    target: types.maybe(types.safeReference(ElementNode)),
-    targetedReactNode: types.maybe(types.safeReference(ReactNode)),
-    selected: types.maybe(types.safeReference(ElementNode)),
-    selectedReactNode: types.maybe(types.safeReference(ReactNode)),
+    targeted: types.maybe(types.safeReference(ReactNode)),
+    selected: types.maybe(types.safeReference(ReactNode)),
     selector: types.maybe(types.string)
   })
   .volatile(self => ({
@@ -49,15 +41,11 @@ export const App = types
     get appliedCSSRules(): ICSSRule[] {
       const { selected } = self;
 
-      if (!selected) {
+      if (!selected || !selected.element) {
         return [];
       }
 
-      return this.queriedCSSRules.filter(selected.hasRule);
-    },
-
-    findElementNode(element: HTMLElement) {
-      return this.nodes.find(node => node.element === element);
+      return this.queriedCSSRules.filter(selected.element.hasRule);
     },
 
     findReactNodeByElement(element: HTMLElement) {
@@ -120,10 +108,6 @@ export const App = types
       );
     },
 
-    get nodes() {
-      return flattenNodes(self.childNodes);
-    },
-
     get root(): null | HTMLElement {
       if (!self.document) {
         return null;
@@ -144,13 +128,13 @@ export const App = types
     },
 
     clearTarget() {
-      self.target = undefined;
+      self.targeted = undefined;
     },
 
     close() {
       self.state = "HIDDEN";
       self.selected = undefined;
-      self.target = undefined;
+      self.targeted = undefined;
     },
 
     handleFrameLoad(event: SyntheticEvent) {
@@ -220,8 +204,8 @@ export const App = types
       if (key === "Escape") {
         event.preventDefault();
 
-        if (self.selectedReactNode) {
-          self.selectedReactNode = undefined;
+        if (self.selected) {
+          self.selected = undefined;
           return;
         }
 
@@ -234,9 +218,11 @@ export const App = types
     handleStatus(status: string) {
       if (
         status === "idle" &&
-        self.document &&
-        self.selected &&
-        !self.document.contains(self.selected.element)
+        self.document
+        // &&
+        // self.selected &&
+        // self.selected.element &&
+        // !self.document.contains(self.selected.element.element)
       ) {
         this.initNodes();
         this.reselect();
@@ -298,14 +284,13 @@ export const App = types
     },
 
     initNodes() {
-      if (!self.root) {
-        self.childNodes.clear();
-        return;
+      if (self.root) {
+        self.rootInstance = createReactNode(getReactInstance(self.root));
+        self.reactNodes.replace(flattenReactNodes(self.rootInstance.children));
+      } else {
+        self.rootInstance = undefined;
+        self.reactNodes.clear();
       }
-
-      self.childNodes.replace(createChildNodes(self.root));
-      self.rootInstance = createReactNode(getReactInstance(self.root));
-      self.reactNodes.replace(flattenReactNodes(self.rootInstance.children));
     },
 
     open() {
@@ -316,7 +301,13 @@ export const App = types
       const { selector } = self;
 
       if (self.root && selector) {
-        self.selected = self.nodes.find(node => node.selector === selector);
+        self.selected = self.reactNodes.find(reactNode => {
+          return (
+            reactNode &&
+            reactNode.element &&
+            reactNode.element.selector === selector
+          );
+        });
       }
     },
 
@@ -336,15 +327,12 @@ export const App = types
       }
     },
 
-    selectNode(node: IElementNode) {
-      self.selected = node;
-      self.selector = node.selector;
-    },
-
     selectReactNode(node: IReactNode) {
-      self.selectedReactNode = node;
-      self.targetedReactNode = undefined;
-      // TODO self.selector = node.selector
+      self.selected = node;
+      self.selector = self.selected.element
+        ? self.selected.element.selector
+        : undefined;
+      self.targeted = undefined;
     },
 
     targetDOMNode(element: HTMLElement) {
@@ -355,11 +343,7 @@ export const App = types
       }
     },
 
-    targetNode(node: IElementNode) {
-      self.target = node;
-    },
-
     targetReactNode(node: IReactNode) {
-      self.targetedReactNode = node;
+      self.targeted = node;
     }
   }));

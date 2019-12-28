@@ -21,10 +21,15 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
     <div
       style={{
         border: "1px dashed #4299e1",
-        filter: `grayscale(${node === store.selectedReactNode ? 0 : 1})`,
+        filter: `grayscale(${node === store.selected ? 0 : 1})`,
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
-        opacity: store.selected && store.selected.isPreviewing ? 0 : 1,
+        opacity:
+          store.selected &&
+          store.selected.element &&
+          store.selected.element.isPreviewing
+            ? 0
+            : 1,
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,

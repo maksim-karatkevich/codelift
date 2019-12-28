@@ -9,7 +9,7 @@ type NodeProps = {
 
 const Label: FunctionComponent<NodeProps> = observer(({ node }) => {
   const store = useStore();
-  const isSelected = node === store.selectedReactNode;
+  const isSelected = node === store.selected;
 
   return (
     <button

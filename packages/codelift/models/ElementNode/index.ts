@@ -63,11 +63,11 @@ export const ElementNode = types
     },
 
     get isSelected(): boolean {
-      return this.store.selected === self;
+      return this.store.selected ? this.store.selected.element === self : false;
     },
 
     get isTargeted(): boolean {
-      return this.store.target === self;
+      return this.store.targeted ? this.store.targeted.element === self : false;
     },
 
     get reactElement() {

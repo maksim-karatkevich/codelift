@@ -31,27 +31,37 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     throw new Error(res.error.toString());
   }
 
-  const toggleRule = (rule: ICSSRule) => {
-    if (!store.selected) {
-      console.warn("Cannot apply rule without an element selected");
-      return;
-    }
+  if (!store.selected) {
+    console.warn("Cannot apply rule without an element selected");
+    return null;
+  }
 
+  const { element } = store.selected;
+
+  if (!element) {
+    console.warn(
+      "Selected node does not have an element associated with it",
+      store.selected
+    );
+    return null;
+  }
+
+  const toggleRule = (rule: ICSSRule) => {
     const { className } = rule;
-    const { debugSource } = store.selected;
+    const { debugSource } = element;
 
     if (!debugSource) {
       const error = new Error(
         "Selected element is missing _debugSource property"
       );
 
-      console.error(error, store.selected.element);
+      console.error(error, element);
       throw error;
     }
 
     toggleClassName({ ...debugSource, className });
 
-    store.selected.applyRule(rule);
+    element.applyRule(rule);
     store.resetQuery();
   };
 
@@ -63,16 +73,8 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       fontWeight="hairline"
       fontSize="xs"
       onClick={() => toggleRule(rule)}
-      onMouseEnter={() => {
-        if (store.selected) {
-          store.selected.previewRule(rule);
-        }
-      }}
-      onMouseLeave={() => {
-        if (store.selected) {
-          store.selected.cancelRule(rule);
-        }
-      }}
+      onMouseEnter={() => element.previewRule(rule)}
+      onMouseLeave={() => element.cancelRule(rule)}
       paddingX="2"
       paddingY="1"
       // @ts-ignore
