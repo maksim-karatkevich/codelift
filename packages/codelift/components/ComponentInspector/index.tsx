@@ -1,4 +1,4 @@
-import { FunctionComponent, MouseEvent } from "react";
+import { FunctionComponent } from "react";
 
 import { observer, useStore } from "../../store";
 import { IReactNode } from "../../models/ReactNode";
@@ -9,36 +9,24 @@ type NodeProps = {
 
 const Label: FunctionComponent<NodeProps> = observer(({ node }) => {
   const store = useStore();
-
-  const handleMouseEnter = (event: MouseEvent) => {
-    if (node.element) {
-      node.element.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-  };
-
-  // store.targetNode(node);
+  const isSelected = node === store.selectedReactNode;
 
   return (
     <button
-      className="text-left truncate w-full"
-      onMouseEnter={handleMouseEnter}
+      className={`my-1 pl-2 rounded-l text-left truncate w-full ${
+        isSelected
+          ? "bg-white text-black font-bold shadow-sm"
+          : "text-gray-400 text-normal hover:bg-gray-800 hover:font-bold"
+      }`}
+      onClick={() => store.selectReactNode(node)}
+      onMouseEnter={() => store.targetReactNode(node)}
+      style={{ transition: "all 100ms ease-in-out" }}
     >
       {node.name}
-
-      {node.element && node.element.id && (
-        <small className="text-xs text-gray-600" key="id">
-          #{node.element.id}
-        </small>
-      )}
-
-      {node.classNames.length > 0 && (
-        <small className="text-xs text-gray-600" key="classNames">
-          .{node.classNames.join(".")}
-        </small>
-      )}
+      <small className="text-xs text-gray-600 font-normal">
+        {node.element && node.element.id && `#${node.element.id}`}
+        {node.classNames.length > 0 && `.${node.classNames.join(".")}`}
+      </small>
     </button>
   );
 });

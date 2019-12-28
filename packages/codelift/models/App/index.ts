@@ -9,7 +9,12 @@ import {
   flattenNodes,
   IElementNode
 } from "../ElementNode";
-import { createReactNode, getReactInstance, ReactNode } from "../ReactNode";
+import {
+  createReactNode,
+  getReactInstance,
+  IReactNode,
+  ReactNode
+} from "../ReactNode";
 
 export interface IApp extends Instance<typeof App> {}
 
@@ -25,7 +30,9 @@ export const App = types
       "VISIBLE"
     ),
     target: types.maybe(types.safeReference(ElementNode)),
+    targetedReactNode: types.maybe(ReactNode),
     selected: types.maybe(types.safeReference(ElementNode)),
+    selectedReactNode: types.maybe(ReactNode),
     selector: types.maybe(types.string)
   })
   .volatile(self => ({
@@ -328,7 +335,16 @@ export const App = types
       self.selector = node.selector;
     },
 
+    selectReactNode(node: IReactNode) {
+      self.selectedReactNode = node;
+      // TODO self.selector = node.selector
+    },
+
     targetNode(node: IElementNode) {
       self.target = node;
+    },
+
+    targetReactNode(node: IReactNode) {
+      self.targetedReactNode = node;
     }
   }));
