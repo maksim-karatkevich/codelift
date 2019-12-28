@@ -5,7 +5,9 @@ export default function HomePage() {
     <div>
       <Nav />
       <div className="hero">
-        <h1 className="title">Next.js + Tailwind css</h1>
+        <h1 id="title" className="title">
+          Next.js + Tailwind css
+        </h1>
       </div>
     </div>
   );
