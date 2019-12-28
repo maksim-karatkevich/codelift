@@ -1,9 +1,8 @@
 import Link from "next/link";
 
 const links = [
-  { href: "https://github.com/ericclemmons/codelift", label: "codelift" },
-  { href: "https://github.com/zeit/next.js", label: "Next.js GitHub" },
-  { href: "https://nextjs.org/docs", label: "Next.js Docs" }
+  { href: "https://github.com/zeit/next.js", label: "GitHub" },
+  { href: "https://nextjs.org/docs", label: "Docs" }
 ];
 
 export default function Nav() {
