@@ -49,7 +49,9 @@ export const App: FunctionComponent = observer(() => {
       >
         <Sidebar key="Tree">
           {store.root ? (
-            <TreeInspector />
+            <>
+              <TreeInspector />
+            </>
           ) : store.error ? (
             <Error />
           ) : (

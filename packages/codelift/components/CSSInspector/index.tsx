@@ -31,7 +31,11 @@ export const CSSInspector: FunctionComponent = observer(() => {
     }
 
     if (searchRef.current) searchRef.current.focus();
-  }, [store.selected && store.selected.classNames.join(" ")]);
+  }, [
+    store.selected &&
+      store.selected.element &&
+      store.selected.element.classNames.join(" ")
+  ]);
 
   return (
     <>

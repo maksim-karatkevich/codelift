@@ -13,21 +13,11 @@ export const Selector = observer(() => {
 
     const handleClick = (event: MouseEvent) => {
       event.preventDefault();
-
-      const node = store.findElementNode(event.target as HTMLElement);
-
-      if (node) {
-        store.selectNode(node);
-        store.clearTarget();
-      }
+      store.selectDOMNode(event.target as HTMLElement);
     };
 
     const handleHover = (event: MouseEvent) => {
-      const node = store.findElementNode(event.target as HTMLElement);
-
-      if (node) {
-        store.targetNode(node);
-      }
+      store.targetDOMNode(event.target as HTMLElement);
     };
 
     // When nothing is selected, allow the user to click to choose.
@@ -47,7 +37,7 @@ export const Selector = observer(() => {
   return (
     <>
       {store.selected && <Portal key="selected" node={store.selected} />}
-      {store.target && <Portal key="target" node={store.target} />}
+      {store.targeted && <Portal key="targeted" node={store.targeted} />}
     </>
   );
 });

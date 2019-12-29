@@ -3,12 +3,26 @@ import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 import { ICSSRule } from "../CSSRule";
 import { IApp } from "../App";
 
-export interface INode extends Instance<typeof Node> {}
+export interface IElementNode extends Instance<typeof ElementNode> {}
 
-export const Node = types
-  .model("Node", {
+export const getReactInstance = (element: HTMLElement) => {
+  if ("_reactRootContainer" in element) {
+    // @ts-ignore Property '_reactRootContainer' does not exist on type 'never'.ts(2339)
+    return element._reactRootContainer._internalRoot.current.child;
+  }
+
+  for (const key in element) {
+    if (key.startsWith("__reactInternalInstance$")) {
+      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'HTMLElement'.ts(7053)
+      return element[key];
+    }
+  }
+};
+
+export const ElementNode = types
+  .model("ElementNode", {
     classNames: types.array(types.string),
-    childNodes: types.array(types.late((): IAnyModelType => Node)),
+    childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
     isPreviewing: false,
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
@@ -36,6 +50,10 @@ export const Node = types
       return this.reactElement._debugSource;
     },
 
+    getBoundingClientRect() {
+      return self.element.getBoundingClientRect();
+    },
+
     hasRule(rule: ICSSRule) {
       return self.classNames.includes(rule.className);
     },
@@ -45,20 +63,15 @@ export const Node = types
     },
 
     get isSelected(): boolean {
-      return this.store.selected === self;
+      return this.store.selected ? this.store.selected.element === self : false;
     },
 
     get isTargeted(): boolean {
-      return this.store.target === self;
+      return this.store.targeted ? this.store.targeted.element === self : false;
     },
 
     get reactElement() {
-      for (const key in self.element) {
-        if (key.startsWith("__reactInternalInstance$")) {
-          // @ts-ignore
-          return self.element[key];
-        }
-      }
+      return getReactInstance(self.element);
     },
 
     get selector() {
@@ -140,7 +153,7 @@ export const Node = types
   }));
 
 export const createNode = (element: HTMLElement) => {
-  const node = Node.create();
+  const node = ElementNode.create();
   node.setElement(element);
 
   return node;
@@ -152,11 +165,11 @@ export const createChildNodes = (element: HTMLElement) => {
   return children.map((child: HTMLElement) => createNode(child));
 };
 
-export const flattenNodes = (nodes: INode[]) => {
+export const flattenNodes = (nodes: IElementNode[]) => {
   return nodes.reduce((acc, node) => {
     acc.push(node);
     acc.push(...flattenNodes(node.childNodes));
 
     return acc;
-  }, [] as INode[]);
+  }, [] as IElementNode[]);
 };
