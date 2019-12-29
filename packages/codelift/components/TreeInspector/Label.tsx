@@ -38,6 +38,7 @@ const Icon: FunctionComponent<LabelProps> = ({ node, ...props }) => {
 export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
   const store = useStore();
   const isSelected = node === store.selected;
+  const isTargeted = node === store.targeted;
 
   // When HMR runs, these nodes may be removed, but still observing a previous reference
   if (!isValidReference(() => node)) {
@@ -49,7 +50,9 @@ export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
       className={`flex items-center my-1 pl-2 rounded-l text-left truncate w-full ${
         isSelected
           ? "bg-white text-black font-bold shadow-sm"
-          : "text-gray-400 text-normal hover:bg-gray-800 hover:font-bold"
+          : `text-gray-400 text-normal ${
+              isTargeted ? "bg-gray-800 font-bold" : ""
+            }`
       }`}
       onClick={() => store.selectReactNode(node)}
       onMouseEnter={() => store.targetReactNode(node)}
