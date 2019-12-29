@@ -1,3 +1,4 @@
+import { isValidReference } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 
 import { observer, useStore } from "../../store";
@@ -10,6 +11,11 @@ type LabelProps = {
 export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
   const store = useStore();
   const isSelected = node === store.selected;
+
+  // When HMR runs, these nodes may be removed, but still observing a previous reference
+  if (!isValidReference(() => node)) {
+    return null;
+  }
 
   return (
     <button

@@ -1,3 +1,4 @@
+import { isValidReference } from "mobx-state-tree";
 import { FunctionComponent } from "react";
 
 import { observer } from "../../store";
@@ -8,10 +9,10 @@ type ListProps = {
 };
 
 import { Label } from "./Label";
-import { isAlive } from "mobx-state-tree";
 
 export const List: FunctionComponent<ListProps> = observer(({ node }) => {
-  if (!isAlive(node)) {
+  // When HMR runs, these nodes may be removed, but still observing a previous reference
+  if (!isValidReference(() => node)) {
     return null;
   }
 
