@@ -127,7 +127,7 @@ export const App = types
       self.selected = undefined;
     },
 
-    clearTarget() {
+    clearTargeted() {
       self.targeted = undefined;
     },
 
