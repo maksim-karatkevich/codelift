@@ -31,22 +31,20 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
     throw new Error(res.error.toString());
   }
 
-  if (!store.selected) {
-    console.warn("Cannot apply rule without an element selected");
-    return null;
-  }
-
-  const { element } = store.selected;
-
-  if (!element) {
-    console.warn(
-      "Selected node does not have an element associated with it",
-      store.selected
-    );
-    return null;
-  }
-
   const toggleRule = (rule: ICSSRule) => {
+    if (!store.selected) {
+      return console.warn("Cannot apply rule without an element selected");
+    }
+
+    const { element } = store.selected;
+
+    if (!element) {
+      return console.warn(
+        "Selected node does not have an element associated with it",
+        store.selected
+      );
+    }
+
     const { className } = rule;
     const { debugSource } = element;
 
@@ -73,8 +71,16 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       fontWeight="hairline"
       fontSize="xs"
       onClick={() => toggleRule(rule)}
-      onMouseEnter={() => element.previewRule(rule)}
-      onMouseLeave={() => element.cancelRule(rule)}
+      onMouseEnter={() => {
+        if (store.selected && store.selected.element) {
+          store.selected.element.previewRule(rule);
+        }
+      }}
+      onMouseLeave={() => {
+        if (store.selected && store.selected.element) {
+          store.selected.element.cancelRule(rule);
+        }
+      }}
       paddingX="2"
       paddingY="1"
       // @ts-ignore
