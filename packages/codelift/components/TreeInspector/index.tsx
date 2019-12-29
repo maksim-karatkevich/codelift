@@ -11,7 +11,7 @@ export const TreeInspector: FunctionComponent = observer(() => {
   }
 
   return (
-    <nav className="font-thin w-full m-auto h-full overflow-auto text-xs text-gray-400 py-4">
+    <nav className="font-thin w-full m-auto h-full overflow-auto text-xs text-gray-400 py-2">
       <List node={store.rootInstance} />
     </nav>
   );
