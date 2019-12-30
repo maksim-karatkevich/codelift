@@ -3,7 +3,6 @@ import { Instance, types } from "mobx-state-tree";
 import { SyntheticEvent } from "react";
 
 import { CSSRule, ICSSRule } from "../CSSRule";
-import { ElementNode } from "../ElementNode";
 import {
   createReactNode,
   getReactInstance,
