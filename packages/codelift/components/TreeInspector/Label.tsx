@@ -60,9 +60,9 @@ export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
     >
       <Icon
         // @ts-ignore   Property 'className' does not exist on type 'IntrinsicAttributes & LabelProps & { children?: ReactNode; }'.
-        className="flex-none pr-1 text-gray-600"
+        className="flex-none mr-1 text-gray-600"
         node={node}
-        size={15}
+        size={12}
       />
       {node.name}
 
