@@ -124,7 +124,7 @@ export const ElementNode = types
       }
     },
 
-    cancelRule(rule: ICSSRule) {
+    cancelRule() {
       if (self.element) {
         self.element.className = self.classNames.join(" ");
       }
@@ -133,6 +133,8 @@ export const ElementNode = types
     },
 
     previewRule(rule: ICSSRule) {
+      this.cancelRule();
+
       if (self.element) {
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
