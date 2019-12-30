@@ -15,6 +15,7 @@ import React, {
 import { observer, useStore } from "../../store";
 import { AppliedRules } from "./AppliedRules";
 import { GroupedRules } from "./GroupedRules";
+import { StyleInspector } from "../StyleInspector";
 
 export const CSSInspector: FunctionComponent = observer(() => {
   const store = useStore();
@@ -58,6 +59,8 @@ export const CSSInspector: FunctionComponent = observer(() => {
           <IconButton aria-label="Search" icon="search" variant="ghost" />
         </InputRightElement>
       </InputGroup>
+
+      <StyleInspector />
 
       <List maxHeight="100%" overflow="auto" ref={listRef} width="100%">
         <AppliedRules />
