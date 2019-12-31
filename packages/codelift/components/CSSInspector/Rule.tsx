@@ -78,7 +78,7 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
       }}
       onMouseLeave={() => {
         if (store.selected && store.selected.element) {
-          store.selected.element.cancelRule(rule);
+          store.selected.element.cancelRule();
         }
       }}
       paddingX="2"
