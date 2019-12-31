@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { ChevronDown, ChevronRight, PlusCircle } from "react-feather";
+import { ChevronDown } from "react-feather";
 
 import { Slider } from "./Slider";
 
@@ -49,6 +49,24 @@ export const StyleInspector: FunctionComponent = () => {
         <ol>
           <li>
             <Slider label="All" match={/^-?p-/} />
+          </li>
+          <li>
+            <Slider label="Horizontal" match={/^-?px-/} />
+          </li>
+          <li>
+            <Slider label="Vertical" match={/^-?py-/} />
+          </li>
+          <li>
+            <Slider label="Top" match={/^-?pt-/} />
+          </li>
+          <li>
+            <Slider label="Right" match={/^-?pr-/} />
+          </li>
+          <li>
+            <Slider label="Bottom" match={/^-?pb-/} />
+          </li>
+          <li>
+            <Slider label="Left" match={/^-?pl-/} />
           </li>
         </ol>
       </li>
