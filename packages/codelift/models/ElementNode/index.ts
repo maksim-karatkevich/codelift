@@ -139,6 +139,18 @@ export const ElementNode = types
         if (self.hasRule(rule)) {
           self.element.classList.remove(rule.className);
         } else {
+          const keys = String(Object.keys(rule.style));
+
+          // TODO This is O(n) and potentially slow.
+          // Instead, we need a map of cssRulesByClassName, cssRulesByKeys
+          self.store.cssRules.forEach(rule => {
+            const sameStyles = String(Object.keys(rule.style)) === keys;
+
+            if (sameStyles && self.classNames.includes(rule.className)) {
+              self.element.classList.remove(rule.className);
+            }
+          });
+
           self.element.classList.add(rule.className);
         }
 

@@ -15,6 +15,8 @@ export interface IApp extends Instance<typeof App> {}
 
 export const App = types
   .model("App", {
+    // TODO Use `types.map` for faster lookup by className:
+    // https://mobx.js.org/refguide/map.html
     cssRules: types.array(CSSRule),
     query: "",
     reactNodes: types.array(types.safeReference(ReactNode)),
