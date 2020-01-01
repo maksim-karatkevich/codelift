@@ -19,6 +19,9 @@ export const getReactInstance = (element: HTMLElement) => {
   }
 };
 
+// To preview the node, we have to mutate `element.classList`.
+// We track `element.classList` as `classNames` initially, so
+// that `classList.add|remove` can be used to preview rules.
 export const ElementNode = types
   .model("ElementNode", {
     classNames: types.array(types.string),
@@ -30,6 +33,10 @@ export const ElementNode = types
     element: document.createElement("null")
   }))
   .views(self => ({
+    get className() {
+      return [...self.element.classList].join(" ");
+    },
+
     get componentName() {
       return this.reactElement.return.type.name;
     },
