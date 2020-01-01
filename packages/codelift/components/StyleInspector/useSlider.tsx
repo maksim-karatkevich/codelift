@@ -98,8 +98,8 @@ export const useSlider = (props: SliderProps) => {
 
         if (slider.currentRule) {
           element.previewRule(slider.currentRule);
-        } else {
-          element.cancelRule();
+        } else if (slider.initialRule) {
+          element.removeRule(slider.initialRule);
         }
       }
     }),

@@ -12,7 +12,6 @@ export type SliderProps = {
 export const Slider: FunctionComponent<SliderProps> = observer(props => {
   const store = useStore();
   const slider = useSlider(props);
-  // TODO useMutation that fires or something when it's done.
 
   return (
     <label
@@ -27,12 +26,8 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
       <input
         className="bg-gray-600 appearance-none h-1 ml-3 rounded shadow-inner w-full"
         onMouseUp={event => {
-          // TODO How to remove this specific rule? props.match?
-          // (e.g. element.removeClassName(props.match))
-          // (e.g. element.addClassName(props.match))
-          // (e.g. element.toggleClassName(props.match))
-          if (slider.currentRule) {
-            store.selected?.element?.applyRule(slider.currentRule);
+          if (slider.currentRule !== slider.initialRule) {
+            store.selected?.element?.save();
           }
         }}
         onChange={event => slider.setValue(parseInt(event.target.value, 10))}

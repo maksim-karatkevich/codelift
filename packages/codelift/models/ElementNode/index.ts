@@ -31,18 +31,10 @@ export const ElementNode = types
   }))
   .views(self => ({
     get componentName() {
-      if (!this.reactElement) {
-        return undefined;
-      }
-
       return this.reactElement.return.type.name;
     },
 
     get debugSource() {
-      if (!this.reactElement) {
-        return undefined;
-      }
-
       if (!this.reactElement._debugSource) {
         throw new Error(`Selected element is missing _debugSource property`);
       }
@@ -113,49 +105,52 @@ export const ElementNode = types
   }))
   .actions(self => ({
     applyRule(rule: ICSSRule) {
-      if (self.element) {
-        if (self.hasRule(rule)) {
-          self.element.classList.remove(rule.className);
-        } else {
-          self.element.classList.add(rule.className);
-        }
-
-        self.classNames.replace([...self.element.classList]);
+      if (self.hasRule(rule)) {
+        self.element.classList.remove(rule.className);
+      } else {
+        self.element.classList.add(rule.className);
       }
+
+      self.classNames.replace([...self.element.classList]);
     },
 
-    cancelRule() {
-      if (self.element) {
-        self.element.className = self.classNames.join(" ");
-      }
-
+    cancelPreview() {
+      self.element.className = self.classNames.join(" ");
       self.isPreviewing = false;
     },
 
     previewRule(rule: ICSSRule) {
-      this.cancelRule();
+      this.cancelPreview();
 
-      if (self.element) {
-        if (self.hasRule(rule)) {
+      const keys = String(Object.keys(rule.style));
+
+      // TODO This is O(n) and potentially slow.
+      // Instead, we need a map of cssRulesByClassName, cssRulesByKeys
+      self.store.cssRules.forEach(rule => {
+        const sameStyles = String(Object.keys(rule.style)) === keys;
+
+        if (sameStyles && self.classNames.includes(rule.className)) {
           self.element.classList.remove(rule.className);
-        } else {
-          const keys = String(Object.keys(rule.style));
-
-          // TODO This is O(n) and potentially slow.
-          // Instead, we need a map of cssRulesByClassName, cssRulesByKeys
-          self.store.cssRules.forEach(rule => {
-            const sameStyles = String(Object.keys(rule.style)) === keys;
-
-            if (sameStyles && self.classNames.includes(rule.className)) {
-              self.element.classList.remove(rule.className);
-            }
-          });
-
-          self.element.classList.add(rule.className);
         }
+      });
 
-        self.isPreviewing = true;
-      }
+      self.element.classList.add(rule.className);
+
+      self.isPreviewing = true;
+    },
+
+    removeRule(rule: ICSSRule) {
+      this.cancelPreview();
+
+      self.element.classList.remove(rule.className);
+      self.isPreviewing = true;
+    },
+
+    save() {
+      self.classNames.replace([...self.element.classList]);
+      self.isPreviewing = false;
+      console.log("Save", self.classNames.join(" "));
+      // TODO This should useMutation and instead of toggleClassName should use setClassName
     },
 
     setElement(element: HTMLElement) {
