@@ -26,7 +26,6 @@ export const ElementNode = types
   .model("ElementNode", {
     classNames: types.array(types.string),
     childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
-    isPreviewing: false,
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
@@ -59,6 +58,10 @@ export const ElementNode = types
 
     get id() {
       return self.element.getAttribute("id");
+    },
+
+    get isPreviewing() {
+      return this.className !== self.element.className;
     },
 
     get isSelected(): boolean {
@@ -123,7 +126,6 @@ export const ElementNode = types
 
     cancelPreview() {
       self.element.className = self.classNames.join(" ");
-      self.isPreviewing = false;
     },
 
     previewRule(rule: ICSSRule) {
@@ -142,8 +144,6 @@ export const ElementNode = types
       });
 
       self.element.classList.add(rule.className);
-
-      self.isPreviewing = true;
     },
 
     removeRule(rule: ICSSRule) {
