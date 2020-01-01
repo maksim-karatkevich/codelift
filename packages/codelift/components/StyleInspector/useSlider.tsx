@@ -7,6 +7,7 @@ import { SliderProps } from "./Slider";
 
 export const useSlider = (props: SliderProps) => {
   const store = useStore();
+  // TODO Use MST for typingss
   const slider: any = useLocalStore(
     source => ({
       value: 0,
