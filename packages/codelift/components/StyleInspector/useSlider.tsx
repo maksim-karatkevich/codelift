@@ -51,7 +51,7 @@ export const useSlider = (props: SliderProps) => {
       get rule() {
         return slider.value
           ? slider.rules[slider.leftOfZero + slider.value]
-          : null;
+          : undefined;
       },
 
       get rules() {
