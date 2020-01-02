@@ -40,7 +40,7 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         slider.value === 0 ? "text-gray-400" : "text-white font-bold"
       } px-3 py-1 text-xs`}
     >
-      <span className="w-24">
+      <span className="w-32">
         {props.label}
         {slider.value !== slider.initialValue && "*"}
       </span>
