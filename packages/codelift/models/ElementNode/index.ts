@@ -1,6 +1,7 @@
+import { autorun } from "mobx";
 import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 
-import { ICSSRule } from "../CSSRule";
+import { CSSRule, ICSSRule } from "../CSSRule";
 import { IApp } from "../App";
 
 export interface IElementNode extends Instance<typeof ElementNode> {}
@@ -19,13 +20,11 @@ export const getReactInstance = (element: HTMLElement) => {
   }
 };
 
-// To preview the node, we have to mutate `element.classList`.
-// We track `element.classList` as `classNames` initially, so
-// that `classList.add|remove` can be used to preview rules.
 export const ElementNode = types
   .model("ElementNode", {
     classNames: types.array(types.string),
     childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
+    previewedRule: types.maybeNull(types.safeReference(CSSRule)),
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
@@ -33,7 +32,33 @@ export const ElementNode = types
   }))
   .views(self => ({
     get className() {
-      return [...self.element.classList].join(" ");
+      const classNames = new Set(self.classNames);
+
+      // When not previewing, return the original className value
+      if (!self.previewedRule) {
+        return Array.from(classNames).join(" ");
+      }
+
+      const hashStyles = (style: any) => String(Object.keys(style));
+      const previewHash = hashStyles(self.previewedRule.style);
+
+      // Remove overlapping classes that style the same properties
+      // ! This is O(n) and potentially slow.
+      // !Instead, we need a map of cssRulesByClassName, cssRulesByKeys
+      this.store.cssRules.forEach(rule => {
+        const sameStyles = hashStyles(rule.style) === previewHash;
+
+        if (sameStyles && classNames.has(rule.className)) {
+          classNames.delete(rule.className);
+        }
+      });
+
+      // When previewing, only add the class if it doesn't exist already
+      if (!self.classNames.includes(self.previewedRule.className)) {
+        classNames.add(self.previewedRule.className);
+      }
+
+      return Array.from(classNames).join(" ");
     },
 
     get componentName() {
@@ -114,49 +139,26 @@ export const ElementNode = types
     }
   }))
   .actions(self => ({
-    applyRule(rule: ICSSRule) {
-      if (self.hasRule(rule)) {
-        self.element.classList.remove(rule.className);
-      } else {
-        self.element.classList.add(rule.className);
-      }
-
-      self.classNames.replace([...self.element.classList]);
+    afterCreate() {
+      autorun(() => {
+        // Keep element className in sync with computed (preview) one
+        self.element.className = self.className;
+      });
     },
 
     cancelPreview() {
-      self.element.className = self.classNames.join(" ");
+      self.previewedRule = null;
     },
 
     previewRule(rule: ICSSRule) {
-      this.cancelPreview();
-
-      const keys = String(Object.keys(rule.style));
-
-      // TODO This is O(n) and potentially slow.
-      // Instead, we need a map of cssRulesByClassName, cssRulesByKeys
-      self.store.cssRules.forEach(rule => {
-        const sameStyles = String(Object.keys(rule.style)) === keys;
-
-        if (sameStyles && self.classNames.includes(rule.className)) {
-          self.element.classList.remove(rule.className);
-        }
-      });
-
-      self.element.classList.add(rule.className);
-    },
-
-    removeRule(rule: ICSSRule) {
-      this.cancelPreview();
-
-      self.element.classList.remove(rule.className);
+      self.previewedRule = rule;
     },
 
     setElement(element: HTMLElement) {
       self.element = element;
 
-      self.childNodes.replace(createChildNodes(element));
       self.classNames.replace([...element.classList]);
+      self.childNodes.replace(createChildNodes(element));
     }
   }));
 
