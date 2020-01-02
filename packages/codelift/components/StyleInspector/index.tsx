@@ -70,6 +70,16 @@ export const StyleInspector: FunctionComponent = () => {
           </li>
         </ol>
       </li>
+      <li>
+        <Heading>
+          <span className="w-full">Position</span>
+        </Heading>
+        <ol>
+          <li>
+            <Slider label="z-Index" match={/^z-/} />
+          </li>
+        </ol>
+      </li>
     </ol>
   );
 };
