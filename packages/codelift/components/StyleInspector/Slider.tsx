@@ -34,6 +34,8 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
     throw new Error(res.error.toString());
   }
 
+  const tickPercentage = `${100 / (slider.rules.length - 1)}%`;
+
   return (
     <label
       className={`flex items-center ${
@@ -45,7 +47,7 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         {slider.value !== slider.initialValue && "*"}
       </span>
       <input
-        className={`bg-gray-600 appearance-none h-1 ml-3 rounded shadow-inner w-full ${
+        className={`text-gray-600 appearance-none h-1 ml-2 rounded shadow-inner w-full ${
           res.fetching ? "cursor-wait opacity-50" : "cursor-move"
         }`}
         disabled={res.fetching}
@@ -59,6 +61,9 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         onChange={event => slider.setValue(parseInt(event.target.value, 10))}
         min={-slider.leftOfZero}
         max={slider.rightOfZero}
+        style={{
+          background: `repeating-linear-gradient(to right, #4a5568, #4a5568 1px, currentColor 1px, currentColor ${tickPercentage})`
+        }}
         type="range"
         value={slider.value}
       />
