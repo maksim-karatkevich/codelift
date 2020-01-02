@@ -9,7 +9,9 @@ export const CSSRule = types
   .model("CSSRule", {
     cssText: types.string,
     selectorText: types.string,
-    style: types.frozen()
+    style: types.frozen(),
+    //  TODO Can the ID be the className?
+    uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .views(self => ({
     get className() {
