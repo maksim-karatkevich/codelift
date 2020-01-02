@@ -45,7 +45,10 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         {slider.value !== slider.initialValue && "*"}
       </span>
       <input
-        className="bg-gray-600 appearance-none h-1 ml-3 rounded shadow-inner w-full"
+        className={`bg-gray-600 appearance-none h-1 ml-3 rounded shadow-inner w-full ${
+          res.fetching ? "cursor-wait opacity-50" : "cursor-move"
+        }`}
+        disabled={res.fetching}
         onMouseUp={event => {
           if (slider.hasChanges && store.selected?.element) {
             const { className, debugSource } = store.selected.element;
