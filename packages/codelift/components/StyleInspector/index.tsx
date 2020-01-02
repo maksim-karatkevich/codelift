@@ -1,16 +1,29 @@
-import { FunctionComponent } from "react";
-import { ChevronDown } from "react-feather";
+import { FunctionComponent, useState } from "react";
+import { ChevronRight } from "react-feather";
 
 import { Slider } from "./Slider";
 
-const Heading: FunctionComponent = ({ children }) => (
-  <button className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
-    {children}
-    <ChevronDown className="flex-none ml-2" size={12} />
-  </button>
-);
-
 export const StyleInspector: FunctionComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const Heading: FunctionComponent = ({ children }) => (
+    <button
+      className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full"
+      // @ts-ignore Property 'onClick' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      {children}
+      <ChevronRight
+        className="flex-none ml-2"
+        size={12}
+        style={{
+          transform: `rotate(${isOpen ? 90 : 0}deg)`,
+          transition: "all 200ms ease-in-out"
+        }}
+      />
+    </button>
+  );
+
   return (
     <ol>
       <li>
@@ -20,25 +33,25 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Slider label="All" match={/^-?m-/} />
+            <Slider hidden={!isOpen} label="All" match={/^-?m-/} />
           </li>
           <li>
-            <Slider label="Horizontal" match={/^-?mx-/} />
+            <Slider hidden={!isOpen} label="Horizontal" match={/^-?mx-/} />
           </li>
           <li>
-            <Slider label="Vertical" match={/^-?my-/} />
+            <Slider hidden={!isOpen} label="Vertical" match={/^-?my-/} />
           </li>
           <li>
-            <Slider label="Top" match={/^-?mt-/} />
+            <Slider hidden={!isOpen} label="Top" match={/^-?mt-/} />
           </li>
           <li>
-            <Slider label="Right" match={/^-?mr-/} />
+            <Slider hidden={!isOpen} label="Right" match={/^-?mr-/} />
           </li>
           <li>
-            <Slider label="Bottom" match={/^-?mb-/} />
+            <Slider hidden={!isOpen} label="Bottom" match={/^-?mb-/} />
           </li>
           <li>
-            <Slider label="Left" match={/^-?ml-/} />
+            <Slider hidden={!isOpen} label="Left" match={/^-?ml-/} />
           </li>
         </ol>
       </li>
@@ -48,25 +61,25 @@ export const StyleInspector: FunctionComponent = () => {
         </Heading>
         <ol>
           <li>
-            <Slider label="All" match={/^-?p-/} />
+            <Slider hidden={!isOpen} label="All" match={/^-?p-/} />
           </li>
           <li>
-            <Slider label="Horizontal" match={/^-?px-/} />
+            <Slider hidden={!isOpen} label="Horizontal" match={/^-?px-/} />
           </li>
           <li>
-            <Slider label="Vertical" match={/^-?py-/} />
+            <Slider hidden={!isOpen} label="Vertical" match={/^-?py-/} />
           </li>
           <li>
-            <Slider label="Top" match={/^-?pt-/} />
+            <Slider hidden={!isOpen} label="Top" match={/^-?pt-/} />
           </li>
           <li>
-            <Slider label="Right" match={/^-?pr-/} />
+            <Slider hidden={!isOpen} label="Right" match={/^-?pr-/} />
           </li>
           <li>
-            <Slider label="Bottom" match={/^-?pb-/} />
+            <Slider hidden={!isOpen} label="Bottom" match={/^-?pb-/} />
           </li>
           <li>
-            <Slider label="Left" match={/^-?pl-/} />
+            <Slider hidden={!isOpen} label="Left" match={/^-?pl-/} />
           </li>
         </ol>
       </li>
