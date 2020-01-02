@@ -59,7 +59,6 @@ export const Rule: FunctionComponent<RuleProps> = observer(({ rule }) => {
 
     toggleClassName({ ...debugSource, className });
 
-    element.applyRule(rule);
     store.resetQuery();
   };
 

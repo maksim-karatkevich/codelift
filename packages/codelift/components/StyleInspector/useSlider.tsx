@@ -12,14 +12,8 @@ export const useSlider = (props: SliderProps) => {
     source => ({
       value: 0,
 
-      get currentRule() {
-        return slider.value
-          ? slider.rules[slider.leftOfZero + slider.value]
-          : null;
-      },
-
       get hasChanges() {
-        return slider.currentRule !== slider.initialRule;
+        return slider.rule !== slider.initialRule;
       },
 
       get initialRule() {
@@ -52,6 +46,12 @@ export const useSlider = (props: SliderProps) => {
             return !rule.className.startsWith("-");
           }).length - 1
         );
+      },
+
+      get rule() {
+        return slider.value
+          ? slider.rules[slider.leftOfZero + slider.value]
+          : null;
       },
 
       get rules() {
@@ -101,10 +101,17 @@ export const useSlider = (props: SliderProps) => {
 
         const { element } = store.selected;
 
-        if (slider.currentRule) {
-          element.previewRule(slider.currentRule);
+        if (slider.rule) {
+          // Using the default value should cancel preview
+          if (slider.rule === slider.initialRule) {
+            element.cancelPreview();
+          } else {
+            // Only preview when the rule differs from the initial
+            element.previewRule(slider.rule);
+          }
         } else if (slider.initialRule) {
-          element.removeRule(slider.initialRule);
+          // Setting the value to 0 should remove the existing rule
+          element.previewRule(slider.initialRule);
         }
       }
     }),
