@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import { useMutation } from "urql";
 
 import { observer, useStore } from "../../store";
 import { useSlider } from "./useSlider";
@@ -13,6 +14,26 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
   const store = useStore();
   const slider = useSlider(props);
 
+  const [res, updateClassName] = useMutation(`
+    mutation UpdateClassName(
+      $className: String
+      $fileName: String!
+      $lineNumber: Int!
+    ) {
+      updateClassName(
+        className: $className
+        fileName: $fileName
+        lineNumber: $lineNumber
+      )
+    }
+  `);
+
+  if (res.error) {
+    console.error(res.error);
+
+    throw new Error(res.error.toString());
+  }
+
   return (
     <label
       className={`flex items-center ${
@@ -26,8 +47,10 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
       <input
         className="bg-gray-600 appearance-none h-1 ml-3 rounded shadow-inner w-full"
         onMouseUp={event => {
-          if (slider.currentRule !== slider.initialRule) {
-            store.selected?.element?.save();
+          if (slider.hasChanges && store.selected?.element) {
+            const { className, debugSource } = store.selected.element;
+
+            updateClassName({ ...debugSource, className });
           }
         }}
         onChange={event => slider.setValue(parseInt(event.target.value, 10))}

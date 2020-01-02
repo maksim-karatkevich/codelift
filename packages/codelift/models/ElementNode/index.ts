@@ -150,14 +150,6 @@ export const ElementNode = types
       this.cancelPreview();
 
       self.element.classList.remove(rule.className);
-      self.isPreviewing = true;
-    },
-
-    save() {
-      self.classNames.replace([...self.element.classList]);
-      self.isPreviewing = false;
-      console.log("Save", self.classNames.join(" "));
-      // TODO This should useMutation and instead of toggleClassName should use setClassName
     },
 
     setElement(element: HTMLElement) {

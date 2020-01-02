@@ -18,6 +18,10 @@ export const useSlider = (props: SliderProps) => {
           : null;
       },
 
+      get hasChanges() {
+        return slider.currentRule !== slider.initialRule;
+      },
+
       get initialRule() {
         return slider.rules.find((rule: ICSSRule) => {
           if (store.selected && store.selected.element) {

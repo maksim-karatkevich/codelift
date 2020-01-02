@@ -1,9 +1,9 @@
 import { readFileSync, writeFileSync } from "fs";
-import jscodeshift from "jscodeshift";
 
-// This is the one we need to use to parse source code
-// ? Should this change by extension
-const j = jscodeshift.withParser("tsx");
+import { getNodeAt } from "./utils/getNodeAt";
+import { findAttribute } from "./utils/findAttribute";
+import { parser } from "./utils/parser";
+import { setAttribute } from "./utils/setAttribute";
 
 export const resolvers = {
   Mutation: {
@@ -15,86 +15,74 @@ export const resolvers = {
         lineNumber: number;
       }
     ) {
-      let updatedClassName;
-
       const { className, fileName, lineNumber } = args;
-      const source = readFileSync(fileName, "utf8");
-      const ast = j(source);
-      const nodes = ast.find(j.JSXOpeningElement).filter(path => {
-        return Boolean(
-          path.value.loc && path.value.loc.start.line === lineNumber
-        );
-      });
+      const ast = parser(readFileSync(fileName, "utf8"));
+      const node = getNodeAt(ast, lineNumber);
+      const attribute = findAttribute(node, "className");
+      const [path] = attribute.paths();
 
-      if (!nodes.length) {
-        throw new Error(
-          `Could not find JSX component at ${fileName}:${lineNumber}`
-        );
+      if (!path) {
+        return resolvers.Mutation.updateClassName(_, args);
       }
 
-      nodes.forEach(path => {
-        const classNameAttributes = j(path).find(j.JSXAttribute, {
-          name: {
-            name: "className",
-            type: "JSXIdentifier"
-          }
-        });
+      const literal = path.value.value;
 
-        // <Component /> does not have a `className`
-        if (classNameAttributes.size() === 0) {
-          path.value.attributes.push(
-            j.jsxAttribute(
-              j.jsxIdentifier("className"),
-              j.stringLiteral(className)
-            )
-          );
+      if (!literal) {
+        const error = new Error("className has no value");
 
-          updatedClassName = className;
+        console.error(error, path);
+        throw error;
+      }
 
-          return;
-        }
+      if (literal.type !== "StringLiteral") {
+        const error = new Error(`TODO - Support literal ${literal.type}`);
 
-        classNameAttributes.forEach(classNameAttribute => {
-          const literal = classNameAttribute.value.value;
+        console.error(error, literal);
+        throw error;
+      }
 
-          if (!literal) {
-            throw new Error(`className has no value`);
-          }
+      const classNames = new Set(
+        literal.value
+          .split(" ")
+          .map(className => className.trim())
+          .filter(Boolean)
+      );
 
-          if (literal.type !== "StringLiteral") {
-            const error = new Error(`TODO - Support literal ${literal.type}`);
-            console.error(error, literal);
+      if (classNames.has(className)) {
+        classNames.delete(className);
+      } else {
+        classNames.add(className);
+      }
 
-            throw error;
-          }
-
-          // Toggle class
-          const previousClassNames = literal.value
-            .split(" ")
-            .map(className => className.trim())
-            .filter(Boolean);
-
-          // Toggle className within list of classes
-          const nextClassNames = previousClassNames.includes(className)
-            ? previousClassNames.filter(
-                otherClassName => otherClassName !== className
-              )
-            : previousClassNames.concat(className);
-
-          literal.value = nextClassNames.join(" ");
-
-          // Remove empty `className`
-          if (literal.value) {
-            updatedClassName = literal.value;
-          } else {
-            classNameAttribute.prune();
-          }
-        });
-      });
+      const value = setAttribute(
+        node,
+        "className",
+        Array.from(classNames)
+          .sort()
+          .join(" ")
+      );
 
       writeFileSync(fileName, ast.toSource(), "utf8");
 
-      return updatedClassName;
+      return value;
+    },
+
+    updateClassName(
+      _: any,
+      args: {
+        className: string;
+        fileName: string;
+        lineNumber: number;
+      }
+    ) {
+      const { className, fileName, lineNumber } = args;
+      const ast = parser(readFileSync(fileName, "utf8"));
+      const node = getNodeAt(ast, lineNumber);
+
+      const value = setAttribute(node, "className", className);
+      writeFileSync(fileName, ast.toSource(), "utf8");
+
+      return value;
     }
   },
 
