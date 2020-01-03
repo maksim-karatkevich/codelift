@@ -35,7 +35,7 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
     throw new Error(res.error.toString());
   }
 
-  const tickPercentage = `${100 / (slider.rules.length - 1)}%`;
+  const tickPercentage = `${100 / slider.rules.length}%`;
 
   return (
     <label

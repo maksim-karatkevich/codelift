@@ -40,17 +40,14 @@ export const useSlider = (props: SliderProps) => {
       },
 
       get rightOfZero() {
-        // Shorten by -1 since the 0th position is for when the rule is disabled/removed
-        return (
-          slider.rules.filter((rule: ICSSRule) => {
-            return !rule.className.startsWith("-");
-          }).length - 1
-        );
+        return slider.rules.filter((rule: ICSSRule) => {
+          return !rule.className.startsWith("-");
+        }).length;
       },
 
       get rule() {
         return slider.value
-          ? slider.rules[slider.leftOfZero + slider.value]
+          ? slider.rules[slider.leftOfZero + slider.value - 1]
           : undefined;
       },
 
