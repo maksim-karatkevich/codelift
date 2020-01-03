@@ -98,17 +98,14 @@ export const useSlider = (props: SliderProps) => {
 
         const { element } = store.selected;
 
-        if (slider.rule) {
-          // Using the default value should cancel preview
-          if (slider.rule === slider.initialRule) {
-            element.cancelPreview();
-          } else {
-            // Only preview when the rule differs from the initial
-            element.previewRule(slider.rule);
-          }
-        } else if (slider.initialRule) {
+        element.cancelPreview();
+
+        if (value === 0 && slider.initialValue) {
           // Setting the value to 0 should remove the existing rule
           element.previewRule(slider.initialRule);
+        } else if (slider.rule !== slider.initialRule) {
+          // Using a different value should update the preview
+          element.previewRule(slider.rule);
         }
       }
     }),
