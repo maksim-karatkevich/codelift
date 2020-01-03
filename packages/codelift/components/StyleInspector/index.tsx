@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { ChevronRight } from "react-feather";
 
+import { Palette } from "./Palette";
 import { Slider } from "./Slider";
 
 export const StyleInspector: FunctionComponent = () => {
@@ -25,7 +26,7 @@ export const StyleInspector: FunctionComponent = () => {
   );
 
   return (
-    <ol>
+    <ol className="text-gray-400 text-xs">
       <li>
         <Heading>
           <span className="w-full">Margin</span>
@@ -89,7 +90,17 @@ export const StyleInspector: FunctionComponent = () => {
         </Heading>
         <ol>
           <li>
-            <Slider label="z-Index" match={/^z-/} />
+            <Slider hidden={!isOpen} label="z-Index" match={/^z-/} />
+          </li>
+        </ol>
+      </li>
+      <li>
+        <Heading>
+          <span className="w-full">Background</span>
+        </Heading>
+        <ol>
+          <li>
+            <Palette hidden={!isOpen} match={/^bg-(\w+)-\d+/} />
           </li>
         </ol>
       </li>
