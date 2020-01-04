@@ -100,7 +100,7 @@ export const StyleInspector: FunctionComponent = () => {
         </Heading>
         <ol>
           <li>
-            <Palette hidden={!isOpen} match={/^bg-(\w+)-\d+/} />
+            <Palette hidden={!isOpen} match={/^bg-(\w+)-\d00/} />
           </li>
         </ol>
       </li>
