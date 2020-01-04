@@ -104,6 +104,16 @@ export const StyleInspector: FunctionComponent = () => {
           </li>
         </ol>
       </li>
+      <li>
+        <Heading>
+          <span className="w-full">Text</span>
+        </Heading>
+        <ol>
+          <li>
+            <Palette hidden={!isOpen} match={/^text-(\w+)-\d00/} />
+          </li>
+        </ol>
+      </li>
     </ol>
   );
 };
