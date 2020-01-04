@@ -114,6 +114,16 @@ export const StyleInspector: FunctionComponent = () => {
           </li>
         </ol>
       </li>
+      <li>
+        <Heading>
+          <span className="w-full">Effects</span>
+        </Heading>
+        <ol>
+          <li>
+            <Slider hidden={!isOpen} label="Opacity" match={/^opacity-/} />
+          </li>
+        </ol>
+      </li>
     </ol>
   );
 };
