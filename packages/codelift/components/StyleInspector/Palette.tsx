@@ -26,7 +26,13 @@ export const Palette: FunctionComponent<PaletteProps> = ({ hidden, match }) => {
         <div className="flex">
           {groupRules.map(groupRule => (
             <button
-              className={`${groupRule.className} flex-grow py-3 hover:shadow-outline hover:z-50`}
+              className={`${groupRule.className.replace(
+                /^\w+/,
+                "bg"
+              )} flex-grow py-3 hover:shadow-outline hover:z-50`}
+              hidden={hidden}
+              key={groupRule.className}
+              onMouseLeave={() => store.selected?.element?.cancelPreview()}
               onMouseOver={() =>
                 store.selected?.element?.previewRule(groupRule)
               }
@@ -35,7 +41,6 @@ export const Palette: FunctionComponent<PaletteProps> = ({ hidden, match }) => {
                   "TODO Move mutation to it's own hook or preview/apply rule for use with Slider & Palette"
                 );
               }}
-              hidden={hidden}
             />
           ))}
         </div>
