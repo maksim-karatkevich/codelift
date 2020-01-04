@@ -124,6 +124,31 @@ export const StyleInspector: FunctionComponent = () => {
           </li>
         </ol>
       </li>
+      <li>
+        <Heading>
+          <span className="w-full">Border</span>
+        </Heading>
+      </li>
+      <ol>
+        <li>
+          <Palette hidden={!isOpen} match={/^border-(\w+)-\d00/} />
+        </li>
+        <li>
+          <Slider hidden={!isOpen} label="All" match={/^border-\d+/} />
+        </li>
+        <li>
+          <Slider hidden={!isOpen} label="Top" match={/^border-t-\d+/} />
+        </li>
+        <li>
+          <Slider hidden={!isOpen} label="Right" match={/^border-r-\d+/} />
+        </li>
+        <li>
+          <Slider hidden={!isOpen} label="Bottom" match={/^border-b-\d+/} />
+        </li>
+        <li>
+          <Slider hidden={!isOpen} label="Left" match={/^border-l-\d+/} />
+        </li>
+      </ol>
     </ol>
   );
 };
