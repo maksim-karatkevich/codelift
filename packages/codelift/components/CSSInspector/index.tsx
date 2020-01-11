@@ -61,8 +61,8 @@ export const CSSInspector: FunctionComponent = observer(() => {
       </InputGroup>
 
       <StyleInspector />
-
-      <List maxHeight="100%" overflow="auto" ref={listRef} width="100%">
+      <hr />
+      <List ref={listRef} width="100%">
         <AppliedRules />
         <GroupedRules />
       </List>
