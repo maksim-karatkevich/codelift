@@ -19,7 +19,7 @@ export const useSlider = (props: SliderProps) => {
       get initialRule() {
         return slider.rules.find((rule: ICSSRule) => {
           if (store.selected && store.selected.element) {
-            return store.selected.element.classNames.includes(rule.className);
+            return store.selected.element.hasRule(rule);
           }
 
           return false;
