@@ -5,8 +5,7 @@ import { observer, useStore } from "../../store";
 import { useSlider } from "./useSlider";
 
 export type SliderProps = {
-  hidden?: boolean;
-  label: string;
+  label?: string;
   match: RegExp;
 };
 
@@ -39,23 +38,18 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
 
   return (
     <label
-      className={`flex items-center ${
-        slider.value === 0 ? "text-gray-400" : "text-white font-bold"
+      className={`flex items-center text-black ${
+        slider.value === 0 ? "font-normal" : "font-bold"
       } px-3 h-8 text-xs`}
-      style={{
-        height: props.hidden && !slider.rule ? 0 : "",
-        overflow: "hidden",
-        paddingBottom: props.hidden && !slider.rule ? 0 : "",
-        paddingTop: props.hidden && !slider.rule ? 0 : "",
-        transition: "all 200ms ease-in-out"
-      }}
     >
-      <span className="w-32">
-        {props.label}
-        {slider.value !== slider.initialValue && "*"}
-      </span>
+      {props.label && (
+        <span className="select-none w-32">
+          {props.label}
+          {slider.value !== slider.initialValue && "*"}
+        </span>
+      )}
       <input
-        className={`text-gray-600 appearance-none h-1 ml-2 rounded shadow-inner w-full ${
+        className={`text-gray-300 appearance-none h-1 ml-2 rounded shadow-inner w-full ${
           res.fetching ? "cursor-wait opacity-50" : "cursor-move"
         }`}
         disabled={res.fetching}
@@ -70,7 +64,7 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         min={-slider.leftOfZero}
         max={slider.rightOfZero}
         style={{
-          background: `repeating-linear-gradient(to right, #4a5568, #4a5568 1px, currentColor 1px, currentColor ${tickPercentage})`
+          background: `repeating-linear-gradient(to right, currentColor, currentColor 1px, transparent 1px, transparent ${tickPercentage})`
         }}
         type="range"
         value={slider.value}
