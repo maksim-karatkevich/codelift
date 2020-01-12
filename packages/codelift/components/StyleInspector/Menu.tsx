@@ -20,7 +20,7 @@ export const Menu: FunctionComponent<MenuProps> = ({
           isOpen
             ? "bg-white rounded-b-none text-black font-bold z-50"
             : "border border-gray-800 text-gray-400 hover:bg-gray-800"
-        } relative cursor-pointer m-2 rounded flex items-center px-3 h-8 select-none shadow text-xs`}
+        } relative cursor-pointer m-2 rounded flex items-center px-2 h-8 select-none shadow text-xs`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="w-full">{label}</span>
