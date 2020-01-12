@@ -63,7 +63,14 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" style="background-color" />
+            <Palette
+              label="Color"
+              filter={cssRule =>
+                cssRule.className.indexOf(":") === -1 &&
+                cssRule.style["background-color"]
+              }
+              value={cssRule => cssRule.style["background-color"]}
+            />
           </li>
         </ol>
       </li>
@@ -73,7 +80,13 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" style="color" />
+            <Palette
+              label="Color"
+              filter={cssRule =>
+                cssRule.className.indexOf(":") === -1 && cssRule.style.color
+              }
+              value={cssRule => cssRule.style.color}
+            />
           </li>
         </ol>
       </li>
@@ -93,7 +106,19 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" style="border-top-color" />
+            <Palette
+              filter={cssRule =>
+                cssRule.className.indexOf(":") === -1 &&
+                [
+                  "border-top-color",
+                  "border-right-color",
+                  "border-bottom-color",
+                  "border-left-color"
+                ].every(style => cssRule.style[style])
+              }
+              label="Color"
+              value={cssRule => cssRule.style["border-top-color"]}
+            />
           </li>
           <li>
             <SliderMenu

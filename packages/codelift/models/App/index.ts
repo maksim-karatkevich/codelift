@@ -61,17 +61,6 @@ export const App = types
       return reactNode;
     },
 
-    findRulesByStyle(style: string) {
-      return self.cssRules.filter(cssRule => {
-        // Ignore :hover/:active/etc.
-        if (cssRule.className.indexOf(":") > -1) {
-          return false;
-        }
-
-        return cssRule.style[style];
-      });
-    },
-
     get queriedCSSRules(): ICSSRule[] {
       const { cssRules, query } = self;
 

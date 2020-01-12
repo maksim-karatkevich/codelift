@@ -4,16 +4,18 @@ import { FunctionComponent } from "react";
 import { useStore, observer } from "../../store";
 import { Menu } from "./Menu";
 import { Swatch } from "./Swatch";
+import { ICSSRule } from "../../models/CSSRule";
 
 type PaletteProps = {
   label: string;
-  style: string;
+  filter: (cssRule: ICSSRule) => boolean;
+  value: (cssRule: ICSSRule) => string | undefined;
 };
 
 export const Palette: FunctionComponent<PaletteProps> = observer(
-  ({ label, style }) => {
+  ({ label, filter, value }) => {
     const store = useStore();
-    const rules = store.findRulesByStyle(style);
+    const rules = store.cssRules.filter(filter);
 
     const rule = store.selected
       ? rules.find(rule => store.selected?.element?.hasRule(rule))
@@ -54,7 +56,7 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
                       "TODO Move mutation to it's own hook or preview/apply rule for use with Slider & Palette"
                     );
                   }}
-                  style={{ background: groupRule.style[style as string] }}
+                  style={{ background: value(groupRule) }}
                 />
               ))}
             </div>
