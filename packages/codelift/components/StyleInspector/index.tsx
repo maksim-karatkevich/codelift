@@ -7,16 +7,14 @@ import { SliderMenu } from "./SliderMenu";
 export const StyleInspector: FunctionComponent = () => {
   const Heading: FunctionComponent = ({ children }) => (
     <button className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
-      {children}
+      <span className="w-full">{children}</span>
     </button>
   );
 
   return (
     <ol className="text-gray-400 text-xs">
       <li>
-        <Heading>
-          <span className="w-full">Layout</span>
-        </Heading>
+        <Heading>Layout</Heading>
 
         <ol>
           <li>
@@ -51,9 +49,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>
-          <span className="w-full">Position</span>
-        </Heading>
+        <Heading>Position</Heading>
 
         <ol>
           <li>
@@ -63,33 +59,27 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>
-          <span className="w-full">Background</span>
-        </Heading>
+        <Heading>Background</Heading>
 
         <ol>
           <li>
-            <Palette label="Background" match={/^bg-(black|white|\w+-\d00)/} />
+            <Palette label="Color" style="background-color" />
           </li>
         </ol>
       </li>
 
       <li>
-        <Heading>
-          <span className="w-full">Text</span>
-        </Heading>
+        <Heading>Text</Heading>
 
         <ol>
           <li>
-            <Palette label="Color" match={/^text-(black|white|\w+-\d00)/} />
+            <Palette label="Color" style="color" />
           </li>
         </ol>
       </li>
 
       <li>
-        <Heading>
-          <span className="w-full">Effects</span>
-        </Heading>
+        <Heading>Effects</Heading>
 
         <ol>
           <li>
@@ -99,13 +89,11 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>
-          <span className="w-full">Border</span>
-        </Heading>
+        <Heading>Border</Heading>
 
         <ol>
           <li>
-            <Palette label="Color" match={/^border-(\w+)-\d00/} />
+            <Palette label="Color" style="border-top-color" />
           </li>
           <li>
             <SliderMenu

@@ -7,15 +7,13 @@ import { Swatch } from "./Swatch";
 
 type PaletteProps = {
   label: string;
-  match: RegExp;
+  style: string;
 };
 
 export const Palette: FunctionComponent<PaletteProps> = observer(
-  ({ label, match }) => {
+  ({ label, style }) => {
     const store = useStore();
-    const rules = store.cssRules.filter(cssRule =>
-      cssRule.className.match(match)
-    );
+    const rules = store.findRulesByStyle(style);
 
     const rule = store.selected
       ? rules.find(rule => store.selected?.element?.hasRule(rule))
@@ -32,13 +30,20 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
       <>
         <Menu icon={<Swatch {...{ rule }} />} label={label}>
           {Object.entries(groups).map(([group, groupRules]) => (
-            <div className="flex" key={group}>
+            <div
+              className="flex"
+              key={group}
+              style={{
+                background:
+                  "linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)",
+                backgroundPosition:
+                  "0 0, 0 0.5rem, 0.5rem -0.5rem, -0.5rem 0px",
+                backgroundSize: "1rem 1rem"
+              }}
+            >
               {groupRules.map(groupRule => (
                 <button
-                  className={`${groupRule.className.replace(
-                    /^\w+/,
-                    "bg"
-                  )} flex-grow py-3 hover:shadow-outline hover:z-10`}
+                  className="flex-grow py-3 hover:shadow-outline hover:z-10"
                   key={groupRule.className}
                   onMouseLeave={() => store.selected?.element?.cancelPreview()}
                   onMouseOver={() =>
@@ -49,6 +54,7 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
                       "TODO Move mutation to it's own hook or preview/apply rule for use with Slider & Palette"
                     );
                   }}
+                  style={{ background: groupRule.style[style as string] }}
                 />
               ))}
             </div>

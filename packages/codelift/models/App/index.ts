@@ -61,6 +61,17 @@ export const App = types
       return reactNode;
     },
 
+    findRulesByStyle(style: string) {
+      return self.cssRules.filter(cssRule => {
+        // Ignore :hover/:active/etc.
+        if (cssRule.className.indexOf(":") > -1) {
+          return false;
+        }
+
+        return cssRule.style[style];
+      });
+    },
+
     get queriedCSSRules(): ICSSRule[] {
       const { cssRules, query } = self;
 
@@ -83,7 +94,21 @@ export const App = types
 
           return filtered.filter(rule => tests.some(test => test(rule)));
         },
-        [...cssRules]
+        [...cssRules].filter(cssRule => {
+          return !(
+            // Margin/Padding
+            (
+              cssRule.className.match(/^(-?m[xytrbl]?|z)-/) ||
+              // Border
+              cssRule.className.match(/^border-\d+/) ||
+              cssRule.className.match(/^border-[trbl]-\d+/) ||
+              // Opacity
+              cssRule.className.match(/^opacity-/) ||
+              // Colors
+              cssRule.className.match(/^(text|bg|border)-(\w+)-\d00/)
+            )
+          );
+        })
       );
 
       return sortBy(matching, [
