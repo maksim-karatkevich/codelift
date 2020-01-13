@@ -6,9 +6,9 @@ import { SliderMenu } from "./SliderMenu";
 
 export const StyleInspector: FunctionComponent = () => {
   const Heading: FunctionComponent = ({ children }) => (
-    <button className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
-      <span className="w-full">{children}</span>
-    </button>
+    <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
+      {children}
+    </label>
   );
 
   return (
