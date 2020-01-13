@@ -52,9 +52,18 @@ export const useSlider = (props: SliderProps) => {
       },
 
       get rules() {
+        const { match } = source;
+        const keys = Array.isArray(match) ? match : [match];
+
         return store.cssRules
-          .filter(cssRule => cssRule.className.match(source.match))
+          .filter(cssRule => {
+            return (
+              cssRule.className.indexOf(":") === -1 &&
+              String(Object.keys(cssRule.style)) === String(keys)
+            );
+          })
           .sort((a, b) => {
+            // TODO Sort by actual `value(cssRule)`
             let [aString, aUnit] = a.className.split(/(\d+|px|auto$)/);
             let [bString, bUnit] = b.className.split(/(\d+|px|auto$)/);
 

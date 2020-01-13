@@ -6,7 +6,7 @@ import { useSlider } from "./useSlider";
 
 export type SliderProps = {
   label?: string;
-  match: RegExp;
+  match: string | string[];
 };
 
 // Show actual value somehow? https://github.com/davidchin/react-input-range

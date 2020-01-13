@@ -1,10 +1,11 @@
 import { useSelect, StateChangeFunction } from "downshift";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 
 import { Palette } from "./Palette";
 import { SliderMenu } from "./SliderMenu";
 
 export const StyleInspector: FunctionComponent = () => {
+  // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   const Heading: FunctionComponent = ({ children }) => (
     <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
       {children}
@@ -21,13 +22,21 @@ export const StyleInspector: FunctionComponent = () => {
             <SliderMenu
               label="Margin"
               items={[
-                { label: "All", match: /^-?m-/ },
-                { label: "Horizontal", match: /^-?mx-/ },
-                { label: "Vertical", match: /^-?my-/ },
-                { label: "Top", match: /^-?mt-/ },
-                { label: "Right", match: /^-?mr-/ },
-                { label: "Bottom", match: /^-?mb-/ },
-                { label: "Left", match: /^-?ml-/ }
+                {
+                  label: "All",
+                  match: [
+                    "margin-top",
+                    "margin-right",
+                    "margin-bottom",
+                    "margin-left"
+                  ]
+                },
+                { label: "Horizontal", match: ["margin-left", "margin-right"] },
+                { label: "Vertical", match: ["margin-top", "margin-bottom"] },
+                { label: "Top", match: "margin-top" },
+                { label: "Right", match: "margin-right" },
+                { label: "Bottom", match: "margin-bottom" },
+                { label: "Left", match: "margin-left" }
               ]}
             />
           </li>
@@ -35,13 +44,24 @@ export const StyleInspector: FunctionComponent = () => {
             <SliderMenu
               label="Padding"
               items={[
-                { label: "All", match: /^-?p-/ },
-                { label: "Horizontal", match: /^-?px-/ },
-                { label: "Vertical", match: /^-?py-/ },
-                { label: "Top", match: /^-?pt-/ },
-                { label: "Right", match: /^-?pr-/ },
-                { label: "Bottom", match: /^-?pb-/ },
-                { label: "Left", match: /^-?pl-/ }
+                {
+                  label: "All",
+                  match: [
+                    "padding-top",
+                    "padding-right",
+                    "padding-bottom",
+                    "padding-left"
+                  ]
+                },
+                {
+                  label: "Horizontal",
+                  match: ["padding-left", "padding-right"]
+                },
+                { label: "Vertical", match: ["padding-top", "padding-bottom"] },
+                { label: "Top", match: "padding-top" },
+                { label: "Right", match: "padding-right" },
+                { label: "Bottom", match: "padding-bottom" },
+                { label: "Left", match: "padding-left" }
               ]}
             />
           </li>
@@ -53,7 +73,7 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <SliderMenu label="z-Index" items={[{ match: /^z-/ }]} />
+            <SliderMenu label="z-Index" items={[{ match: "z-index" }]} />
           </li>
         </ol>
       </li>
@@ -63,14 +83,7 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette
-              label="Color"
-              filter={cssRule =>
-                cssRule.className.indexOf(":") === -1 &&
-                cssRule.style["background-color"]
-              }
-              value={cssRule => cssRule.style["background-color"]}
-            />
+            <Palette label="Color" match="background-color" />
           </li>
         </ol>
       </li>
@@ -80,13 +93,7 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette
-              label="Color"
-              filter={cssRule =>
-                cssRule.className.indexOf(":") === -1 && cssRule.style.color
-              }
-              value={cssRule => cssRule.style.color}
-            />
+            <Palette label="Color" match="color" />
           </li>
         </ol>
       </li>
@@ -96,7 +103,7 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <SliderMenu label="Opacity" items={[{ match: /^opacity-/ }]} />
+            <SliderMenu label="Opacity" items={[{ match: "opacity" }]} />
           </li>
         </ol>
       </li>
@@ -107,28 +114,32 @@ export const StyleInspector: FunctionComponent = () => {
         <ol>
           <li>
             <Palette
-              filter={cssRule =>
-                cssRule.className.indexOf(":") === -1 &&
-                [
-                  "border-top-color",
-                  "border-right-color",
-                  "border-bottom-color",
-                  "border-left-color"
-                ].every(style => cssRule.style[style])
-              }
               label="Color"
-              value={cssRule => cssRule.style["border-top-color"]}
+              match={[
+                "border-top-color",
+                "border-right-color",
+                "border-bottom-color",
+                "border-left-color"
+              ]}
             />
           </li>
           <li>
             <SliderMenu
               label="Size"
               items={[
-                { label: "All", match: /^border-\d+/ },
-                { label: "Top", match: /^border-t-\d+/ },
-                { label: "Right", match: /^border-r-\d+/ },
-                { label: "Bottom", match: /^border-b-\d+/ },
-                { label: "Left", match: /^border-l-\d+/ }
+                {
+                  label: "All",
+                  match: [
+                    "border-top-width",
+                    "border-right-width",
+                    "border-bottom-width",
+                    "border-left-width"
+                  ]
+                },
+                { label: "Top", match: "border-top-width" },
+                { label: "Right", match: "border-right-width" },
+                { label: "Bottom", match: "border-bottom-width" },
+                { label: "Left", match: "border-left-width" }
               ]}
             />
           </li>

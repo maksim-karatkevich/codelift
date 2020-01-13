@@ -1,17 +1,11 @@
-import { FunctionComponent, useState } from "react";
-import { ChevronDown } from "react-feather";
+import { FunctionComponent } from "react";
 
-import { Slider } from "./Slider";
+import { Slider, SliderProps } from "./Slider";
 import { Menu } from "./Menu";
-
-type Item = {
-  label?: string;
-  match: RegExp;
-};
 
 type SliderMenuProps = {
   label: string;
-  items: Item[];
+  items: SliderProps[];
 };
 
 // TODO Highlight the label if the rules match
@@ -24,7 +18,7 @@ export const SliderMenu: FunctionComponent<SliderMenuProps> = ({
       <ul>
         {items.map((item, i) => (
           <li className="hover:bg-gray-200" key={`${item.label}-${i}`}>
-            <Slider label={item.label} match={item.match} />
+            <Slider {...item} />
           </li>
         ))}
       </ul>
