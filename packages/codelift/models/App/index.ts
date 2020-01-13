@@ -84,6 +84,10 @@ export const App = types
           return filtered.filter(rule => tests.some(test => test(rule)));
         },
         [...cssRules]
+          // Remove duplicates
+          // .filter(match => !this.appliedRules.includes(match))
+          // Remove :hover, :active, etc.
+          .filter(match => match.className.indexOf(":") === -1)
       );
 
       return sortBy(matching, [
