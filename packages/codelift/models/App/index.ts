@@ -83,21 +83,7 @@ export const App = types
 
           return filtered.filter(rule => tests.some(test => test(rule)));
         },
-        [...cssRules].filter(cssRule => {
-          return !(
-            // Margin/Padding
-            (
-              cssRule.className.match(/^(-?m[xytrbl]?|z)-/) ||
-              // Border
-              cssRule.className.match(/^border-\d+/) ||
-              cssRule.className.match(/^border-[trbl]-\d+/) ||
-              // Opacity
-              cssRule.className.match(/^opacity-/) ||
-              // Colors
-              cssRule.className.match(/^(text|bg|border)-(\w+)-\d00/)
-            )
-          );
-        })
+        [...cssRules]
       );
 
       return sortBy(matching, [
