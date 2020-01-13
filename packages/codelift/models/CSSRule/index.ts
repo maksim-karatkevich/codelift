@@ -32,11 +32,7 @@ export const CSSRule = types
     },
 
     get isApplied(): boolean {
-      if (!this.store.targeted || !this.store.targeted.element) {
-        return false;
-      }
-
-      return this.store.targeted.element.hasRule(this as ICSSRule);
+      return Boolean(this.store.selected?.element?.hasRule(this as ICSSRule));
     },
 
     get store(): IApp {
