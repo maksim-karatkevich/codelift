@@ -29,7 +29,6 @@ export const Menu: FunctionComponent<MenuProps> = ({
       <div
         className="absolute outline-none -mt-2 shadow-md z-40 w-full"
         hidden={!isOpen}
-        onMouseUp={() => setIsOpen(false)}
       >
         <div className="bg-white mx-2 rounded-b overflow-hidden">
           {children}
