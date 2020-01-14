@@ -100,16 +100,15 @@ export const App = types
       ]);
     },
 
+    get flattenedCSSRules() {
+      return this.groupedCSSRules.reduce((acc, [group, items]) => {
+        return acc.concat(items);
+      }, [] as ICSSRule[]);
+    },
+
     get groupedCSSRules() {
       return Object.entries(
-        groupBy(
-          this.queriedCSSRules
-            // Remove duplicates
-            // .filter(match => !this.appliedRules.includes(match))
-            // Remove :hover, :active, etc.
-            .filter(match => match.className.indexOf(":") === -1),
-          ({ group = "Other " }) => group
-        )
+        groupBy(this.queriedCSSRules, ({ group = "Other " }) => group)
       );
     },
 
