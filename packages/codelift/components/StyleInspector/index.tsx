@@ -7,7 +7,7 @@ import { SliderMenu } from "./SliderMenu";
 export const StyleInspector: FunctionComponent = () => {
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   const Heading: FunctionComponent = ({ children }) => (
-    <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow text-sm w-full">
+    <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow sticky text-sm top-0 w-full z-10">
       {children}
     </label>
   );
