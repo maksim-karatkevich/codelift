@@ -5,23 +5,17 @@ import { useStore, observer } from "../../store";
 import { Menu } from "./Menu";
 import { Swatch } from "./Swatch";
 import { useUpdateClassName } from "../../hooks/useUpdateClassName";
+import { ICSSRule } from "../../models/CSSRule";
 
 type PaletteProps = {
   label: string;
-  match: string | string[];
+  rules: ICSSRule[];
 };
 
 export const Palette: FunctionComponent<PaletteProps> = observer(
-  ({ label, match }) => {
+  ({ label, rules }) => {
     const store = useStore();
     const [res, updateClassName] = useUpdateClassName();
-    const keys = Array.isArray(match) ? match : [match];
-    const rules = store.cssRules.filter(cssRule => {
-      return (
-        cssRule.className.indexOf(":") === -1 &&
-        String(Object.keys(cssRule.style)) === String(keys)
-      );
-    });
 
     const rule = store.selected
       ? rules.find(rule => store.selected?.element?.hasRule(rule))
@@ -60,7 +54,8 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
                   }
                   onClick={updateClassName}
                   style={{
-                    background: groupRule.style[keys[0]],
+                    background:
+                      groupRule.style[Object.keys(groupRule.style)[0]],
                     outlineStyle: groupRule.isApplied ? "solid" : "unset",
                     outlineWidth: "2px",
                     outlineOffset: "-2px"

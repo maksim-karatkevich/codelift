@@ -4,8 +4,11 @@ import { FunctionComponent } from "react";
 import { Palette } from "./Palette";
 import { SliderMenu } from "./SliderMenu";
 import { Select } from "./Select";
+import { useStore } from "../../store";
 
 export const StyleInspector: FunctionComponent = () => {
+  const store = useStore();
+
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   const Heading: FunctionComponent = ({ children }) => (
     <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow sticky text-sm top-0 w-full z-10">
@@ -84,7 +87,10 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" match="background-color" />
+            <Palette
+              label="Color"
+              rules={store.findRulesByStyle("background-color")}
+            />
           </li>
         </ol>
       </li>
@@ -94,7 +100,7 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" match="color" />
+            <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
         </ol>
       </li>
@@ -119,12 +125,12 @@ export const StyleInspector: FunctionComponent = () => {
           <li>
             <Palette
               label="Color"
-              match={[
+              rules={store.findRulesByStyle([
                 "border-top-color",
                 "border-right-color",
                 "border-bottom-color",
                 "border-left-color"
-              ]}
+              ])}
             />
           </li>
           <li>

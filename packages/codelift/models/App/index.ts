@@ -49,6 +49,34 @@ export const App = types
       return this.queriedCSSRules.filter(selected.element.hasRule);
     },
 
+    get cssRulesByStyle() {
+      return self.cssRules.reduce(
+        (acc, cssRule) => {
+          const key = String(Object.keys(cssRule.style));
+
+          if (!acc[key]) {
+            acc[key] = [];
+          }
+
+          // TODO Support pseudo selectors
+          if (cssRule.className.indexOf(":") === -1) {
+            acc[key].push(cssRule);
+          }
+
+          return acc;
+        },
+        {} as {
+          [key: string]: ICSSRule[];
+        }
+      );
+    },
+
+    findRulesByStyle(style: string | string[]) {
+      const key = String(style);
+
+      return this.cssRulesByStyle[key] ?? [];
+    },
+
     findReactNodeByElement(element: HTMLElement) {
       const reactNode = self.reactNodes.find(reactNode => {
         return (
