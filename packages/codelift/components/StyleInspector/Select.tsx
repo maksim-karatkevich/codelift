@@ -41,8 +41,10 @@ export const Select: FunctionComponent<SelectProps> = observer(
       );
     });
 
+    const selected = rules.find(rule => rule.isApplied);
+
     return (
-      <Menu label={label}>
+      <Menu label={label} selected={selected}>
         <ul>
           {rules.map(rule => (
             <li
