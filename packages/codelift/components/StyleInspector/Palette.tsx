@@ -59,7 +59,12 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
                     store.selected?.element?.previewRule(groupRule)
                   }
                   onClick={updateClassName}
-                  style={{ background: groupRule.style[keys[0]] }}
+                  style={{
+                    background: groupRule.style[keys[0]],
+                    outlineStyle: groupRule.isApplied ? "solid" : "unset",
+                    outlineWidth: "2px",
+                    outlineOffset: "-2px"
+                  }}
                 />
               ))}
             </div>
