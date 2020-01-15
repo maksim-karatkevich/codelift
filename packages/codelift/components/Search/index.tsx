@@ -2,11 +2,13 @@ import { useCombobox } from "downshift";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 
 import { observer, useStore } from "../../store";
+import { useUpdateClassName } from "../../hooks/useUpdateClassName";
 
 export const Search: FunctionComponent = observer(() => {
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLElement>(null);
   const store = useStore();
+  const [res, updateClassName] = useUpdateClassName();
   const items = store.flattenedCSSRules;
 
   const {
@@ -15,8 +17,7 @@ export const Search: FunctionComponent = observer(() => {
     getInputProps,
     getComboboxProps,
     highlightedIndex,
-    getItemProps,
-    selectedItem
+    getItemProps
   } = useCombobox({
     initialInputValue: store.query,
     inputValue: store.query,
@@ -25,52 +26,48 @@ export const Search: FunctionComponent = observer(() => {
     itemToString(item) {
       return item.className;
     },
-    onInputValueChange({ inputValue = "" }) {
-      return store.search(inputValue);
-    },
     onHighlightedIndexChange(changes) {
-      const { highlightedIndex = -1 } = changes;
+      const { highlightedIndex = -1, selectedItem } = changes;
       const rule = items[highlightedIndex];
 
       if (rule) {
         store.selected?.element?.previewRule(rule);
-      } else {
+      } else if (!selectedItem) {
         store.selected?.element?.cancelPreview();
       }
-    }
+    },
+    onInputValueChange({ inputValue = "" }) {
+      return store.search(inputValue);
+    },
+    onSelectedItemChange(changes) {
+      updateClassName();
+
+      if (listRef.current) {
+        listRef.current.scrollTo({
+          left: 0,
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+    },
+    selectedItem: undefined
   });
 
   let index = 0;
 
   useEffect(() => {
-    console.log({ selectedItem });
-  }, [selectedItem]);
-
-  useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
     if (searchRef.current) searchRef.current.focus();
-  }, [
-    store.selected &&
-      store.selected.element &&
-      store.selected.element.classNames.join(" ")
-  ]);
+  }, [store.selected?.element?.className]);
 
   return (
     <div {...getComboboxProps({})}>
       <input
         autoFocus
         className="bg-gray-200 text-gray-600 focus:bg-white focus:text-black p-2 focus:shadow-inner w-full"
+        disabled={res.fetching}
         placeholder="Search..."
-        ref={searchRef}
         value={store.query}
-        {...getInputProps({})}
+        {...getInputProps({ ref: searchRef })}
       />
       <ul hidden={!isOpen} {...getMenuProps()}>
         {store.groupedCSSRules.map(

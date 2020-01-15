@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
-import { useMutation } from "urql";
 
 import { observer, useStore } from "../../store";
 import { useSlider } from "./useSlider";
+import { useUpdateClassName } from "../../hooks/useUpdateClassName";
 
 export type SliderProps = {
   label?: string;
@@ -11,28 +11,8 @@ export type SliderProps = {
 
 // Show actual value somehow? https://github.com/davidchin/react-input-range
 export const Slider: FunctionComponent<SliderProps> = observer(props => {
-  const store = useStore();
   const slider = useSlider(props);
-
-  const [res, updateClassName] = useMutation(`
-    mutation UpdateClassName(
-      $className: String
-      $fileName: String!
-      $lineNumber: Int!
-    ) {
-      updateClassName(
-        className: $className
-        fileName: $fileName
-        lineNumber: $lineNumber
-      )
-    }
-  `);
-
-  if (res.error) {
-    console.error(res.error);
-
-    throw new Error(res.error.toString());
-  }
+  const [res, updateClassName] = useUpdateClassName();
 
   const tickPercentage = `${100 / slider.rules.length}%`;
 
@@ -54,10 +34,8 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         }`}
         disabled={res.fetching}
         onMouseUp={event => {
-          if (slider.hasChanges && store.selected?.element) {
-            const { className, debugSource } = store.selected.element;
-
-            updateClassName({ ...debugSource, className });
+          if (slider.hasChanges) {
+            updateClassName();
           }
         }}
         onChange={event => slider.setValue(parseInt(event.target.value, 10))}

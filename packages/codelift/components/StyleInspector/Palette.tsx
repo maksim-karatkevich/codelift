@@ -4,6 +4,7 @@ import { FunctionComponent } from "react";
 import { useStore, observer } from "../../store";
 import { Menu } from "./Menu";
 import { Swatch } from "./Swatch";
+import { useUpdateClassName } from "../../hooks/useUpdateClassName";
 
 type PaletteProps = {
   label: string;
@@ -12,8 +13,9 @@ type PaletteProps = {
 
 export const Palette: FunctionComponent<PaletteProps> = observer(
   ({ label, match }) => {
-    const keys = Array.isArray(match) ? match : [match];
     const store = useStore();
+    const [res, updateClassName] = useUpdateClassName();
+    const keys = Array.isArray(match) ? match : [match];
     const rules = store.cssRules.filter(cssRule => {
       return (
         cssRule.className.indexOf(":") === -1 &&
@@ -55,11 +57,7 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
                   onMouseOver={() =>
                     store.selected?.element?.previewRule(groupRule)
                   }
-                  onClick={() => {
-                    throw new Error(
-                      "TODO Move mutation to it's own hook or preview/apply rule for use with Slider & Palette"
-                    );
-                  }}
+                  onClick={updateClassName}
                   style={{ background: groupRule.style[keys[0]] }}
                 />
               ))}
