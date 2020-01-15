@@ -3,6 +3,7 @@ import { FunctionComponent } from "react";
 
 import { Palette } from "./Palette";
 import { SliderMenu } from "./SliderMenu";
+import { Select } from "./Select";
 
 export const StyleInspector: FunctionComponent = () => {
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
@@ -104,6 +105,9 @@ export const StyleInspector: FunctionComponent = () => {
         <ol>
           <li>
             <SliderMenu label="Opacity" items={[{ match: "opacity" }]} />
+          </li>
+          <li>
+            <Select label="Shadow" match="box-shadow" />
           </li>
         </ol>
       </li>
