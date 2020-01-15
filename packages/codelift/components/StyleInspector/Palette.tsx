@@ -52,6 +52,7 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
               {groupRules.map(groupRule => (
                 <button
                   className="flex-grow py-3 hover:shadow-outline hover:z-10"
+                  disabled={res.fetching}
                   key={groupRule.className}
                   onMouseLeave={() => store.selected?.element?.cancelPreview()}
                   onMouseOver={() =>
