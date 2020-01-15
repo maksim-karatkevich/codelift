@@ -29,7 +29,7 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
         </span>
       )}
       <input
-        className={`text-gray-200 appearance-none h-1 ml-2 rounded shadow-inner w-full ${
+        className={`text-gray-300 appearance-none h-1 ml-2 rounded shadow-inner w-full ${
           res.fetching ? "cursor-wait opacity-50" : "cursor-move"
         }`}
         disabled={res.fetching}
