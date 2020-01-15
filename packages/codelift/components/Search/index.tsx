@@ -57,7 +57,7 @@ export const Search: FunctionComponent = observer(() => {
 
   useEffect(() => {
     if (searchRef.current) searchRef.current.focus();
-  }, [store.selected?.element?.className]);
+  }, [store.selected?.element?.selector]);
 
   return (
     <div {...getComboboxProps({})}>
