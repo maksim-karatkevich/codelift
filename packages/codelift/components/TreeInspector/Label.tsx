@@ -67,9 +67,8 @@ export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
       {node.name}
 
       <small className="text-xs text-gray-600 font-normal">
-        {node.element && node.element.id && `#${node.element.id}`}
-        {node.element &&
-          node.element.classNames.map(className => `.${className}`).join("")}
+        {node.element?.id ? `#${node.element.id}` : null}
+        {node.element?.classNames.map(className => `.${className}`).join("")}
       </small>
     </button>
   );
