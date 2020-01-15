@@ -86,7 +86,7 @@ export const ElementNode = types
     },
 
     get isPreviewing() {
-      return this.className !== self.element.className;
+      return Boolean(self.previewedRule);
     },
 
     get isSelected(): boolean {
