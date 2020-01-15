@@ -17,10 +17,7 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
     const store = useStore();
     const [res, updateClassName] = useUpdateClassName();
 
-    const rule = store.selected
-      ? rules.find(rule => store.selected?.element?.hasRule(rule))
-      : undefined;
-
+    const selected = rules.find(rule => rule.isApplied);
     const groups = groupBy(rules, rule => {
       const [, group, shade] = rule.className.split("-");
 
@@ -30,7 +27,11 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
 
     return (
       <>
-        <Menu icon={<Swatch {...{ rule }} />} label={label}>
+        <Menu
+          icon={<Swatch rule={selected} />}
+          label={label}
+          selected={selected}
+        >
           {Object.entries(groups).map(([group, groupRules]) => (
             <div
               className="flex"

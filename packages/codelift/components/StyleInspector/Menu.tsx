@@ -1,15 +1,18 @@
-import { ComponentType, FunctionComponent, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { ChevronDown } from "react-feather";
+import { ICSSRule } from "../../models/CSSRule";
 
 type MenuProps = {
   label: string;
   icon?: JSX.Element;
+  selected?: ICSSRule;
 };
 
 export const Menu: FunctionComponent<MenuProps> = ({
   children,
   icon = <ChevronDown className="flex-none ml-2" size={12} />,
-  label
+  label,
+  selected
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,7 +22,10 @@ export const Menu: FunctionComponent<MenuProps> = ({
         className={`${
           isOpen
             ? "bg-white rounded-b-none text-black font-bold z-50"
-            : "border border-gray-800 text-gray-400 hover:bg-gray-800"
+            : `border border-gray-800 ${
+                selected ? "text-white font-bold" : "text-gray-400"
+              }
+            hover:bg-gray-800`
         } relative cursor-pointer m-2 rounded flex items-center px-2 h-8 select-none shadow text-xs`}
         onClick={() => setIsOpen(!isOpen)}
       >
