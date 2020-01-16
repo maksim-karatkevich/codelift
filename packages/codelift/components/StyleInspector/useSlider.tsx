@@ -24,7 +24,7 @@ export const useSlider = (props: SliderProps) => {
 
       get initialValue() {
         return slider.initialRule
-          ? -slider.leftOfZero + slider.rules.indexOf(slider.initialRule)
+          ? -slider.leftOfZero + slider.rules.indexOf(slider.initialRule) + 1
           : 0;
       },
 
