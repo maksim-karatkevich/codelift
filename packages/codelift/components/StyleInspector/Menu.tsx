@@ -3,7 +3,7 @@ import { ChevronDown } from "react-feather";
 import { ICSSRule } from "../../models/CSSRule";
 
 type MenuProps = {
-  label: string;
+  label: string | JSX.Element;
   icon?: JSX.Element;
   selected?: ICSSRule;
 };

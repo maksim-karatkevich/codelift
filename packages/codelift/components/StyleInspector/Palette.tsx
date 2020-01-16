@@ -8,7 +8,7 @@ import { useUpdateClassName } from "../../hooks/useUpdateClassName";
 import { ICSSRule } from "../../models/CSSRule";
 
 type PaletteProps = {
-  label: string;
+  label: string | JSX.Element;
   rules: ICSSRule[];
 };
 
@@ -24,6 +24,12 @@ export const Palette: FunctionComponent<PaletteProps> = observer(
       // Only group colors that have a common shade
       return shade ? group : undefined;
     });
+
+    const previewedRule = store.selected?.element?.previewedRule;
+
+    if (previewedRule && rules.includes(previewedRule)) {
+      label = <code>{previewedRule?.className}</code>;
+    }
 
     return (
       <>

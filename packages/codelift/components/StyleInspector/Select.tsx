@@ -6,7 +6,7 @@ import { Menu } from "./Menu";
 import { useUpdateClassName } from "../../hooks/useUpdateClassName";
 
 type SelectProps = {
-  label: string;
+  label: string | JSX.Element;
   match: string;
 };
 
@@ -42,6 +42,11 @@ export const Select: FunctionComponent<SelectProps> = observer(
     });
 
     const selected = rules.find(rule => rule.isApplied);
+    const previewedRule = store.selected?.element?.previewedRule;
+
+    if (previewedRule && rules.includes(previewedRule)) {
+      label = <code>{previewedRule?.className}</code>;
+    }
 
     return (
       <Menu label={label} selected={selected}>

@@ -2,20 +2,25 @@ import { FunctionComponent } from "react";
 
 import { Slider, SliderProps } from "./Slider";
 import { Menu } from "./Menu";
-import { observer } from "../../store";
+import { observer, useStore } from "../../store";
 
 type SliderMenuProps = {
-  label: string;
+  label: string | JSX.Element;
   items: SliderProps[];
 };
 
 // TODO Highlight the label if the rules match
 export const SliderMenu: FunctionComponent<SliderMenuProps> = observer(
   ({ label, items }) => {
-    const selected = items
-      .map(item => item.rules)
-      .flat()
-      .find(rule => rule.isApplied);
+    const store = useStore();
+    const rules = items.map(item => item.rules).flat();
+    const selected = rules.find(rule => rule.isApplied);
+
+    const previewedRule = store.selected?.element?.previewedRule;
+
+    if (previewedRule && rules.includes(previewedRule)) {
+      label = <code>{previewedRule?.className}</code>;
+    }
 
     return (
       <Menu label={label} selected={selected}>
