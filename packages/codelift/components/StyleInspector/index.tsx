@@ -190,7 +190,10 @@ export const StyleInspector: FunctionComponent = () => {
             />
           </li>
           <li>
-            <Select label="Shadow" match="box-shadow" />
+            <Select
+              label="Shadow"
+              rules={store.findRulesByStyle("box-shadow")}
+            />
           </li>
         </ol>
       </li>

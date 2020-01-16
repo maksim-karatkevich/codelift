@@ -4,10 +4,11 @@ import { FunctionComponent } from "react";
 import { useStore, observer } from "../../store";
 import { Menu } from "./Menu";
 import { useUpdateClassName } from "../../hooks/useUpdateClassName";
+import { ICSSRule } from "../../models/CSSRule";
 
 type SelectProps = {
   label: string | JSX.Element;
-  match: string;
+  rules: ICSSRule[];
 };
 
 const translate = (className: string) => {
@@ -30,17 +31,9 @@ const translate = (className: string) => {
 };
 
 export const Select: FunctionComponent<SelectProps> = observer(
-  ({ label, match }) => {
+  ({ label, rules }) => {
     const store = useStore();
     const [res, updateClassName] = useUpdateClassName();
-
-    const rules = store.cssRules.filter(cssRule => {
-      return (
-        cssRule.className.indexOf(":") === -1 &&
-        String(Object.keys(cssRule.style)) === match
-      );
-    });
-
     const selected = rules.find(rule => rule.isApplied);
     const previewedRule = store.selected?.element?.previewedRule;
 
