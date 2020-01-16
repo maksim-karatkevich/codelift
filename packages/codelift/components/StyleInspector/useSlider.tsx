@@ -48,7 +48,7 @@ export const useSlider = (props: SliderProps) => {
       },
 
       get rules() {
-        return source.rules.sort((a, b) => {
+        return source.rules.slice().sort((a, b) => {
           // TODO Sort by actual `value(cssRule)`
           let [aString, aUnit] = a.className.split(/(\d+|px|auto$)/);
           let [bString, bUnit] = b.className.split(/(\d+|px|auto$)/);
