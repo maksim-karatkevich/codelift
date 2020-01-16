@@ -199,6 +199,12 @@ export const StyleInspector: FunctionComponent = () => {
             />
           </li>
           <li>
+            <SliderMenu
+              label="Line Height"
+              items={[{ rules: store.findRulesByStyle("line-height") }]}
+            />
+          </li>
+          <li>
             <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
         </ol>
