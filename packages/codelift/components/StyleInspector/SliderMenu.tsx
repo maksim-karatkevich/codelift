@@ -15,11 +15,14 @@ export const SliderMenu: FunctionComponent<SliderMenuProps> = observer(
     const store = useStore();
     const rules = items.map(item => item.rules).flat();
     const selected = rules.find(rule => rule.isApplied);
-
     const previewedRule = store.selected?.element?.previewedRule;
 
     if (previewedRule && rules.includes(previewedRule)) {
-      label = <code>{previewedRule?.className}</code>;
+      if (previewedRule === selected) {
+        label = `Remove ${label}`;
+      } else {
+        label = <code>{previewedRule?.className}</code>;
+      }
     }
 
     return (
