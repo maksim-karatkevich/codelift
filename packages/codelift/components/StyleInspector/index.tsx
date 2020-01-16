@@ -3,7 +3,7 @@ import { FunctionComponent, ComponentType } from "react";
 import { Palette } from "./Palette";
 import { SliderMenu } from "./SliderMenu";
 import { Select } from "./Select";
-import { useStore } from "../../store";
+import { observer, useStore } from "../../store";
 import {
   Layout,
   Move,
@@ -14,6 +14,7 @@ import {
   Loader,
   Square
 } from "react-feather";
+import { Search } from "../Search";
 
 type HeadingProps = {
   Icon?: ComponentType<Props>;
@@ -26,12 +27,15 @@ const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
   </label>
 );
 
-export const StyleInspector: FunctionComponent = () => {
+export const StyleInspector: FunctionComponent = observer(() => {
   const store = useStore();
 
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
-    <ol className="text-gray-400 text-xs">
+    <ol className="text-gray-400 text-xs" hidden={!store.selected?.isElement}>
+      <li>
+        <Search />
+      </li>
       <li>
         <Heading Icon={Layout}>Layout</Heading>
         <ol>
@@ -337,4 +341,4 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
     </ol>
   );
-};
+});

@@ -13,7 +13,6 @@ import { Selector } from "../Selector";
 import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
 import { Error } from "./Error";
-import { Search } from "../Search";
 import { Sidebar } from "./Sidebar";
 import { StyleInspector } from "../StyleInspector";
 
@@ -80,7 +79,6 @@ export const App: FunctionComponent = observer(() => {
         </Box>
 
         <Sidebar key="CSS">
-          <Search />
           <StyleInspector />
         </Sidebar>
       </Grid>
