@@ -193,6 +193,12 @@ export const StyleInspector: FunctionComponent = () => {
             />
           </li>
           <li>
+            <SliderMenu
+              label="Letter Spacing"
+              items={[{ rules: store.findRulesByStyle("letter-spacing") }]}
+            />
+          </li>
+          <li>
             <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
         </ol>
