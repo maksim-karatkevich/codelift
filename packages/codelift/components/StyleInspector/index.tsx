@@ -170,7 +170,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Text</Heading>
+        <Heading>Typography</Heading>
 
         <ol>
           <li>
