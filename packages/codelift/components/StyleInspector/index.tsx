@@ -155,17 +155,6 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette
-              label="Color"
-              rules={store.findRulesByStyle([
-                "border-top-color",
-                "border-right-color",
-                "border-bottom-color",
-                "border-left-color"
-              ])}
-            />
-          </li>
-          <li>
             <SliderMenu
               label="Size"
               items={[
@@ -193,6 +182,49 @@ export const StyleInspector: FunctionComponent = () => {
                 {
                   label: "Left",
                   rules: store.findRulesByStyle("border-left-width")
+                }
+              ]}
+            />
+          </li>
+          <li>
+            <Palette
+              label="Color"
+              rules={store.findRulesByStyle([
+                "border-top-color",
+                "border-right-color",
+                "border-bottom-color",
+                "border-left-color"
+              ])}
+            />
+          </li>
+          <li>
+            <SliderMenu
+              label="Radius"
+              items={[
+                {
+                  label: "All",
+                  rules: store.findRulesByStyle([
+                    "border-top-left-radius",
+                    "border-top-right-radius",
+                    "border-bottom-left-radius",
+                    "border-bottom-right-radius"
+                  ])
+                },
+                {
+                  label: "Top Left",
+                  rules: store.findRulesByStyle("border-top-left-radius")
+                },
+                {
+                  label: "Top Right",
+                  rules: store.findRulesByStyle("border-top-right-radius")
+                },
+                {
+                  label: "Bottom Left",
+                  rules: store.findRulesByStyle("border-bottom-left-radius")
+                },
+                {
+                  label: "Bottom Right",
+                  rules: store.findRulesByStyle("border-bottom-right-radius")
                 }
               ]}
             />
