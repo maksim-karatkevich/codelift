@@ -52,7 +52,7 @@ export const App = types
     get cssRulesByStyle() {
       return self.cssRules.reduce(
         (acc, cssRule) => {
-          const key = String(Object.keys(cssRule.style));
+          const key = String(Object.keys(cssRule.style).sort());
 
           if (!acc[key]) {
             acc[key] = [];
@@ -72,7 +72,8 @@ export const App = types
     },
 
     findRulesByStyle(style: string | string[]) {
-      const key = String(style);
+      const styles = Array.isArray(style) ? style : [style];
+      const key = String(styles.sort());
 
       return this.cssRulesByStyle[key] ?? [];
     },
