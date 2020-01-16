@@ -174,13 +174,20 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <Palette label="Color" rules={store.findRulesByStyle("color")} />
+            <Select
+              label="Font"
+              rules={store.findRulesByStyle("font-family")}
+            />
           </li>
           <li>
+            {/* TODO Cannot use SelectMenu because the ordering is weird */}
             <Select
               label="Weight"
               rules={store.findRulesByStyle("font-weight")}
             />
+          </li>
+          <li>
+            <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
         </ol>
       </li>
