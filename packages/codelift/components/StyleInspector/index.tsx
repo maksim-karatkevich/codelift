@@ -28,19 +28,31 @@ export const StyleInspector: FunctionComponent = () => {
               items={[
                 {
                   label: "All",
-                  match: [
+                  rules: store.findRulesByStyle([
                     "margin-top",
                     "margin-right",
                     "margin-bottom",
                     "margin-left"
-                  ]
+                  ])
                 },
-                { label: "Horizontal", match: ["margin-left", "margin-right"] },
-                { label: "Vertical", match: ["margin-top", "margin-bottom"] },
-                { label: "Top", match: "margin-top" },
-                { label: "Right", match: "margin-right" },
-                { label: "Bottom", match: "margin-bottom" },
-                { label: "Left", match: "margin-left" }
+                {
+                  label: "Horizontal",
+                  rules: store.findRulesByStyle(["margin-left", "margin-right"])
+                },
+                {
+                  label: "Vertical",
+                  rules: store.findRulesByStyle(["margin-top", "margin-bottom"])
+                },
+                { label: "Top", rules: store.findRulesByStyle("margin-top") },
+                {
+                  label: "Right",
+                  rules: store.findRulesByStyle("margin-right")
+                },
+                {
+                  label: "Bottom",
+                  rules: store.findRulesByStyle("margin-bottom")
+                },
+                { label: "Left", rules: store.findRulesByStyle("margin-left") }
               ]}
             />
           </li>
@@ -50,22 +62,37 @@ export const StyleInspector: FunctionComponent = () => {
               items={[
                 {
                   label: "All",
-                  match: [
+                  rules: store.findRulesByStyle([
                     "padding-top",
                     "padding-right",
                     "padding-bottom",
                     "padding-left"
-                  ]
+                  ])
                 },
                 {
                   label: "Horizontal",
-                  match: ["padding-left", "padding-right"]
+                  rules: store.findRulesByStyle([
+                    "padding-left",
+                    "padding-right"
+                  ])
                 },
-                { label: "Vertical", match: ["padding-top", "padding-bottom"] },
-                { label: "Top", match: "padding-top" },
-                { label: "Right", match: "padding-right" },
-                { label: "Bottom", match: "padding-bottom" },
-                { label: "Left", match: "padding-left" }
+                {
+                  label: "Vertical",
+                  rules: store.findRulesByStyle([
+                    "padding-top",
+                    "padding-bottom"
+                  ])
+                },
+                { label: "Top", rules: store.findRulesByStyle("padding-top") },
+                {
+                  label: "Right",
+                  rules: store.findRulesByStyle("padding-right")
+                },
+                {
+                  label: "Bottom",
+                  rules: store.findRulesByStyle("padding-bottom")
+                },
+                { label: "Left", rules: store.findRulesByStyle("padding-left") }
               ]}
             />
           </li>
@@ -77,7 +104,10 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <SliderMenu label="z-Index" items={[{ match: "z-index" }]} />
+            <SliderMenu
+              label="z-Index"
+              items={[{ rules: store.findRulesByStyle("z-index") }]}
+            />
           </li>
         </ol>
       </li>
@@ -110,7 +140,10 @@ export const StyleInspector: FunctionComponent = () => {
 
         <ol>
           <li>
-            <SliderMenu label="Opacity" items={[{ match: "opacity" }]} />
+            <SliderMenu
+              label="Opacity"
+              items={[{ rules: store.findRulesByStyle("opacity") }]}
+            />
           </li>
           <li>
             <Select label="Shadow" match="box-shadow" />
@@ -139,17 +172,29 @@ export const StyleInspector: FunctionComponent = () => {
               items={[
                 {
                   label: "All",
-                  match: [
+                  rules: store.findRulesByStyle([
                     "border-top-width",
                     "border-right-width",
                     "border-bottom-width",
                     "border-left-width"
-                  ]
+                  ])
                 },
-                { label: "Top", match: "border-top-width" },
-                { label: "Right", match: "border-right-width" },
-                { label: "Bottom", match: "border-bottom-width" },
-                { label: "Left", match: "border-left-width" }
+                {
+                  label: "Top",
+                  rules: store.findRulesByStyle("border-top-width")
+                },
+                {
+                  label: "Right",
+                  rules: store.findRulesByStyle("border-right-width")
+                },
+                {
+                  label: "Bottom",
+                  rules: store.findRulesByStyle("border-bottom-width")
+                },
+                {
+                  label: "Left",
+                  rules: store.findRulesByStyle("border-left-width")
+                }
               ]}
             />
           </li>

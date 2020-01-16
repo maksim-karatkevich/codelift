@@ -3,17 +3,17 @@ import { FunctionComponent } from "react";
 import { observer, useStore } from "../../store";
 import { useSlider } from "./useSlider";
 import { useUpdateClassName } from "../../hooks/useUpdateClassName";
+import { ICSSRule } from "../../models/CSSRule";
 
 export type SliderProps = {
   label?: string;
-  match: string | string[];
+  rules: ICSSRule[];
 };
 
 // Show actual value somehow? https://github.com/davidchin/react-input-range
 export const Slider: FunctionComponent<SliderProps> = observer(props => {
   const slider = useSlider(props);
   const [res, updateClassName] = useUpdateClassName();
-
   const tickPercentage = `${100 / slider.rules.length}%`;
 
   return (
