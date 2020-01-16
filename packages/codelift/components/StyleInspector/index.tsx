@@ -187,6 +187,12 @@ export const StyleInspector: FunctionComponent = () => {
             />
           </li>
           <li>
+            <SliderMenu
+              label="Size"
+              items={[{ rules: store.findRulesByStyle("font-size") }]}
+            />
+          </li>
+          <li>
             <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
         </ol>
