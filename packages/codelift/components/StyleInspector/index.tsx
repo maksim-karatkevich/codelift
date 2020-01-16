@@ -176,6 +176,12 @@ export const StyleInspector: FunctionComponent = () => {
           <li>
             <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
+          <li>
+            <Select
+              label="Weight"
+              rules={store.findRulesByStyle("font-weight")}
+            />
+          </li>
         </ol>
       </li>
 
