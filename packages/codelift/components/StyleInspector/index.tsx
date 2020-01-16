@@ -1,13 +1,28 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ComponentType } from "react";
 
 import { Palette } from "./Palette";
 import { SliderMenu } from "./SliderMenu";
 import { Select } from "./Select";
 import { useStore } from "../../store";
+import {
+  Layout,
+  Move,
+  Props,
+  Crosshair,
+  Image,
+  Type,
+  Loader,
+  Square
+} from "react-feather";
 
-const Heading: FunctionComponent = ({ children }) => (
+type HeadingProps = {
+  Icon?: ComponentType<Props>;
+};
+
+const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
   <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow sticky text-sm top-0 w-full z-10">
-    {children}
+    {Icon && <Icon className="mr-2" size={13} />}
+    <span className="w-full">{children}</span>
   </label>
 );
 
@@ -18,8 +33,7 @@ export const StyleInspector: FunctionComponent = () => {
   return (
     <ol className="text-gray-400 text-xs">
       <li>
-        <Heading>Layout</Heading>
-
+        <Heading Icon={Layout}>Layout</Heading>
         <ol>
           <li>
             <SliderMenu
@@ -99,7 +113,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Size</Heading>
+        <Heading Icon={Move}>Size</Heading>
 
         <ol>
           <li>
@@ -144,7 +158,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Position</Heading>
+        <Heading Icon={Crosshair}>Position</Heading>
 
         <ol>
           <li>
@@ -157,7 +171,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Background</Heading>
+        <Heading Icon={Image}>Background</Heading>
 
         <ol>
           <li>
@@ -170,7 +184,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Typography</Heading>
+        <Heading Icon={Type}>Typography</Heading>
 
         <ol>
           <li>
@@ -211,7 +225,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Effects</Heading>
+        <Heading Icon={Loader}>Effects</Heading>
 
         <ol>
           <li>
@@ -230,7 +244,7 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
-        <Heading>Border</Heading>
+        <Heading Icon={Square}>Border</Heading>
 
         <ol>
           <li>
