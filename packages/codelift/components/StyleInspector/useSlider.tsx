@@ -93,7 +93,7 @@ export const useSlider = (props: SliderProps) => {
 
         element.cancelPreview();
 
-        if (value === 0 && slider.initialValue) {
+        if (value === 0 && slider.initialRule) {
           // Setting the value to 0 should remove the existing rule
           element.previewRule(slider.initialRule);
         } else if (slider.rule !== slider.initialRule) {
