@@ -235,6 +235,17 @@ export const StyleInspector: FunctionComponent = () => {
             />
           </li>
           <li>
+            <Select
+              label="Style"
+              rules={store.findRulesByStyle([
+                "border-top-style",
+                "border-right-style",
+                "border-bottom-style",
+                "border-left-style"
+              ])}
+            />
+          </li>
+          <li>
             <Palette
               label="Color"
               rules={store.findRulesByStyle([
