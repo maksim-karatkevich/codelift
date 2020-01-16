@@ -99,6 +99,51 @@ export const StyleInspector: FunctionComponent = () => {
       </li>
 
       <li>
+        <Heading>Size</Heading>
+
+        <ol>
+          <li>
+            <SliderMenu
+              label="Width"
+              items={[
+                {
+                  label: "Width",
+                  rules: store.findRulesByStyle("width")
+                },
+                {
+                  label: "Min Width",
+                  rules: store.findRulesByStyle("min-width")
+                },
+                {
+                  label: "Max Width",
+                  rules: store.findRulesByStyle("max-width")
+                }
+              ]}
+            />
+          </li>
+          <li>
+            <SliderMenu
+              label="Height"
+              items={[
+                {
+                  label: "Height",
+                  rules: store.findRulesByStyle("height")
+                },
+                {
+                  label: "Min Height",
+                  rules: store.findRulesByStyle("min-height")
+                },
+                {
+                  label: "Max Height",
+                  rules: store.findRulesByStyle("max-height")
+                }
+              ]}
+            />
+          </li>
+        </ol>
+      </li>
+
+      <li>
         <Heading>Position</Heading>
 
         <ol>
