@@ -21,28 +21,29 @@ export const Menu: FunctionComponent<MenuProps> = observer(
 
     // TODO without access to `rules`, all *Menu.tsx files have to customize the preview `label`
     return (
-      <div className="relative" onMouseLeave={() => isOpen && setIsOpen(false)}>
+      <div
+        className={`relative border-green-600 ${isOpen ? "border-l-2" : ""}`}
+        onMouseLeave={() => isOpen && setIsOpen(false)}
+      >
         <label
           className={`${
             isOpen
-              ? "bg-white rounded-b-none text-black font-bold z-50"
-              : `border border-gray-800 ${
+              ? "bg-white text-black font-bold z-50"
+              : `bg-gray-900 border border-gray-800 ${
                   selected ? "text-white font-bold" : "text-gray-400"
                 }
             hover:bg-gray-800`
-          } relative cursor-pointer m-2 rounded flex items-center px-2 h-8 select-none shadow text-xs`}
+          } relative cursor-pointer flex items-center px-2 h-8 select-none shadow text-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="w-full">{label}</span>
           {icon}
         </label>
         <div
-          className="absolute outline-none -mt-2 shadow-md z-40 w-full"
+          className="absolute bg-white outline-none shadow-md z-40 w-full"
           hidden={!isOpen}
         >
-          <div className="bg-white mx-2 rounded-b overflow-hidden">
-            {children}
-          </div>
+          {children}
         </div>
       </div>
     );
