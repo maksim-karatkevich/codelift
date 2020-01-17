@@ -11,6 +11,9 @@ export type SliderProps = {
 };
 
 // Show actual value somehow? https://github.com/davidchin/react-input-range
+// TODO Get rid of the negative slider values and instead:
+// - Far left = 0 = Remove existing rule, if any.
+// - > 1 = Add rule. If selected rule already exists, no-op.
 export const Slider: FunctionComponent<SliderProps> = observer(props => {
   const slider = useSlider(props);
   const [res, updateClassName] = useUpdateClassName();
