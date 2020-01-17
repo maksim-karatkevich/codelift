@@ -16,7 +16,7 @@ const translate = (className: string) => {
 
   switch (suffix) {
     case undefined:
-      return "Default";
+      return capitalize(className);
     case "md":
       return "Medium";
     case "lg":

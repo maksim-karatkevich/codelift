@@ -166,6 +166,12 @@ export const StyleInspector: FunctionComponent = observer(() => {
 
         <ol>
           <li>
+            <Select
+              label="Position"
+              rules={store.findRulesByStyle("position")}
+            />
+          </li>
+          <li>
             <SliderMenu
               label="z-Index"
               items={[{ rules: store.findRulesByStyle("z-index") }]}
