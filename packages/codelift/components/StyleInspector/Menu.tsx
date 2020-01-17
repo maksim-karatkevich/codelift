@@ -19,14 +19,7 @@ export const Menu: FunctionComponent<MenuProps> = observer(
     const store = useStore();
     const [isOpen, setIsOpen] = useState(false);
 
-    if (isOpen && selected && !store.selected?.element?.isPreviewing) {
-      label = (
-        <>
-          <code>{selected.className}</code> (Current)
-        </>
-      );
-    }
-
+    // TODO without access to `rules`, all *Menu.tsx files have to customize the preview `label`
     return (
       <div className="relative" onMouseLeave={() => isOpen && setIsOpen(false)}>
         <label
