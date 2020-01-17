@@ -12,7 +12,7 @@ type SelectProps = {
 };
 
 const translate = (className: string) => {
-  const [, suffix] = className.split("-");
+  const suffix = className.split("-").pop();
 
   switch (suffix) {
     case undefined:
