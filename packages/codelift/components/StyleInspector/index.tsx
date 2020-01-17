@@ -177,7 +177,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <ButtonMenu
               label="Pinning"
               render={rule => (
-                <>
+                <div className="overflow-hidden p-3">
                   <div
                     className={`${
                       ({
@@ -188,17 +188,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
                       } as any)[rule.className]
                     } absolute p-1 shadow bg-white`}
                   />
-                  <small className="text-gray-700">
-                    {
-                      ({
-                        "top-0": "Top",
-                        "right-0": "Right",
-                        "bottom-0": "Bottom",
-                        "left-0": "Left"
-                      } as any)[rule.className]
-                    }
-                  </small>
-                </>
+                </div>
               )}
               rules={[
                 store.cssRuleByClassName["top-0"],
