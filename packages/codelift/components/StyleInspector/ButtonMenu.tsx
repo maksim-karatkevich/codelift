@@ -43,7 +43,7 @@ export const ButtonMenu: FunctionComponent<ButtonMenuProps> = observer(
                   res.fetching ? "cursor-wait" : "cursor-pointer"
                 } border relative rounded shadow-inner ${
                   rule.isApplied ? "bg-green-300" : "bg-gray-300"
-                } hover:shadow-outline`}
+                } overflow-hidden text-gray-700 hover:shadow-outline`}
                 onMouseLeave={() => store.selected?.element?.cancelPreview()}
                 onMouseOver={() => store.selected?.element?.previewRule(rule)}
                 onClick={updateClassName}
