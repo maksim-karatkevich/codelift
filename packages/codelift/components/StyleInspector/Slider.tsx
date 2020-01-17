@@ -18,8 +18,10 @@ export const Slider: FunctionComponent<SliderProps> = observer(props => {
 
   return (
     <label
-      className={`flex items-center text-black ${
-        slider.value === 0 ? "font-normal" : "font-bold"
+      className={`flex items-center ${
+        slider.value === 0
+          ? "font-normal text-black"
+          : "font-bold text-green-600"
       } px-3 h-8 text-xs`}
     >
       {props.label && (

@@ -46,8 +46,10 @@ export const Select: FunctionComponent<SelectProps> = observer(
         <ul>
           {rules.map(rule => (
             <li
-              className={`flex items-center px-3 h-8 text-black text-xs hover:bg-gray-200 ${
-                rule.isApplied ? "font-bold" : "font-normal"
+              className={`flex items-center px-3 h-8 text-xs hover:bg-gray-200 ${
+                rule.isApplied
+                  ? "font-bold text-green-600"
+                  : "font-normal text-gray-800"
               } ${res.fetching ? "cursor-wait" : "cursor-pointer"}`}
               key={rule.className}
               onMouseLeave={() => store.selected?.element?.cancelPreview()}
