@@ -41,7 +41,7 @@ export const ButtonMenu: FunctionComponent<ButtonMenuProps> = observer(
               <button
                 className={`${
                   res.fetching ? "cursor-wait" : "cursor-pointer"
-                } border relative rounded-sm shadow-inner ${
+                } border relative rounded shadow-inner ${
                   rule.isApplied ? "bg-green-300" : "bg-gray-300"
                 } hover:shadow-outline`}
                 onMouseLeave={() => store.selected?.element?.cancelPreview()}
