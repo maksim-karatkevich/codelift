@@ -71,6 +71,19 @@ export const App = types
       );
     },
 
+    get cssRuleByClassName() {
+      return self.cssRules.reduce(
+        (acc, cssRule) => {
+          acc[cssRule.className] = cssRule;
+
+          return acc;
+        },
+        {} as {
+          [key: string]: ICSSRule;
+        }
+      );
+    },
+
     findRulesByStyle(style: string | string[]) {
       const styles = Array.isArray(style) ? style : [style];
       const key = String(styles.sort());

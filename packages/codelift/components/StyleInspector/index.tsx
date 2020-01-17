@@ -1,20 +1,22 @@
-import { FunctionComponent, ComponentType } from "react";
-
-import { Palette } from "./Palette";
-import { SliderMenu } from "./SliderMenu";
-import { Select } from "./Select";
-import { observer, useStore } from "../../store";
+import { ComponentType, FunctionComponent } from "react";
 import {
-  Layout,
-  Move,
-  Props,
   Crosshair,
   Image,
-  Type,
+  Layout,
   Loader,
-  Square
+  Move,
+  Props,
+  Square,
+  Type
 } from "react-feather";
+
+import { ICSSRule } from "../../models/CSSRule";
+import { observer, useStore } from "../../store";
 import { Search } from "../Search";
+import { ButtonMenu } from "./ButtonMenu";
+import { Palette } from "./Palette";
+import { Select } from "./Select";
+import { SliderMenu } from "./SliderMenu";
 
 type HeadingProps = {
   Icon?: ComponentType<Props>;
@@ -169,6 +171,45 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <Select
               label="Position"
               rules={store.findRulesByStyle("position")}
+            />
+          </li>
+          <li>
+            <ButtonMenu
+              label="Pinning"
+              render={rule => (
+                <div
+                  className={`border overflow-hidden p-3 relative rounded-sm shadow-inner ${
+                    rule.isApplied ? "bg-green-300" : "bg-gray-300"
+                  } hover:shadow-outline`}
+                >
+                  <div
+                    className={`${
+                      ({
+                        "top-0": "top-0 left-0 right-0",
+                        "right-0": "top-0 right-0 bottom-0",
+                        "bottom-0": "left-0 bottom-0 right-0",
+                        "left-0": "top-0 left-0 bottom-0"
+                      } as any)[rule.className]
+                    } absolute p-1 shadow bg-white`}
+                  />
+                  <small className="text-gray-700">
+                    {
+                      ({
+                        "top-0": "Top",
+                        "right-0": "Right",
+                        "bottom-0": "Bottom",
+                        "left-0": "Left"
+                      } as any)[rule.className]
+                    }
+                  </small>
+                </div>
+              )}
+              rules={[
+                store.cssRuleByClassName["top-0"],
+                store.cssRuleByClassName["right-0"],
+                store.cssRuleByClassName["bottom-0"],
+                store.cssRuleByClassName["left-0"]
+              ]}
             />
           </li>
           <li>
