@@ -214,7 +214,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
           <li>
             <SliderMenu
-              label="z-Index"
+              label="Z Index"
               items={[{ rules: store.findRulesByStyle("z-index") }]}
             />
           </li>
