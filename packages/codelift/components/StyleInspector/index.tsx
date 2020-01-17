@@ -177,11 +177,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <ButtonMenu
               label="Pinning"
               render={rule => (
-                <div
-                  className={`border overflow-hidden p-3 relative rounded-sm shadow-inner ${
-                    rule.isApplied ? "bg-green-300" : "bg-gray-300"
-                  } hover:shadow-outline`}
-                >
+                <>
                   <div
                     className={`${
                       ({
@@ -202,7 +198,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
                       } as any)[rule.className]
                     }
                   </small>
-                </div>
+                </>
               )}
               rules={[
                 store.cssRuleByClassName["top-0"],

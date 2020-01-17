@@ -35,11 +35,15 @@ export const ButtonMenu: FunctionComponent<ButtonMenuProps> = observer(
 
     return (
       <Menu label={label} selected={selected}>
-        <ul className="flex justify-around p-2">
+        <ul className="flex justify-between p-2">
           {rules.map(rule => (
             <li key={rule.className}>
               <button
-                className={res.fetching ? "cursor-wait" : "cursor-pointer"}
+                className={`${
+                  res.fetching ? "cursor-wait" : "cursor-pointer"
+                } border overflow-hidden p-3 relative rounded-sm shadow-inner ${
+                  rule.isApplied ? "bg-green-300" : "bg-gray-300"
+                } hover:shadow-outline`}
                 onMouseLeave={() => store.selected?.element?.cancelPreview()}
                 onMouseOver={() => store.selected?.element?.previewRule(rule)}
                 onClick={updateClassName}
