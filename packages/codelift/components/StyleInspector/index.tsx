@@ -17,6 +17,7 @@ import { ButtonMenu } from "./ButtonMenu";
 import { Palette } from "./Palette";
 import { Select } from "./Select";
 import { SliderMenu } from "./SliderMenu";
+import { Menu } from "./Menu";
 
 type HeadingProps = {
   Icon?: ComponentType<Props>;
@@ -159,6 +160,29 @@ export const StyleInspector: FunctionComponent = observer(() => {
                 }
               ]}
             />
+          </li>
+          <li>
+            <Menu
+              label="Overflow"
+              selected={[
+                ...store.findRulesByStyle(["overflow-x", "overflow-y"]),
+                ...store.findRulesByStyle("overflow-x"),
+                ...store.findRulesByStyle("overflow-y")
+              ].find(rule => rule.isApplied)}
+            >
+              <Select
+                label="All"
+                rules={store.findRulesByStyle(["overflow-x", "overflow-y"])}
+              />
+              <Select
+                label="Horizontal"
+                rules={store.findRulesByStyle("overflow-x")}
+              />
+              <Select
+                label="Vertical"
+                rules={store.findRulesByStyle("overflow-y")}
+              />
+            </Menu>
           </li>
         </ol>
       </li>
