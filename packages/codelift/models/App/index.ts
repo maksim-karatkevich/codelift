@@ -309,13 +309,13 @@ export const App = types
         return CSSRule.create({
           cssText,
           selectorText,
-          style: Object.values(style).reduce(
-            (acc, property) => ({
-              ...acc,
-              [property]: style[property as any]
-            }),
-            {}
-          )
+          style: Object.values(style).reduce((acc, property) => {
+            if (!property.startsWith("-")) {
+              acc[property] = style[property as any];
+            }
+
+            return acc;
+          }, {} as { [property: string]: string })
         });
       });
 
