@@ -13,6 +13,9 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
   ({ label, render, rules }) => {
     const store = useStore();
     const [res, updateClassName] = useUpdateClassName();
+
+    rules = rules.filter(Boolean);
+
     const selected = rules.find(rule => rule.isApplied);
 
     return (
