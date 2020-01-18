@@ -17,7 +17,6 @@ import {
 import { ICSSRule } from "../../models/CSSRule";
 import { observer, useStore } from "../../store";
 import { Search } from "../Search";
-import { ButtonMenu } from "./ButtonMenu";
 import { Palette } from "./Palette";
 import { Select } from "./Select";
 import { SliderMenu } from "./SliderMenu";
@@ -210,22 +209,16 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
-            <ButtonMenu
+            <ButtonGroup
               label="Pinning"
-              render={rule => (
-                <div className="overflow-hidden p-3">
-                  <div
-                    className={`${
-                      ({
-                        "top-0": "top-0 left-0 right-0",
-                        "right-0": "top-0 right-0 bottom-0",
-                        "bottom-0": "left-0 bottom-0 right-0",
-                        "left-0": "top-0 left-0 bottom-0"
-                      } as any)[rule.className]
-                    } absolute p-1 shadow bg-white`}
-                  />
-                </div>
-              )}
+              render={rule => {
+                return ({
+                  "top-0": <ArrowUp size={13} />,
+                  "right-0": <ArrowRight size={13} />,
+                  "bottom-0": <ArrowDown size={13} />,
+                  "left-0": <ArrowLeft size={13} />
+                } as any)[rule.className];
+              }}
               rules={[
                 store.cssRuleByClassName["top-0"],
                 store.cssRuleByClassName["right-0"],
