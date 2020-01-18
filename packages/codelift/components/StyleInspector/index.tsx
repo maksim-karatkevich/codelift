@@ -304,6 +304,23 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
+            <ButtonGroup
+              label="Float"
+              render={rule => {
+                return ({
+                  "float-left": <ArrowLeftCircle size={13} />,
+                  "float-none": <XCircle size={13} />,
+                  "float-right": <ArrowRightCircle size={13} />
+                } as any)[rule.className];
+              }}
+              rules={[
+                store.cssRuleByClassName["float-left"],
+                store.cssRuleByClassName["float-none"],
+                store.cssRuleByClassName["float-right"]
+              ]}
+            />
+          </li>
+          <li>
             <SliderMenu
               label="Z Index"
               items={[{ rules: store.findRulesByStyle("z-index") }]}
