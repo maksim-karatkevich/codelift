@@ -301,6 +301,23 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("box-shadow")}
             />
           </li>
+          <li>
+            <Select
+              label="Cursor"
+              render={rule => (
+                <div
+                  className={`${rule.className} flex w-full h-full items-center`}
+                >
+                  {capitalize(
+                    words(rule.className)
+                      .slice(1)
+                      .join(" ")
+                  )}
+                </div>
+              )}
+              rules={store.findRulesByStyle("cursor")}
+            />
+          </li>
         </ol>
       </li>
 
