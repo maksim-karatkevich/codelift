@@ -532,6 +532,27 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
         </ol>
       </li>
+
+      <li>
+        <Heading Icon={PenTool}>SVG</Heading>
+
+        <ol>
+          <li>
+            <ButtonGroup
+              label="Fill"
+              render={rule => <Check size={13} />}
+              rules={store.findRulesByStyle("fill")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Stroke"
+              render={rule => <Check size={13} />}
+              rules={store.findRulesByStyle("stroke")}
+            />
+          </li>
+        </ol>
+      </li>
     </ol>
   );
 });
