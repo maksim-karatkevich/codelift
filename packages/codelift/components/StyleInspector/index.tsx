@@ -1,17 +1,29 @@
+import { capitalize, words } from "lodash";
 import { ComponentType, FunctionComponent } from "react";
 import {
   AlignCenter,
   AlignLeft,
   AlignJustify,
   AlignRight,
+  ArrowUp,
+  ArrowRight,
+  ArrowDown,
+  ArrowLeft,
+  ArrowLeftCircle,
+  ArrowRightCircle,
   Crosshair,
   Image,
   Layout,
   Loader,
+  Lock,
+  Maximize,
+  Minimize,
   Move,
   Props,
   Square,
-  Type
+  Sidebar,
+  Type,
+  XCircle,
 } from "react-feather";
 
 import { ICSSRule } from "../../models/CSSRule";
@@ -125,6 +137,70 @@ export const StyleInspector: FunctionComponent = observer(() => {
                 },
                 { label: "Left", rules: store.findRulesByStyle("padding-left") }
               ]}
+            />
+          </li>
+        </ol>
+      </li>
+
+      <li>
+        <Heading Icon={Sidebar}>Flexbox</Heading>
+
+        <ol>
+          <li>
+            <Select
+              label="Direction"
+              rules={store.findRulesByStyle("flex-direction")}
+            />
+          </li>
+          <li>
+            <Select label="Wrap" rules={store.findRulesByStyle("flex-wrap")} />
+          </li>
+          <li>
+            <Select
+              label="Align Items"
+              rules={store.findRulesByStyle("align-items")}
+            />
+          </li>
+          <li>
+            <Select
+              label="Align Content"
+              rules={store.findRulesByStyle("align-content")}
+            />
+          </li>
+          <li>
+            <Select
+              label="Align Self"
+              rules={store.findRulesByStyle("align-self")}
+            />
+          </li>
+          <li>
+            <Select
+              label="Justify Content"
+              rules={store.findRulesByStyle("justify-content")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Shrink"
+              render={rule => {
+                return ({
+                  "flex-shrink": <Minimize size={13} />,
+                  "flex-shrink-0": <Lock size={13} />
+                } as any)[rule.className];
+              }}
+              rules={store.findRulesByStyle("flex-shrink")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Grow"
+              render={rule => {
+                return ({
+                  "flex-grow": <Maximize size={13} />,
+                  "flex-grow-0": <Lock size={13} />
+                } as any)[rule.className];
+              }}
+              rules={store.findRulesByStyle("flex-grow")}
             />
           </li>
         </ol>
