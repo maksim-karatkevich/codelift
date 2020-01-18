@@ -28,7 +28,7 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,
-        transition: "all 200ms ease-in-out",
+        transition: "all 100ms ease-in-out",
         width: right - left,
         zIndex: 40
       }}
