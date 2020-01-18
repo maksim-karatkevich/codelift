@@ -8,15 +8,16 @@ import { ICSSRule } from "../../models/CSSRule";
 
 type SelectProps = {
   label: string | JSX.Element;
+  render?: (rule: ICSSRule) => string | JSX.Element;
   rules: ICSSRule[];
 };
 
-const translate = (className: string) => {
-  const suffix = className.split("-").pop();
+const defaultRender: SelectProps["render"] = rule => {
+  const suffix = rule.className.split("-").pop();
 
   switch (suffix) {
     case undefined:
-      return capitalize(className);
+      return capitalize(rule.className);
     case "md":
       return "Medium";
     case "lg":
@@ -31,7 +32,7 @@ const translate = (className: string) => {
 };
 
 export const Select: FunctionComponent<SelectProps> = observer(
-  ({ label, rules }) => {
+  ({ label, render = defaultRender, rules }) => {
     const store = useStore();
     const [res, updateClassName] = useUpdateClassName();
     const selected = rules.find(rule => rule.isApplied);
@@ -57,7 +58,7 @@ export const Select: FunctionComponent<SelectProps> = observer(
               onClick={updateClassName}
               value={rule.className}
             >
-              {translate(rule.className)}
+              {render(rule)}
             </li>
           ))}
         </ul>
