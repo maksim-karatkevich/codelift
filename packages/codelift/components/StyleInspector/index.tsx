@@ -380,6 +380,13 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
+            <Select
+              label="Vertical Align"
+              render={rule => rule.className}
+              rules={store.findRulesByStyle("vertical-align")}
+            />
+          </li>
+          <li>
             <SliderMenu
               label="Letter Spacing"
               items={[{ rules: store.findRulesByStyle("letter-spacing") }]}
