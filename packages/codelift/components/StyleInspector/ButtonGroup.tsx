@@ -29,7 +29,7 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
         <div className="flex shadow-md rounded overflow-hidden">
           {rules.map((rule, i) => (
             <button
-              className={`p-1 px-2 bg-white font-thin text-xs text-gray-700 ${
+              className={`relative p-1 px-2 bg-white font-thin text-xs text-gray-700 ${
                 rule.isApplied
                   ? "bg-green-100 border-t shadow-inner"
                   : "border-b"
