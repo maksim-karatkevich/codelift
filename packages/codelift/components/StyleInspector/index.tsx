@@ -43,6 +43,13 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Layout}>Layout</Heading>
         <ol>
           <li>
+            <Select
+              label="Display"
+              render={rule => capitalize(words(rule.className).join(" "))}
+              rules={store.findRulesByStyle("display")}
+            />
+          </li>
+          <li>
             <SliderMenu
               label="Margin"
               items={[
