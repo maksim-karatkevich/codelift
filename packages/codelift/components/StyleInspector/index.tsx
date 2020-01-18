@@ -21,7 +21,7 @@ import {
   Move,
   Props,
   Square,
-  Sidebar,
+  Trello,
   Type,
   XCircle,
 } from "react-feather";
@@ -143,7 +143,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
       </li>
 
       <li>
-        <Heading Icon={Sidebar}>Flexbox</Heading>
+        <Heading Icon={Trello}>Flexbox</Heading>
 
         <ol>
           <li>
