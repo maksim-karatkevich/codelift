@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { ChevronDown } from "react-feather";
 import { ICSSRule } from "../../models/CSSRule";
-import { observer, useStore } from "../../store";
+import { observer } from "../../store";
 
 type MenuProps = {
   label: string | JSX.Element;
@@ -16,7 +16,6 @@ export const Menu: FunctionComponent<MenuProps> = observer(
     label,
     selected
   }) => {
-    const store = useStore();
     const [isOpen, setIsOpen] = useState(false);
 
     // TODO without access to `rules`, all *Menu.tsx files have to customize the preview `label`
@@ -28,19 +27,19 @@ export const Menu: FunctionComponent<MenuProps> = observer(
         <label
           className={`${
             isOpen
-              ? "bg-white text-black font-bold z-50"
-              : `bg-gray-900 border border-gray-800 ${
+              ? "bg-white text-black font-bold z-50 shadow"
+              : `bg-gray-900 ${
                   selected ? "text-white font-bold" : "text-gray-400"
                 }
             hover:bg-gray-800`
-          } relative cursor-pointer flex items-center px-2 h-8 select-none shadow text-xs`}
+          } relative cursor-pointer flex items-center px-2 h-8 select-none text-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="w-full">{label}</span>
           {icon}
         </label>
         <div
-          className="absolute bg-white outline-none shadow-md z-40 w-full"
+          className="absolute bg-white outline-none shadow-lg z-40 w-full border-b border-black"
           hidden={!isOpen}
         >
           {children}
