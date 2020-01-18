@@ -1,5 +1,9 @@
 import { ComponentType, FunctionComponent } from "react";
 import {
+  AlignCenter,
+  AlignLeft,
+  AlignJustify,
+  AlignRight,
   Crosshair,
   Image,
   Layout,
@@ -18,6 +22,7 @@ import { Palette } from "./Palette";
 import { Select } from "./Select";
 import { SliderMenu } from "./SliderMenu";
 import { Menu } from "./Menu";
+import { ButtonGroup } from "./ButtonGroup";
 
 type HeadingProps = {
   Icon?: ComponentType<Props>;
@@ -272,6 +277,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <SliderMenu
               label="Size"
               items={[{ rules: store.findRulesByStyle("font-size") }]}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Align"
+              render={rule => {
+                return ({
+                  "text-left": <AlignLeft size={13} />,
+                  "text-center": <AlignCenter size={13} />,
+                  "text-right": <AlignRight size={13} />,
+                  "text-justify": <AlignJustify size={13} />
+                } as any)[rule.className];
+              }}
+              rules={store.findRulesByStyle("text-align")}
             />
           </li>
           <li>
