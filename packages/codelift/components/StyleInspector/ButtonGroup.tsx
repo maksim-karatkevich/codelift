@@ -29,11 +29,9 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
         <div className="flex shadow-md rounded overflow-hidden">
           {rules.map((rule, i) => (
             <button
-              className={`relative p-1 px-2 bg-white font-thin text-xs text-gray-700 ${
-                rule.isApplied
-                  ? "bg-green-200 border-t shadow-inner"
-                  : "border-b"
-              } ${i === 0 ? "" : "border-l"} ${
+              className={`relative p-1 px-2 bg-white font-thin text-xs text-gray-700 border-gray-500 ${
+                rule.isApplied ? "bg-green-200 shadow-inner" : "border-b"
+              } ${i === 0 ? "" : ""} ${
                 res.fetching ? "cursor-wait" : ""
               } hover:bg-blue-100`}
               disabled={res.fetching}
@@ -41,6 +39,11 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
               onMouseLeave={() => store.selected?.element?.cancelPreview()}
               onMouseOver={() => store.selected?.element?.previewRule(rule)}
               onClick={updateClassName}
+              style={{
+                boxShadow: rule.isApplied
+                  ? "0 1px 3px rgba(0, 0, 0, 0.33) inset"
+                  : undefined
+              }}
             >
               {render(rule)}
             </button>
