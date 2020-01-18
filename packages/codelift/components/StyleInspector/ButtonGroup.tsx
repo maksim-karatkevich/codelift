@@ -31,7 +31,7 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
             <button
               className={`relative p-1 px-2 bg-white font-thin text-xs text-gray-700 ${
                 rule.isApplied
-                  ? "bg-green-100 border-t shadow-inner"
+                  ? "bg-green-200 border-t shadow-inner"
                   : "border-b"
               } ${i === 0 ? "" : "border-l"} ${
                 res.fetching ? "cursor-wait" : ""
