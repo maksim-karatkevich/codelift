@@ -24,7 +24,7 @@ type HeadingProps = {
 };
 
 const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
-  <label className="flex items-center text-left text-white bg-black px-2 py-1 shadow sticky text-sm top-0 w-full z-10">
+  <label className="flex items-center text-left text-gray-500 px-2 py-1 shadow sticky text-sm top-0 w-full z-10 bg-black">
     {Icon && <Icon className="mr-2" size={13} />}
     <span className="w-full">{children}</span>
   </label>
