@@ -1,6 +1,6 @@
 import { isValidReference } from "mobx-state-tree";
 import { FunctionComponent } from "react";
-import { Code, Image, Link, List, Package, Type } from "react-feather";
+import { Code, Image, Link, List, Package, Type, Grid } from "react-feather";
 
 import { observer, useStore } from "../../store";
 import { IReactNode } from "../../models/ReactNode";
@@ -30,6 +30,8 @@ const Icon: FunctionComponent<LabelProps> = ({ node, ...props }) => {
     case "h6":
     case "p":
       return <Type {...props} />;
+    case "table":
+      return <Grid {...props} />;
     default:
       return <Code {...props} />;
   }
