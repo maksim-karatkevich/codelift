@@ -152,6 +152,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
         </ol>
       </li>
 
+      {/* TODO Hide unless in valid flex container  */}
       <li>
         <Heading Icon={Trello}>Flexbox</Heading>
 
@@ -281,6 +282,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               />
             </Menu>
           </li>
+          {/* TODO Hide when not an img */}
           <li>
             <ButtonGroup
               label="Fit"
@@ -315,6 +317,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("position")}
             />
           </li>
+          {/* TODO Hide when not an img */}
           <li>
             <ButtonMenu
               label="Object Position"
