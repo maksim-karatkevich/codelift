@@ -315,6 +315,36 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
+            <ButtonMenu
+              label="Object Position"
+              groups={3}
+              render={rule =>
+                (({
+                  "object-left-top": <ArrowUpLeft size={13} />,
+                  "object-top": <ArrowUp size={13} />,
+                  "object-right-top": <ArrowUpRight size={13} />,
+                  "object-left": <ArrowLeft size={13} />,
+                  "object-center": <Move size={13} />,
+                  "object-right": <ArrowRight size={13} />,
+                  "object-left-bottom": <ArrowDownLeft size={13} />,
+                  "object-bottom": <ArrowDown size={13} />,
+                  "object-right-bottom": <ArrowDownRight size={13} />
+                } as any)[rule.className])
+              }
+              rules={[
+                store.cssRuleByClassName["object-left-top"],
+                store.cssRuleByClassName["object-top"],
+                store.cssRuleByClassName["object-right-top"],
+                store.cssRuleByClassName["object-left"],
+                store.cssRuleByClassName["object-center"],
+                store.cssRuleByClassName["object-right"],
+                store.cssRuleByClassName["object-left-bottom"],
+                store.cssRuleByClassName["object-bottom"],
+                store.cssRuleByClassName["object-right-bottom"]
+              ]}
+            />
+          </li>
+          <li>
             <ButtonGroup
               label="Pinning"
               render={rule => {
