@@ -2,12 +2,10 @@ import Nav from "../components/nav";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <Nav />
-      <div className="hero">
-        <h1 id="title" className="title">
-          Next.js + Tailwind css
-        </h1>
+      <div className="bg-black text-white text-center text-5xl shadow-lg py-12">
+        <h1 className="tracking-wider">Next.js + Tailwind css</h1>
       </div>
     </div>
   );
