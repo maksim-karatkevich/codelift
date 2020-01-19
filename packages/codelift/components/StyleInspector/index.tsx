@@ -484,6 +484,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
           <li>
             <ButtonGroup
+              label="Transform"
+              render={rule =>
+                (({
+                  "uppercase": <span className="font-serif italic">AA</span>,
+                  "lowercase": <span className="font-serif italic">aa</span>,
+                  "capitalize": <span className="font-serif italic">Aa</span>,
+                  "normal-case": <Slash size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("text-transform")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
               label="Align"
               render={rule =>
                 (({
