@@ -12,5 +12,9 @@ export const findAttribute = (
     }
   });
 
+  if (nodes.length > 1) {
+    throw new Error(`Found more than ${JSON.stringify(name)}`);
+  }
+
   return nodes.at(0);
 };
