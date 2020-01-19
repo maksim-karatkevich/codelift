@@ -5,12 +5,17 @@ import {
   AlignLeft,
   AlignJustify,
   AlignRight,
-  ArrowUp,
-  ArrowRight,
   ArrowDown,
+  ArrowDownRight,
+  ArrowDownLeft,
   ArrowLeft,
   ArrowLeftCircle,
   ArrowRightCircle,
+  ArrowRight,
+  ArrowUp,
+  ArrowUpLeft,
+  ArrowUpRight,
+  Check,
   Crosshair,
   Image,
   Layout,
@@ -19,11 +24,12 @@ import {
   Maximize,
   Minimize,
   Move,
+  PenTool,
   Props,
   Square,
   Trello,
   Type,
-  XCircle,
+  XCircle
 } from "react-feather";
 
 import { ICSSRule } from "../../models/CSSRule";
@@ -34,6 +40,7 @@ import { Select } from "./Select";
 import { SliderMenu } from "./SliderMenu";
 import { Menu } from "./Menu";
 import { ButtonGroup } from "./ButtonGroup";
+import { ButtonMenu } from "./ButtonMenu";
 
 type HeadingProps = {
   Icon?: ComponentType<Props>;
@@ -339,6 +346,54 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("background-color")}
             />
           </li>
+          <li>
+            <Select
+              label="Attachment"
+              rules={store.findRulesByStyle("background-attachment")}
+            />
+          </li>
+          <li>
+            <ButtonMenu
+              label="Position"
+              groups={3}
+              render={rule =>
+                (({
+                  "bg-left-top": <ArrowUpLeft size={13} />,
+                  "bg-top": <ArrowUp size={13} />,
+                  "bg-right-top": <ArrowUpRight size={13} />,
+                  "bg-left": <ArrowLeft size={13} />,
+                  "bg-center": <Move size={13} />,
+                  "bg-right": <ArrowRight size={13} />,
+                  "bg-left-bottom": <ArrowDownLeft size={13} />,
+                  "bg-bottom": <ArrowDown size={13} />,
+                  "bg-right-bottom": <ArrowDownRight size={13} />
+                } as any)[rule.className])
+              }
+              rules={[
+                store.cssRuleByClassName["bg-left-top"],
+                store.cssRuleByClassName["bg-top"],
+                store.cssRuleByClassName["bg-right-top"],
+                store.cssRuleByClassName["bg-left"],
+                store.cssRuleByClassName["bg-center"],
+                store.cssRuleByClassName["bg-right"],
+                store.cssRuleByClassName["bg-left-bottom"],
+                store.cssRuleByClassName["bg-bottom"],
+                store.cssRuleByClassName["bg-right-bottom"]
+              ]}
+            />
+          </li>
+          <li>
+            <Select
+              label="Repeat"
+              rules={store.findRulesByStyle("background-repeat")}
+            />
+          </li>
+          <li>
+            <Select
+              label="Size"
+              rules={store.findRulesByStyle("background-size")}
+            />
+          </li>
         </ol>
       </li>
 
@@ -368,14 +423,14 @@ export const StyleInspector: FunctionComponent = observer(() => {
           <li>
             <ButtonGroup
               label="Align"
-              render={rule => {
-                return ({
+              render={rule =>
+                (({
                   "text-left": <AlignLeft size={13} />,
                   "text-center": <AlignCenter size={13} />,
                   "text-right": <AlignRight size={13} />,
                   "text-justify": <AlignJustify size={13} />
-                } as any)[rule.className];
-              }}
+                } as any)[rule.className])
+              }
               rules={store.findRulesByStyle("text-align")}
             />
           </li>
