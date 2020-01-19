@@ -461,6 +461,9 @@ export const StyleInspector: FunctionComponent = observer(() => {
 
         <ol>
           <li>
+            <Palette label="Color" rules={store.findRulesByStyle("color")} />
+          </li>
+          <li>
             <Select
               label="Font"
               rules={store.findRulesByStyle("font-family")}
@@ -513,7 +516,10 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
-            <Palette label="Color" rules={store.findRulesByStyle("color")} />
+            <Select
+              label="Whitespace"
+              rules={store.findRulesByStyle("white-space")}
+            />
           </li>
         </ol>
       </li>
