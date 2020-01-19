@@ -26,6 +26,7 @@ import {
   Maximize2,
   Minimize,
   Minimize2,
+  MousePointer,
   Move,
   PenTool,
   Props,
@@ -531,6 +532,24 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <Select
               label="Shadow"
               rules={store.findRulesByStyle("box-shadow")}
+            />
+          </li>
+        </ol>
+      </li>
+
+      <li>
+        <Heading Icon={MousePointer}>Interactivity</Heading>
+
+        <ol>
+          <li>
+            <ButtonGroup
+              label="Customize Appearance"
+              render={rule =>
+                (({
+                  "appearance-none": <Check size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("appearance")}
             />
           </li>
           <li>

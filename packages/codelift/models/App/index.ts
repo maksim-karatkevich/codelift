@@ -310,9 +310,10 @@ export const App = types
           cssText,
           selectorText,
           style: Object.values(style).reduce((acc, property) => {
-            if (!property.startsWith("-")) {
-              acc[property] = style[property as any];
-            }
+            // Remove prefixes
+            property = property.replace("-moz-", "").replace("-webkit-", "");
+            // Only valid rules will be set, so there shouldn't be collissions
+            acc[property] = style[property as any];
 
             return acc;
           }, {} as { [property: string]: string })
