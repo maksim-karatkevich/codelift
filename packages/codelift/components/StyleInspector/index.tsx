@@ -22,14 +22,16 @@ import {
   Loader,
   Lock,
   Maximize,
+  Maximize2,
   Minimize,
+  Minimize2,
   Move,
   PenTool,
   Props,
   Square,
   Trello,
   Type,
-  XCircle
+  Slash
 } from "react-feather";
 
 import { ICSSRule } from "../../models/CSSRule";
@@ -278,6 +280,27 @@ export const StyleInspector: FunctionComponent = observer(() => {
               />
             </Menu>
           </li>
+          <li>
+            <ButtonGroup
+              label="Fit"
+              render={rule =>
+                (({
+                  "object-none": <Slash size={13} />,
+                  "object-scale-down": <Minimize2 size={13} />,
+                  "object-contain": <Minimize size={13} />,
+                  "object-cover": <Maximize size={13} />,
+                  "object-fill": <Maximize2 size={13} />
+                } as any)[rule.className])
+              }
+              rules={[
+                store.cssRuleByClassName["object-none"],
+                store.cssRuleByClassName["object-scale-down"],
+                store.cssRuleByClassName["object-contain"],
+                store.cssRuleByClassName["object-cover"],
+                store.cssRuleByClassName["object-fill"]
+              ]}
+            />
+          </li>
         </ol>
       </li>
 
@@ -316,7 +339,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               render={rule => {
                 return ({
                   "float-left": <ArrowLeftCircle size={13} />,
-                  "float-none": <XCircle size={13} />,
+                  "float-none": <Slash size={13} />,
                   "float-right": <ArrowRightCircle size={13} />
                 } as any)[rule.className];
               }}
