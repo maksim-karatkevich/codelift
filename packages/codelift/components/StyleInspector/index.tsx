@@ -17,6 +17,7 @@ import {
   ArrowUpRight,
   Check,
   Crosshair,
+  Grid,
   Image,
   Layout,
   Loader,
@@ -28,10 +29,10 @@ import {
   Move,
   PenTool,
   Props,
+  Slash,
   Square,
   Trello,
-  Type,
-  Slash
+  Type
 } from "react-feather";
 
 import { ICSSRule } from "../../models/CSSRule";
@@ -657,6 +658,38 @@ export const StyleInspector: FunctionComponent = observer(() => {
               label="Stroke"
               render={rule => <Check size={13} />}
               rules={store.findRulesByStyle("stroke")}
+            />
+          </li>
+        </ol>
+      </li>
+
+      {/* TODO Hide unless `table` is selected */}
+      <li>
+        <Heading Icon={Grid}>Table</Heading>
+
+        <ol>
+          <li>
+            <ButtonGroup
+              label="Border"
+              render={rule =>
+                (({
+                  "border-collapse": <Square size={13} />,
+                  "border-separate": <Grid size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("border-collapse")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Layout"
+              render={rule =>
+                (({
+                  "table-auto": <Maximize2 size={13} />,
+                  "table-fixed": <Lock size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("table-layout")}
             />
           </li>
         </ol>
