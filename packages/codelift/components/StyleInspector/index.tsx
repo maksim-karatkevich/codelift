@@ -56,6 +56,7 @@ const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
   </label>
 );
 
+// TODO Move hover: highlight to <li>
 export const StyleInspector: FunctionComponent = observer(() => {
   const store = useStore();
 
