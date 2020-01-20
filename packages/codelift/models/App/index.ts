@@ -310,6 +310,12 @@ export const App = types
           cssText,
           selectorText,
           style: Object.values(style).reduce((acc, property) => {
+            // Some propeties have been deprecated:
+            // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
+            if (["-moz-box-ordinal-group"].includes(property)) {
+              return acc;
+            }
+
             // Remove prefixes
             property = property.replace("-moz-", "").replace("-webkit-", "");
             // Only valid rules will be set, so there shouldn't be collissions

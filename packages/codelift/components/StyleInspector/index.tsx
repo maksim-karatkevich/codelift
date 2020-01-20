@@ -193,6 +193,12 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
+            <SliderMenu
+              label="Order"
+              items={[{ rules: store.findRulesByStyle("order") }]}
+            />
+          </li>
+          <li>
             <ButtonGroup
               label="Shrink"
               render={rule => {
