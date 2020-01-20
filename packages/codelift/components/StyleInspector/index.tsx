@@ -17,6 +17,8 @@ import {
   ArrowUpRight,
   Check,
   Crosshair,
+  Eye,
+  EyeOff,
   Grid,
   Image,
   Layout,
@@ -558,6 +560,18 @@ export const StyleInspector: FunctionComponent = observer(() => {
             <Select
               label="Shadow"
               rules={store.findRulesByStyle("box-shadow")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Visibility"
+              render={rule =>
+                (({
+                  invisible: <EyeOff size={13} />,
+                  visible: <Eye size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("visibility")}
             />
           </li>
         </ol>
