@@ -76,7 +76,10 @@ export const createRulesFromDocument = (document: HTMLDocument) => {
         };
       }
 
-      Object.values(style).forEach(property => {
+      // Firefox can use Object.values(style) to iterate over styles.
+      // Edge returns 519 empty "" strings. Array.from seems to work...
+      // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule/style
+      Array.from(style).forEach(property => {
         // Some propeties have been deprecated:
         // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
         if (["-moz-box-ordinal-group"].includes(property)) {
