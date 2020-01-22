@@ -609,6 +609,17 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("cursor")}
             />
           </li>
+          <li>
+            <ButtonGroup
+              label="Outline"
+              render={rule =>
+                (({
+                  "outline-none": <Check size={13} />
+                } as any)[rule.className])
+              }
+              rules={[store.cssRuleByClassName["outline-none"]]}
+            />
+          </li>
         </ol>
       </li>
 
