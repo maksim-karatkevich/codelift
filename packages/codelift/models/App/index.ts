@@ -2,7 +2,7 @@ import { groupBy, sortBy } from "lodash";
 import { Instance, types } from "mobx-state-tree";
 import { SyntheticEvent } from "react";
 
-import { CSSRule, ICSSRule } from "../CSSRule";
+import { createRulesFromDocument, CSSRule, ICSSRule } from "../CSSRule";
 import {
   createReactNode,
   getReactInstance,
@@ -277,54 +277,7 @@ export const App = types
         return;
       }
 
-      const styleSheets = [...self.document.styleSheets].filter(
-        styleSheet => styleSheet.constructor.name === "CSSStyleSheet"
-      );
-
-      const cssStyleRules = styleSheets
-        .reduce((acc, styleSheet) => {
-          const cssRules = [...(styleSheet as CSSStyleSheet).cssRules].filter(
-            cssRule => cssRule.constructor.name === "CSSStyleRule"
-          );
-
-          return acc.concat(cssRules as CSSStyleRule[]);
-        }, [] as CSSStyleRule[])
-        // ? Sorting doesn't seem very useful (yet)
-        // .sort((a, b) => {
-        //   const [aString, aNumber] = a.selectorText.split(/(\d+$)/);
-        //   const [bString, bNumber] = b.selectorText.split(/(\d+$)/);
-
-        //   return (
-        //     aString.localeCompare(bString) || Number(aNumber) - Number(bNumber)
-        //   );
-        // })
-        .filter(cssStyleRule => {
-          // Only show utility class
-          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
-        });
-
-      const cssRules = cssStyleRules.map(cssStyleRule => {
-        const { cssText, selectorText, style } = cssStyleRule;
-
-        return CSSRule.create({
-          cssText,
-          selectorText,
-          style: Object.values(style).reduce((acc, property) => {
-            // Some propeties have been deprecated:
-            // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
-            if (["-moz-box-ordinal-group"].includes(property)) {
-              return acc;
-            }
-
-            // Remove prefixes
-            property = property.replace("-moz-", "").replace("-webkit-", "");
-            // Only valid rules will be set, so there shouldn't be collissions
-            acc[property] = style[property as any];
-
-            return acc;
-          }, {} as { [property: string]: string })
-        });
-      });
+      const cssRules = createRulesFromDocument(self.document);
 
       self.cssRules.replace(cssRules);
     },
