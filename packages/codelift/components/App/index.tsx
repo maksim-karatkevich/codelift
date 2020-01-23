@@ -79,7 +79,7 @@ export const App: FunctionComponent = observer(() => {
         </Box>
 
         <Sidebar key="CSS">
-          <StyleInspector />
+          {store.selected?.isElement && <StyleInspector />}
         </Sidebar>
       </Grid>
     </Provider>

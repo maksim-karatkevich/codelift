@@ -69,39 +69,42 @@ export const Search: FunctionComponent = observer(() => {
         value={store.query}
         {...getInputProps({ ref: searchRef })}
       />
-      <ul hidden={!isOpen} {...getMenuProps()}>
-        {store.groupedCSSRules.map(
-          ([group, items]) =>
-            items.length && (
-              <React.Fragment key={`group-${group}`}>
-                <li
-                  className="bg-gray-800 flex items-center shadow py-1 px-2 sticky text-sm text-white top-0"
-                  key={group}
-                >
-                  <label className="flex-grow truncate">{group}</label>
-                  <small className="bg-gray-900 opacity-75 px-2 rounded-full shadow-inner text-white">
-                    {items.length}
-                  </small>
-                </li>
 
-                {items.map(item => (
-                  <li key={item.className}>
-                    <button
-                      className={`font-mono text-left text-xs px-2 py-1 ${
-                        item.isApplied ? "text-white" : "text-gray-400"
-                      }  w-full ${
-                        highlightedIndex === index ? "bg-gray-600" : ""
-                      }`}
-                      {...getItemProps({ item, index: index++ })}
-                    >
-                      {item.className}
-                    </button>
+      {isOpen && (
+        <ul {...getMenuProps()}>
+          {store.groupedCSSRules.map(
+            ([group, items]) =>
+              items.length && (
+                <React.Fragment key={`group-${group}`}>
+                  <li
+                    className="bg-gray-800 flex items-center shadow py-1 px-2 sticky text-sm text-white top-0"
+                    key={group}
+                  >
+                    <label className="flex-grow truncate">{group}</label>
+                    <small className="bg-gray-900 opacity-75 px-2 rounded-full shadow-inner text-white">
+                      {items.length}
+                    </small>
                   </li>
-                ))}
-              </React.Fragment>
-            )
-        )}
-      </ul>
+
+                  {items.map(item => (
+                    <li key={item.className}>
+                      <button
+                        className={`font-mono text-left text-xs px-2 py-1 ${
+                          item.isApplied ? "text-white" : "text-gray-400"
+                        }  w-full ${
+                          highlightedIndex === index ? "bg-gray-600" : ""
+                        }`}
+                        {...getItemProps({ item, index: index++ })}
+                      >
+                        {item.className}
+                      </button>
+                    </li>
+                  ))}
+                </React.Fragment>
+              )
+          )}
+        </ul>
+      )}
     </div>
   );
 });

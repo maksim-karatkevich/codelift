@@ -46,12 +46,12 @@ export const Menu: FunctionComponent<MenuProps> = observer(
 
           {icon}
         </label>
-        <div
-          className="absolute bg-gray-100 text-black outline-none shadow-lg z-40 w-full border-b border-black rounded-b"
-          hidden={!isOpen}
-        >
-          {children}
-        </div>
+
+        {isOpen && (
+          <div className="absolute bg-gray-100 text-black outline-none shadow-lg z-40 w-full border-b border-black rounded-b">
+            {children}
+          </div>
+        )}
       </div>
     );
   }

@@ -68,7 +68,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
 
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
-    <ol className="text-gray-400 text-xs" hidden={!store.selected?.isElement}>
+    <ol className="text-gray-400 text-xs">
       <li className="hover:bg-gray-800">
         <Search />
       </li>
