@@ -1,5 +1,5 @@
 import { capitalize, words } from "lodash";
-import { ComponentType, FunctionComponent } from "react";
+import { ComponentType, FunctionComponent, useEffect } from "react";
 import {
   AlignCenter,
   AlignLeft,
@@ -65,6 +65,15 @@ const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
 // TODO Move hover: highlight to <li>
 export const StyleInspector: FunctionComponent = observer(() => {
   const store = useStore();
+
+  useEffect(() => {
+    console.info(
+      "%ccode%clift",
+      "color: #669",
+      "font-style: italic; font-size: 0.8em; top: -.5em;",
+      store.selected?.element?.element
+    );
+  }, [store.selected?.element]);
 
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
