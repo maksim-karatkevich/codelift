@@ -737,6 +737,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("user-select").reverse()}
             />
           </li>
+          <li>
+            <ButtonGroup
+              label="Resize"
+              render={rule =>
+                (({
+                  "resize": <Move size={13} />,
+                  "resize-x": <MoreHorizontal size={13} />,
+                  "resize-y": <MoreVertical size={13} />,
+                  "resize-none": <Slash size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("resize").reverse()}
+            />
+          </li>
         </ol>
       </li>
 
