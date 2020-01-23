@@ -153,6 +153,38 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
+          <li>
+            <Menu
+              label="Overflow"
+              selected={[
+                ...store.findRulesByStyle(["overflow-x", "overflow-y"]),
+                ...store.findRulesByStyle("overflow-x"),
+                ...store.findRulesByStyle("overflow-y")
+              ].find(rule => rule.isApplied)}
+            >
+              <Select
+                label="All"
+                rules={store.findRulesByStyle(["overflow-x", "overflow-y"])}
+              />
+              <Select
+                label="Horizontal"
+                rules={store.findRulesByStyle("overflow-x")}
+              />
+              <Select
+                label="Vertical"
+                rules={store.findRulesByStyle("overflow-y")}
+              />
+              <ButtonGroup
+                label="Momentum Scroll"
+                render={rule =>
+                  (({
+                    "scrolling-touch": <Check size={13} />
+                  } as any)[rule.className])
+                }
+                rules={[store.cssRuleByClassName["scrolling-touch"]]}
+              />
+            </Menu>
+          </li>
         </ol>
       </li>
 
@@ -268,29 +300,6 @@ export const StyleInspector: FunctionComponent = observer(() => {
                 }
               ]}
             />
-          </li>
-          <li>
-            <Menu
-              label="Overflow"
-              selected={[
-                ...store.findRulesByStyle(["overflow-x", "overflow-y"]),
-                ...store.findRulesByStyle("overflow-x"),
-                ...store.findRulesByStyle("overflow-y")
-              ].find(rule => rule.isApplied)}
-            >
-              <Select
-                label="All"
-                rules={store.findRulesByStyle(["overflow-x", "overflow-y"])}
-              />
-              <Select
-                label="Horizontal"
-                rules={store.findRulesByStyle("overflow-x")}
-              />
-              <Select
-                label="Vertical"
-                rules={store.findRulesByStyle("overflow-y")}
-              />
-            </Menu>
           </li>
           {/* TODO Hide when not an img */}
           <li>
