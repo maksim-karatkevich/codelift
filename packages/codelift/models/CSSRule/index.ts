@@ -88,10 +88,19 @@ export const createRulesFromDocument = (document: HTMLDocument) => {
             // Flexbox has replaced box-* properties
             // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/box-direction
             "box-direction",
-            "box-orient"
+            "box-orient",
+            // text-decoration expands into properties that don't have equivalent utilities
+            "text-decoration-color",
+            "text-decoration-style",
+            "text-decoration-thickness"
           ].includes(property)
         ) {
           return;
+        }
+
+        // Collapse text-decoration back into how we know it
+        if (property === "text-decoration-line") {
+          property = "text-decoration";
         }
 
         // Only valid rules will be set, so there shouldn't be collissions
