@@ -573,6 +573,23 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
           <li>
             <ButtonGroup
+              label="Antialiasing"
+              render={rule =>
+                (({
+                  "antialiased": <span className="font-serif">Grayscale</span>,
+                  "subpixel-antialiased": (
+                    <span className="font-serif">Subpixel</span>
+                  )
+                } as any)[rule.className])
+              }
+              rules={[
+                store.cssRuleByClassName["antialiased"],
+                store.cssRuleByClassName["subpixel-antialiased"]
+              ]}
+            />
+          </li>
+          <li>
+            <ButtonGroup
               label="List Type"
               render={rule =>
                 (({
