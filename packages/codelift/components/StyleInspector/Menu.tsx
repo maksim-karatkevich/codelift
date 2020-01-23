@@ -28,10 +28,7 @@ export const Menu: FunctionComponent<MenuProps> = observer(
           className={`${
             isOpen
               ? "bg-white text-black font-bold z-50 shadow"
-              : `bg-gray-900 ${
-                  selected ? "text-white font-bold" : "text-gray-400"
-                }
-            hover:bg-gray-800`
+              : `${selected ? "font-bold" : ""}`
           } relative cursor-pointer flex items-center px-2 h-8 select-none text-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -39,7 +36,7 @@ export const Menu: FunctionComponent<MenuProps> = observer(
           {icon}
         </label>
         <div
-          className="absolute bg-gray-100 outline-none shadow-lg z-40 w-full border-b border-black"
+          className="absolute bg-gray-100 text-black outline-none shadow-lg z-40 w-full border-b border-black rounded-b"
           hidden={!isOpen}
         >
           {children}

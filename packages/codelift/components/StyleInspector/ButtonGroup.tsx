@@ -26,7 +26,7 @@ export const ButtonGroup: FunctionComponent<ButtonGroupProps> = observer(
         {label && (
           <label
             className={`flex flex-grow h-8 items-center select-none ${
-              selected ? "text-white font-bold" : "text-gray-400"
+              selected ? "font-bold" : ""
             }`}
           >
             {label}
