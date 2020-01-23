@@ -80,34 +80,41 @@ export const createRulesFromDocument = (document: HTMLDocument) => {
       // Edge returns 519 empty "" strings. Array.from seems to work...
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule/style
       Array.from(style).forEach(property => {
+        // Remove prefixes
+        let normalizedProperty = property
+          .replace("-moz-", "")
+          .replace("-webkit-", "");
+
         if (
           [
             // Some properties have been deprecated:
             // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
-            "-moz-box-ordinal-group",
             // Flexbox has replaced box-* properties
             // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/box-direction
+            "box-align",
             "box-direction",
+            "box-flex",
+            "box-flex-group",
+            "box-lines",
+            "box-ordinal-group",
             "box-orient",
+            "box-pack",
             // text-decoration expands into properties that don't have equivalent utilities
             "text-decoration-color",
             "text-decoration-style",
             "text-decoration-thickness"
-          ].includes(property)
+          ].includes(normalizedProperty)
         ) {
           return;
         }
 
         // Collapse text-decoration back into how we know it
-        if (property === "text-decoration-line") {
-          property = "text-decoration";
+        if (normalizedProperty === "text-decoration-line") {
+          normalizedProperty = "text-decoration";
         }
 
         // Only valid rules will be set, so there shouldn't be collissions
-        map[className].style[
-          // Remove prefixes
-          property.replace("-moz-", "").replace("-webkit-", "")
-        ] = style[property as any];
+        map[className].style[normalizedProperty] = style[property as any];
       });
     });
   });
