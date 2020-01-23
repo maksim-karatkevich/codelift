@@ -538,6 +538,25 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           <li>
+            <ButtonGroup
+              label="Word Break"
+              render={rule =>
+                (({
+                  "break-normal": <span className="font-serif">Auto</span>,
+                  "break-words": <span className="font-serif">Words</span>,
+                  "break-all": <span className="font-serif">All</span>,
+                  "truncate": <span className="font-serif">&hellip;</span>
+                } as any)[rule.className])
+              }
+              rules={[
+                store.cssRuleByClassName["break-normal"],
+                store.cssRuleByClassName["break-words"],
+                store.cssRuleByClassName["break-all"],
+                store.cssRuleByClassName["truncate"]
+              ]}
+            />
+          </li>
+          <li>
             <Select
               label="Whitespace"
               rules={store.findRulesByStyle("white-space")}
