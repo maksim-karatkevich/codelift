@@ -710,6 +710,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
           <li>
             <ButtonGroup
+              label="Pointer Events"
+              render={rule =>
+                (({
+                  "pointer-events-auto": (
+                    <span className="font-serif italic">Auto</span>
+                  ),
+                  "pointer-events-none": <Slash size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("pointer-events").reverse()}
+            />
+          </li>
+          <li>
+            <ButtonGroup
               label="Select Text"
               render={rule =>
                 (({
