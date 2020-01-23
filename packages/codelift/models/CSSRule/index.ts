@@ -80,9 +80,17 @@ export const createRulesFromDocument = (document: HTMLDocument) => {
       // Edge returns 519 empty "" strings. Array.from seems to work...
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule/style
       Array.from(style).forEach(property => {
-        // Some propeties have been deprecated:
-        // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
-        if (["-moz-box-ordinal-group"].includes(property)) {
+        if (
+          [
+            // Some properties have been deprecated:
+            // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-box-ordinal-group
+            "-moz-box-ordinal-group",
+            // Flexbox has replaced box-* properties
+            // @see: https://developer.mozilla.org/en-US/docs/Web/CSS/box-direction
+            "box-direction",
+            "box-orient"
+          ].includes(property)
+        ) {
           return;
         }
 
