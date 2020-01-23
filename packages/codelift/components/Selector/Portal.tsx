@@ -24,16 +24,11 @@ export const Portal: FunctionComponent<PortalProps> = observer(({ node }) => {
         filter: `grayscale(${node === store.selected ? 0 : 1})`,
         height: bottom - top,
         left: left + store.contentWindow.scrollX,
-        opacity:
-          store.selected &&
-          store.selected.element &&
-          store.selected.element.isPreviewing
-            ? 0
-            : 1,
+        opacity: store.selected?.element?.isPreviewing ? 0 : 1,
         pointerEvents: "none",
         position: "absolute",
         top: top + store.contentWindow.scrollY,
-        transition: "all 200ms ease-in-out",
+        transition: "all 100ms ease-in-out",
         width: right - left,
         zIndex: 40
       }}

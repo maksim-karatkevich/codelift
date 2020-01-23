@@ -11,6 +11,7 @@ export enum GROUP {
   TYPOGRAPHY = "Typography"
 }
 
+// TODO groups should be by property instead of className
 export const classNameGroups: {
   [pattern: string]: string;
 } = {

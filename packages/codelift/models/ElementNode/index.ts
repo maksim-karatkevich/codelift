@@ -1,6 +1,7 @@
+import { autorun } from "mobx";
 import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 
-import { ICSSRule } from "../CSSRule";
+import { CSSRule, ICSSRule } from "../CSSRule";
 import { IApp } from "../App";
 
 export interface IElementNode extends Instance<typeof ElementNode> {}
@@ -23,26 +24,48 @@ export const ElementNode = types
   .model("ElementNode", {
     classNames: types.array(types.string),
     childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
-    isPreviewing: false,
+    previewedRule: types.maybeNull(types.safeReference(CSSRule)),
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
     element: document.createElement("null")
   }))
   .views(self => ({
-    get componentName() {
-      if (!this.reactElement) {
-        return undefined;
+    get className() {
+      const classNames = new Set(self.classNames);
+
+      // When not previewing, return the original className value
+      if (!self.previewedRule) {
+        return Array.from(classNames).join(" ");
       }
 
+      const hashStyles = (style: any) => String(Object.keys(style));
+      const previewHash = hashStyles(self.previewedRule.style);
+
+      // Remove overlapping classes that style the same properties
+      // ! This is O(n) and potentially slow.
+      // !Instead, we need a map of cssRulesByClassName, cssRulesByKeys
+      this.store.cssRules.forEach(rule => {
+        const sameStyles = hashStyles(rule.style) === previewHash;
+
+        if (sameStyles && classNames.has(rule.className)) {
+          classNames.delete(rule.className);
+        }
+      });
+
+      // When previewing, only add the class if it doesn't exist already
+      if (!self.classNames.includes(self.previewedRule.className)) {
+        classNames.add(self.previewedRule.className);
+      }
+
+      return Array.from(classNames).join(" ");
+    },
+
+    get componentName() {
       return this.reactElement.return.type.name;
     },
 
     get debugSource() {
-      if (!this.reactElement) {
-        return undefined;
-      }
-
       if (!this.reactElement._debugSource) {
         throw new Error(`Selected element is missing _debugSource property`);
       }
@@ -60,6 +83,10 @@ export const ElementNode = types
 
     get id() {
       return self.element.getAttribute("id");
+    },
+
+    get isPreviewing() {
+      return Boolean(self.previewedRule);
     },
 
     get isSelected(): boolean {
@@ -112,45 +139,26 @@ export const ElementNode = types
     }
   }))
   .actions(self => ({
-    applyRule(rule: ICSSRule) {
-      if (self.element) {
-        if (self.hasRule(rule)) {
-          self.element.classList.remove(rule.className);
-        } else {
-          self.element.classList.add(rule.className);
-        }
-
-        self.classNames.replace([...self.element.classList]);
-      }
+    afterCreate() {
+      autorun(() => {
+        // Keep element className in sync with computed (preview) one
+        self.element.className = self.className;
+      });
     },
 
-    cancelRule() {
-      if (self.element) {
-        self.element.className = self.classNames.join(" ");
-      }
-
-      self.isPreviewing = false;
+    cancelPreview() {
+      self.previewedRule = null;
     },
 
     previewRule(rule: ICSSRule) {
-      this.cancelRule();
-
-      if (self.element) {
-        if (self.hasRule(rule)) {
-          self.element.classList.remove(rule.className);
-        } else {
-          self.element.classList.add(rule.className);
-        }
-
-        self.isPreviewing = true;
-      }
+      self.previewedRule = rule;
     },
 
     setElement(element: HTMLElement) {
       self.element = element;
 
-      self.childNodes.replace(createChildNodes(element));
       self.classNames.replace([...element.classList]);
+      self.childNodes.replace(createChildNodes(element));
     }
   }));
 

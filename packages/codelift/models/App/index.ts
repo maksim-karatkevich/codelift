@@ -2,7 +2,7 @@ import { groupBy, sortBy } from "lodash";
 import { Instance, types } from "mobx-state-tree";
 import { SyntheticEvent } from "react";
 
-import { CSSRule, ICSSRule } from "../CSSRule";
+import { createRulesFromDocument, CSSRule, ICSSRule } from "../CSSRule";
 import {
   createReactNode,
   getReactInstance,
@@ -15,6 +15,8 @@ export interface IApp extends Instance<typeof App> {}
 
 export const App = types
   .model("App", {
+    // TODO Use `types.map` for faster lookup by className:
+    // https://mobx.js.org/refguide/map.html
     cssRules: types.array(CSSRule),
     query: "",
     reactNodes: types.array(types.safeReference(ReactNode)),
@@ -45,6 +47,48 @@ export const App = types
       }
 
       return this.queriedCSSRules.filter(selected.element.hasRule);
+    },
+
+    get cssRulesByStyle() {
+      return self.cssRules.reduce(
+        (acc, cssRule) => {
+          const key = String(Object.keys(cssRule.style).sort());
+
+          if (!acc[key]) {
+            acc[key] = [];
+          }
+
+          // TODO Support pseudo selectors
+          if (cssRule.className.indexOf(":") === -1) {
+            acc[key].push(cssRule);
+          }
+
+          return acc;
+        },
+        {} as {
+          [key: string]: ICSSRule[];
+        }
+      );
+    },
+
+    get cssRuleByClassName() {
+      return self.cssRules.reduce(
+        (acc, cssRule) => {
+          acc[cssRule.className] = cssRule;
+
+          return acc;
+        },
+        {} as {
+          [key: string]: ICSSRule;
+        }
+      );
+    },
+
+    findRulesByStyle(style: string | string[]) {
+      const styles = Array.isArray(style) ? style : [style];
+      const key = String(styles.sort());
+
+      return this.cssRulesByStyle[key] ?? [];
     },
 
     findReactNodeByElement(element: HTMLElement) {
@@ -82,6 +126,10 @@ export const App = types
           return filtered.filter(rule => tests.some(test => test(rule)));
         },
         [...cssRules]
+          // Remove duplicates
+          // .filter(match => !this.appliedRules.includes(match))
+          // Remove :hover, :active, etc.
+          .filter(match => match.className.indexOf(":") === -1)
       );
 
       return sortBy(matching, [
@@ -94,16 +142,15 @@ export const App = types
       ]);
     },
 
+    get flattenedCSSRules() {
+      return this.groupedCSSRules.reduce((acc, [group, items]) => {
+        return acc.concat(items);
+      }, [] as ICSSRule[]);
+    },
+
     get groupedCSSRules() {
       return Object.entries(
-        groupBy(
-          this.queriedCSSRules
-            // Remove duplicates
-            // .filter(match => !this.appliedRules.includes(match))
-            // Remove :hover, :active, etc.
-            .filter(match => match.className.indexOf(":") === -1),
-          ({ group = "Other " }) => group
-        )
+        groupBy(this.queriedCSSRules, ({ group = "Other " }) => group)
       );
     },
 
@@ -230,47 +277,7 @@ export const App = types
         return;
       }
 
-      const styleSheets = [...self.document.styleSheets].filter(
-        styleSheet => styleSheet.constructor.name === "CSSStyleSheet"
-      );
-
-      const cssStyleRules = styleSheets
-        .reduce((acc, styleSheet) => {
-          const cssRules = [...(styleSheet as CSSStyleSheet).cssRules].filter(
-            cssRule => cssRule.constructor.name === "CSSStyleRule"
-          );
-
-          return acc.concat(cssRules as CSSStyleRule[]);
-        }, [] as CSSStyleRule[])
-        // ? Sorting doesn't seem very useful (yet)
-        // .sort((a, b) => {
-        //   const [aString, aNumber] = a.selectorText.split(/(\d+$)/);
-        //   const [bString, bNumber] = b.selectorText.split(/(\d+$)/);
-
-        //   return (
-        //     aString.localeCompare(bString) || Number(aNumber) - Number(bNumber)
-        //   );
-        // })
-        .filter(cssStyleRule => {
-          // Only show utility class
-          return cssStyleRule.selectorText.lastIndexOf(".") === 0;
-        });
-
-      const cssRules = cssStyleRules.map(cssStyleRule => {
-        const { cssText, selectorText, style } = cssStyleRule;
-
-        return CSSRule.create({
-          cssText,
-          selectorText,
-          style: Object.values(style).reduce(
-            (acc, property) => ({
-              ...acc,
-              [property]: style[property as any]
-            }),
-            {}
-          )
-        });
-      });
+      const cssRules = createRulesFromDocument(self.document);
 
       self.cssRules.replace(cssRules);
     },

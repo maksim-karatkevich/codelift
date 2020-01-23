@@ -9,12 +9,12 @@ import {
 import React, { FunctionComponent, useEffect } from "react";
 import { createClient, Provider } from "urql";
 
-import { CSSInspector } from "../CSSInspector";
 import { Selector } from "../Selector";
 import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
 import { Error } from "./Error";
 import { Sidebar } from "./Sidebar";
+import { StyleInspector } from "../StyleInspector";
 
 const client = createClient({ url: "/api" });
 
@@ -79,7 +79,7 @@ export const App: FunctionComponent = observer(() => {
         </Box>
 
         <Sidebar key="CSS">
-          <CSSInspector />
+          <StyleInspector />
         </Sidebar>
       </Grid>
     </Provider>

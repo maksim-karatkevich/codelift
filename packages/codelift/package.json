@@ -23,6 +23,7 @@
     "classnames": "^2.2.6",
     "core-js": "^2.6.10",
     "cross-spawn": "^7.0.1",
+    "downshift": "^4.0.1",
     "emotion-theming": "^10.0.19",
     "graphql": "^14.5.8",
     "jscodeshift": "^0.6.4",
@@ -31,7 +32,7 @@
     "mobx": "^5.15.0",
     "mobx-react-lite": "^1.5.1",
     "mobx-state-tree": "^3.15.0",
-    "next": "^9.1.4",
+    "next": "^9.1.6",
     "open": "^7.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -48,7 +49,7 @@
     "autoprefixer": "^9.6.5",
     "cssnano": "^4.1.0",
     "postcss-easy-import": "^3.0.0",
-    "tailwindcss": "^1.0.1",
+    "tailwindcss": "^1.1.4",
     "typescript": "^3.7.2"
   }
 }
