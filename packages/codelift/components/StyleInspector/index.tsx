@@ -66,20 +66,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
     <ol className="text-gray-400 text-xs" hidden={!store.selected?.isElement}>
-      <li>
+      <li className="hover:bg-gray-800">
         <Search />
       </li>
       <li>
         <Heading Icon={Layout}>Layout</Heading>
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Display"
               render={rule => capitalize(words(rule.className).join(" "))}
               rules={store.findRulesByStyle("display")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Margin"
               items={[
@@ -113,7 +113,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Padding"
               items={[
@@ -153,7 +153,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Menu
               label="Overflow"
               selected={[
@@ -193,46 +193,46 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Trello}>Flexbox</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Direction"
               rules={store.findRulesByStyle("flex-direction")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select label="Wrap" rules={store.findRulesByStyle("flex-wrap")} />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Align Items"
               rules={store.findRulesByStyle("align-items")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Align Content"
               rules={store.findRulesByStyle("align-content")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Align Self"
               rules={store.findRulesByStyle("align-self")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Justify Content"
               rules={store.findRulesByStyle("justify-content")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Order"
               items={[{ rules: store.findRulesByStyle("order") }]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Shrink"
               render={rule => {
@@ -244,7 +244,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("flex-shrink")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Grow"
               render={rule => {
@@ -263,7 +263,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Move}>Size</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Width"
               items={[
@@ -282,7 +282,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Height"
               items={[
@@ -302,7 +302,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
             />
           </li>
           {/* TODO Hide when not an img */}
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Fit"
               render={rule =>
@@ -330,14 +330,14 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Crosshair}>Position</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Position"
               rules={store.findRulesByStyle("position")}
             />
           </li>
           {/* TODO Hide when not an img */}
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonMenu
               label="Object Position"
               groups={3}
@@ -367,7 +367,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Pinning"
               render={rule => {
@@ -386,7 +386,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Float"
               render={rule => {
@@ -403,7 +403,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Z Index"
               items={[{ rules: store.findRulesByStyle("z-index") }]}
@@ -416,19 +416,19 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Image}>Background</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <Palette
               label="Color"
               rules={store.findRulesByStyle("background-color")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Attachment"
               rules={store.findRulesByStyle("background-attachment")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonMenu
               label="Position"
               groups={3}
@@ -458,13 +458,13 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Repeat"
               rules={store.findRulesByStyle("background-repeat")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Size"
               rules={store.findRulesByStyle("background-size")}
@@ -477,29 +477,29 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Type}>Typography</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <Palette label="Color" rules={store.findRulesByStyle("color")} />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Font"
               rules={store.findRulesByStyle("font-family")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             {/* TODO Cannot use SelectMenu because the ordering is weird */}
             <Select
               label="Weight"
               rules={store.findRulesByStyle("font-weight")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Size"
               items={[{ rules: store.findRulesByStyle("font-size") }]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Style"
               render={rule => (
@@ -508,7 +508,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("font-style")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Decoration"
               render={rule => (
@@ -517,7 +517,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("text-decoration")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Transform"
               render={rule =>
@@ -531,7 +531,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("text-transform")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Align"
               render={rule =>
@@ -545,26 +545,26 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("text-align")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Vertical Align"
               render={rule => rule.className}
               rules={store.findRulesByStyle("vertical-align")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Letter Spacing"
               items={[{ rules: store.findRulesByStyle("letter-spacing") }]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Line Height"
               items={[{ rules: store.findRulesByStyle("line-height") }]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Word Break"
               render={rule =>
@@ -583,13 +583,13 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Whitespace"
               rules={store.findRulesByStyle("white-space")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Antialiasing"
               render={rule =>
@@ -606,7 +606,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="List Type"
               render={rule =>
@@ -619,7 +619,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("list-style-type").reverse()}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="List Position"
               render={rule =>
@@ -638,19 +638,19 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Loader}>Effects</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Opacity"
               items={[{ rules: store.findRulesByStyle("opacity") }]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Shadow"
               rules={store.findRulesByStyle("box-shadow")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Visibility"
               render={rule =>
@@ -669,7 +669,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={MousePointer}>Interactivity</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Customize Appearance"
               render={rule =>
@@ -680,7 +680,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("appearance")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Cursor"
               render={rule => (
@@ -697,7 +697,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("cursor")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Outline"
               render={rule =>
@@ -708,7 +708,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={[store.cssRuleByClassName["outline-none"]]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Pointer Events"
               render={rule =>
@@ -722,7 +722,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("pointer-events").reverse()}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Select Text"
               render={rule =>
@@ -737,7 +737,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("user-select").reverse()}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Resize"
               render={rule =>
@@ -758,7 +758,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Square}>Border</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Size"
               items={[
@@ -790,7 +790,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Select
               label="Style"
               rules={store.findRulesByStyle([
@@ -801,7 +801,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ])}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <Palette
               label="Color"
               rules={store.findRulesByStyle([
@@ -812,7 +812,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ])}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <SliderMenu
               label="Radius"
               items={[
@@ -851,14 +851,14 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={PenTool}>SVG</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Fill"
               render={rule => <Check size={13} />}
               rules={store.findRulesByStyle("fill")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Stroke"
               render={rule => <Check size={13} />}
@@ -873,7 +873,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Grid}>Table</Heading>
 
         <ol>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Border"
               render={rule =>
@@ -885,7 +885,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("border-collapse")}
             />
           </li>
-          <li>
+          <li className="hover:bg-gray-800">
             <ButtonGroup
               label="Layout"
               render={rule =>
