@@ -501,6 +501,24 @@ export const StyleInspector: FunctionComponent = observer(() => {
           </li>
           <li>
             <ButtonGroup
+              label="Style"
+              render={rule => (
+                <span className={`font-serif ${rule.className}`}>Aa</span>
+              )}
+              rules={store.findRulesByStyle("font-style")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="Decoration"
+              render={rule => (
+                <span className={`font-serif ${rule.className}`}>Aa</span>
+              )}
+              rules={store.findRulesByStyle("text-decoration")}
+            />
+          </li>
+          <li>
+            <ButtonGroup
               label="Transform"
               render={rule =>
                 (({
