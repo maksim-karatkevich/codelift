@@ -392,14 +392,14 @@ export const StyleInspector: FunctionComponent = observer(() => {
               render={rule => {
                 return ({
                   "float-left": <ArrowLeftCircle size={13} />,
-                  "float-none": <Slash size={13} />,
-                  "float-right": <ArrowRightCircle size={13} />
+                  "float-right": <ArrowRightCircle size={13} />,
+                  "float-none": <Slash size={13} />
                 } as any)[rule.className];
               }}
               rules={[
                 store.cssRuleByClassName["float-left"],
-                store.cssRuleByClassName["float-none"],
-                store.cssRuleByClassName["float-right"]
+                store.cssRuleByClassName["float-right"],
+                store.cssRuleByClassName["float-none"]
               ]}
             />
           </li>
