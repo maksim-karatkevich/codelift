@@ -63,7 +63,7 @@ export const Search: FunctionComponent = observer(() => {
     <div {...getComboboxProps({})}>
       <input
         autoFocus
-        className="bg-gray-200 text-base text-gray-600 focus:bg-white focus:text-black p-2 focus:shadow-inner w-full"
+        className="bg-gray-200 text-sm text-gray-600 focus:bg-white focus:text-black p-2 focus:shadow-inner w-full"
         disabled={res.fetching}
         placeholder="Search..."
         value={store.query}
