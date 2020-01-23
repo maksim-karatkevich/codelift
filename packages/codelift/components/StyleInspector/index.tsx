@@ -708,6 +708,21 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={[store.cssRuleByClassName["outline-none"]]}
             />
           </li>
+          <li>
+            <ButtonGroup
+              label="Select Text"
+              render={rule =>
+                (({
+                  "select-none": <Slash size={13} />
+                } as any)[rule.className] ?? (
+                  <span className="font-serif italic">
+                    {capitalize(words(rule.className)[1])}
+                  </span>
+                ))
+              }
+              rules={store.findRulesByStyle("user-select").reverse()}
+            />
+          </li>
         </ol>
       </li>
 
