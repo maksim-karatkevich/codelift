@@ -32,7 +32,18 @@ export const Menu: FunctionComponent<MenuProps> = observer(
           } relative cursor-pointer flex items-center px-2 h-8 select-none text-xs`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="w-full">{label}</span>
+          <span className="w-full">
+            {label}
+            {selected && (
+              <span
+                className="pl-1 text-green-600"
+                style={{ textShadow: "0px 0px 3px rgba(66,153,225)" }}
+              >
+                •
+              </span>
+            )}
+          </span>
+
           {icon}
         </label>
         <div
