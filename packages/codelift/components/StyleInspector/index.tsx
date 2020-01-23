@@ -571,6 +571,31 @@ export const StyleInspector: FunctionComponent = observer(() => {
               rules={store.findRulesByStyle("white-space")}
             />
           </li>
+          <li>
+            <ButtonGroup
+              label="List Type"
+              render={rule =>
+                (({
+                  "list-none": <Slash size={13} />,
+                  "list-disc": <span className="font-serif italic">•</span>,
+                  "list-decimal": <span className="font-serif italic">1.</span>
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("list-style-type").reverse()}
+            />
+          </li>
+          <li>
+            <ButtonGroup
+              label="List Position"
+              render={rule =>
+                (({
+                  "list-inside": <AlignJustify size={13} />,
+                  "list-outside": <List size={13} />
+                } as any)[rule.className])
+              }
+              rules={store.findRulesByStyle("list-style-position")}
+            />
+          </li>
         </ol>
       </li>
 
