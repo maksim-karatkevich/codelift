@@ -12,7 +12,7 @@ export const TreeInspector: FunctionComponent = observer(() => {
 
   return (
     <nav
-      className="font-thin min-w-full m-auto h-full overflow-auto text-xs text-gray-400 py-2"
+      className="font-thin text-xs text-gray-400 py-2"
       onMouseLeave={() => store.clearTargeted()}
     >
       <List node={store.rootInstance} />
