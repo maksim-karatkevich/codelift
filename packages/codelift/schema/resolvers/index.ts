@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
+import launchEditor from "react-dev-utils/launchEditor";
 
 import { getNodeAt } from "./utils/getNodeAt";
 import { findAttribute } from "./utils/findAttribute";
@@ -7,6 +8,20 @@ import { setAttribute } from "./utils/setAttribute";
 
 export const resolvers = {
   Mutation: {
+    openInIDE(
+      _: any,
+      args: {
+        fileName: string;
+        lineNumber: number;
+      }
+    ) {
+      const { fileName, lineNumber } = args;
+
+      launchEditor(fileName, lineNumber);
+
+      return true;
+    },
+
     toggleClassName(
       _: any,
       args: {
