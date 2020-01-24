@@ -57,6 +57,7 @@ export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
             }`
       }`}
       onClick={() => store.selectReactNode(node)}
+      onDoubleClick={() => node.openInIDE()}
       onMouseEnter={() => store.targetReactNode(node)}
       style={{ transition: "all 100ms ease-in-out" }}
     >
