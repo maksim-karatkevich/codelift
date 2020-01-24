@@ -13,6 +13,10 @@ export const ReactNode = types
     instance: null as any
   }))
   .views(self => ({
+    get fileName() {
+      return self.instance._debugSource.fileName;
+    },
+
     get isComponent() {
       return typeof self.instance.elementType !== "string";
     },
@@ -23,6 +27,10 @@ export const ReactNode = types
 
     get isUserCode() {
       return Boolean(self.instance._debugSource);
+    },
+
+    get lineNumber() {
+      return self.instance._debugSource.lineNumber;
     },
 
     get name(): string {
