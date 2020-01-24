@@ -15,6 +15,7 @@ import { observer, useStore } from "../../store";
 import { TreeInspector } from "../TreeInspector";
 import { Error } from "./Error";
 import { Sidebar } from "./Sidebar";
+import { ComponentInspector } from "../ComponentInspector";
 import { StyleInspector } from "../StyleInspector";
 
 const client = createClient({ url: "/api" });
@@ -108,6 +109,7 @@ export const App: FunctionComponent = observer(() => {
         </Box>
 
         <Sidebar key="CSS">
+          {store.selected?.isComponent && <ComponentInspector />}
           {store.selected?.isElement && <StyleInspector />}
         </Sidebar>
       </Grid>
