@@ -218,7 +218,6 @@ export const App = types
 
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
-      this.initCSSRules();
       this.initNodes();
       this.reselect();
     },

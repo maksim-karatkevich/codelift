@@ -7,6 +7,7 @@ import {
   useToast
 } from "@chakra-ui/core";
 import React, { FunctionComponent, useEffect } from "react";
+import { GitHub, HelpCircle } from "react-feather";
 import { createClient, Provider } from "urql";
 
 import { Selector } from "../Selector";
@@ -48,25 +49,53 @@ export const App: FunctionComponent = observer(() => {
         style={{ transition: "all 200ms ease-in-out" }}
       >
         <Sidebar key="Tree">
-          {store.root ? (
-            <>
-              <TreeInspector />
-            </>
-          ) : store.error ? (
-            <Error />
-          ) : (
-            <Alert
-              flexDirection="column"
-              paddingY="4"
-              status="info"
-              variant="left-accent"
+          <footer className="order-last text-gray-300 flex font-thin bg-black items-center items-stretch">
+            <a
+              className="flex flex-grow items-center px-2 py-1 hover:text-white hover:bg-gray-800"
+              href="https://github.com/ericclemmons/codelift"
             >
-              <AlertTitle color="white" fontSize="xl">
-                <CircularProgress isIndeterminate size="70%" marginRight="2" />
-                Loading
-              </AlertTitle>
-            </Alert>
-          )}
+              code
+              <small className="text-white font-normal italic underline pl-px">
+                lift
+              </small>
+            </a>
+            <a
+              className="flex items-center px-2 py-1 hover:text-white hover:bg-gray-800"
+              href="https://github.com/ericclemmons/codelift"
+            >
+              <GitHub className="current-color" size={13} />
+            </a>
+            <a
+              className="flex items-center px-2 py-1 hover:text-white hover:bg-gray-800"
+              href="https://github.com/ericclemmons/codelift/issues/new"
+            >
+              <HelpCircle className="current-color" size={13} />
+            </a>
+          </footer>
+
+          <main className="flex-grow overflow-auto shadow-inner">
+            {store.root ? (
+              <TreeInspector />
+            ) : store.error ? (
+              <Error />
+            ) : (
+              <Alert
+                flexDirection="column"
+                paddingY="4"
+                status="info"
+                variant="left-accent"
+              >
+                <AlertTitle color="white" fontSize="xl">
+                  <CircularProgress
+                    isIndeterminate
+                    size="70%"
+                    marginRight="2"
+                  />
+                  Loading
+                </AlertTitle>
+              </Alert>
+            )}
+          </main>
         </Sidebar>
 
         <Box as="main" boxShadow="lg" height="100vh" overflow="auto" zIndex={1}>

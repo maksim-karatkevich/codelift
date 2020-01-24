@@ -66,6 +66,12 @@ const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
 export const StyleInspector: FunctionComponent = observer(() => {
   const store = useStore();
 
+  // When mounted, initialize CSS Rules
+  useEffect(() => {
+    store.initCSSRules();
+  }, []);
+
+  // Log the currently selectly element for easier inspection in DevTools
   useEffect(() => {
     console.info(
       "%ccode%clift",
@@ -77,7 +83,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
 
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
-    <ol className="text-gray-400 text-xs">
+    <ol className="text-gray-400 text-xs overflow-auto">
       <li className="hover:bg-gray-800">
         <Search />
       </li>
