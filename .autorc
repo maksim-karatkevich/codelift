@@ -1,3 +1,7 @@
 {
+  "repo": "codelift",
+  "owner": "ericclemmons",
+  "name": "Eric Clemmons",
+  "email": "eric@smarterspam.com",
   "plugins": ["released"]
 }
