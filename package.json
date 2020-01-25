@@ -1,5 +1,8 @@
 {
   "private": true,
+  "name": "codelift",
+  "repository": "git@github.com:ericclemmons/ericclemmons.git",
+  "author": "Eric Clemmons <eric@smarterspam.com>",
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
