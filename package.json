@@ -14,6 +14,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "auto": "^9.3.1",
+    "concurrently": "^5.0.0",
+    "lerna": "^3.20.2"
   }
 }
