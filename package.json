@@ -3,6 +3,10 @@
   "name": "codelift",
   "repository": "ericclemmons/codelift",
   "author": "Eric Clemmons <eric@smarterspam.com>",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
