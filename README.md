@@ -1,6 +1,6 @@
 # code<sup>_lift_</sup>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Create React App Example](/codelift.next.gif)
@@ -70,6 +70,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://ericclemmons.com/"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" width="50px;" alt=""/><br /><sub><b>Eric Clemmons</b></sub></a><br /><a href="https://github.com/ericclemmons/codelift/commits?author=ericclemmons" title="Code">💻</a></td>
+    <td align="center"><a href="https://aulisi.us"><img src="https://avatars2.githubusercontent.com/u/6629172?v=4" width="50px;" alt=""/><br /><sub><b>​Faizaan</b></sub></a><br /><a href="https://github.com/ericclemmons/codelift/commits?author=aulisius" title="Code">💻</a></td>
   </tr>
 </table>
 
