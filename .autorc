@@ -5,6 +5,7 @@
   "email": "eric@smarterspam.com",
   "plugins": [
     "all-contributors",
+    "first-time-contributor",
     "npm",
     "released"
   ]
