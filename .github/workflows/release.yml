@@ -15,7 +15,7 @@ jobs:
         run: |
           git checkout ${GITHUB_REF:11} --
           git remote rm origin
-          git remote add origin "https://x-access-token:$GH_TOKEN@github.com/ericclemmons/codelift.git"`
+          git remote add origin "https://x-access-token:$GH_TOKEN@github.com/ericclemmons/codelift.git"
           git fetch origin --tags
           git branch --set-upstream-to origin/${GITHUB_REF:11} ${GITHUB_REF:11}
 
