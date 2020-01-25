@@ -19,7 +19,9 @@
     "packages/*"
   ],
   "devDependencies": {
-    "auto": "^9.3.1",
+    "@auto-it/all-contributors": "^9.3.2",
+    "all-contributors-cli": "^6.13.0",
+    "auto": "^9.3.2",
     "concurrently": "^5.0.0",
     "lerna": "^3.20.2"
   }
