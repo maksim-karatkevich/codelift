@@ -7,9 +7,7 @@
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
-    "prerelease": "yarn workspace codelift build",
-    "release": "auto shipit",
-    "postrelease": "git push --follow-tags",
+    "release": "./scripts/release.sh",
     "test": "echo No Tests"
   },
   "workspaces": [
