@@ -8,7 +8,7 @@
     "cra": "cd examples/cra && codelift",
     "next": "cd examples/next && codelift dev",
     "prerelease": "yarn workspace codelift build",
-    "release": "yarn workspace codelift publish",
+    "release": "auto shipit",
     "postrelease": "git push --follow-tags",
     "test": "echo No Tests"
   },
