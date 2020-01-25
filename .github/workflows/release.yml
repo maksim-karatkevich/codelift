@@ -17,7 +17,7 @@ jobs:
           git fetch origin --tags
           git branch --set-upstream-to origin/${GITHUB_REF:11} ${GITHUB_REF:11}
 
-          - name: Use Node.js 12.x
+      - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
