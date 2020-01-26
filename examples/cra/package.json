@@ -1,6 +1,7 @@
 {
-  "name": "cra",
   "private": true,
+  "name": "cra",
+  "version": "0.0.0",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
