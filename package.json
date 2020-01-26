@@ -19,11 +19,11 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@auto-it/all-contributors": "^9.3.2",
-    "@auto-it/first-time-contributor": "^9.3.2",
+    "@auto-it/all-contributors": "^9.4.1",
+    "@auto-it/first-time-contributor": "^9.4.1",
     "all-contributors-cli": "^6.13.0",
-    "auto": "^9.3.2",
-    "concurrently": "^5.0.0",
+    "auto": "^9.4.1",
+    "concurrently": "^5.0.2",
     "lerna": "^3.20.2"
   }
 }
