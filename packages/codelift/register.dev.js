@@ -1,32 +1,36 @@
+// @ts-check
 // Allow access from GUI on another port
 document.domain = window.location.hostname;
 
-const syncPath = () => {
-  const store = window["__CODELIFT__"];
-
-  if (store) {
-    // Sync path after after other Next listeners have fired
-    setTimeout(store.syncPath, 0);
-  }
+const codelift = (action, ...args) => {
+  window.top.postMessage(
+    {
+      source: "codelift",
+      payload: { action, args }
+    },
+    "*"
+  );
 };
+
+codelift("register");
+codelift("setPath", window.location.href.split(window.location.origin).pop());
+
 // Intercept history methods that don't have a listener
 ["pushState", "replaceState"].forEach(method => {
   const original = window.history[method];
 
   window.history[method] = (...args) => {
     original.apply(window.history, args);
-    syncPath();
+    codelift("syncPath");
   };
 });
 
-window.addEventListener("popstate", syncPath);
+window.addEventListener("popstate", () => codelift("syncPath"));
 
+// @ts-ignore
 if (module.hot) {
+  // @ts-ignore
   module.hot.addStatusHandler(status => {
-    const store = window["__CODELIFT__"];
-
-    if (store) {
-      store.handleStatus(status);
-    }
+    codelift("handleStatus", status);
   });
 }

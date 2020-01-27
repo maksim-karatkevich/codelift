@@ -201,8 +201,6 @@ export const App = types
 
       try {
         self.document = iframe.contentWindow.document;
-        // @ts-ignore
-        self.contentWindow["__CODELIFT__"] = self;
         self.error = null;
       } catch (error) {
         self.error = error;
