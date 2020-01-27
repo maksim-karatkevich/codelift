@@ -6,7 +6,6 @@ import {
   Grid,
   useToast
 } from "@chakra-ui/core";
-import { useRouter } from "next/router";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { GitHub, HelpCircle } from "react-feather";
 import { createClient, Provider } from "urql";
@@ -22,7 +21,6 @@ const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
   const store = useStore();
-  const router = useRouter();
   // Only render the initial path to prevent double-reloads.
   const [initialPath] = useState(store.path);
   const toast = useToast();
