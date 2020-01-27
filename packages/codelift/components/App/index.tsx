@@ -6,7 +6,7 @@ import {
   Grid,
   useToast
 } from "@chakra-ui/core";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { GitHub, HelpCircle } from "react-feather";
 import { createClient, Provider } from "urql";
 
@@ -21,9 +21,9 @@ const client = createClient({ url: "/api" });
 
 export const App: FunctionComponent = observer(() => {
   const store = useStore();
+  // Only render the initial path to prevent double-reloads.
+  const [initialPath] = useState(store.path);
   const toast = useToast();
-  const { href, origin } = window.location;
-  const path = href.split(origin).pop();
 
   useEffect(() => {
     if (store.state === "HIDDEN") {
@@ -37,6 +37,19 @@ export const App: FunctionComponent = observer(() => {
       });
     }
   }, [store.state]);
+
+  useEffect(() => {
+    const { path } = store;
+
+    window.history.pushState(
+      {
+        as: path,
+        url: path
+      },
+      path,
+      path
+    );
+  }, [store.path]);
 
   return (
     <Provider value={client}>
@@ -101,7 +114,7 @@ export const App: FunctionComponent = observer(() => {
         <Box as="main" boxShadow="lg" height="100vh" overflow="auto" zIndex={1}>
           <iframe
             onLoad={store.handleFrameLoad}
-            src={`http://localhost:3000${path}`}
+            src={`http://localhost:3000${initialPath}`}
             style={{ width: "100%", height: "100%" }}
             title="Source"
           />
