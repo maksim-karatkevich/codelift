@@ -40,6 +40,19 @@ export const App: FunctionComponent = observer(() => {
     }
   }, [store.state]);
 
+  useEffect(() => {
+    const { path } = store;
+
+    window.history.pushState(
+      {
+        as: path,
+        url: path
+      },
+      path,
+      path
+    );
+  }, [store.path]);
+
   return (
     <Provider value={client}>
       {store.state === "VISIBLE" && <Selector />}
