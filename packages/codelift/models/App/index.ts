@@ -216,9 +216,9 @@ export const App = types
 
       self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
       self.contentWindow.addEventListener("keydown", this.handleKeyPress);
-
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
+      this.syncPath();
       this.initNodes();
       this.reselect();
     },
@@ -332,6 +332,15 @@ export const App = types
         ? self.selected.element.selector
         : undefined;
       self.targeted = undefined;
+    },
+
+    syncPath() {
+      const path =
+        self.contentWindow?.location.href
+          .split(self.contentWindow.window.location.origin)
+          .pop() ?? "/";
+
+      self.path = path;
     },
 
     targetDOMNode(element: HTMLElement) {
