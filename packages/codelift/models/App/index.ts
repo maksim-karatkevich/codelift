@@ -296,6 +296,10 @@ export const App = types
       self.state = "VISIBLE";
     },
 
+    register() {
+      // TODO App has been registered, so references can start being made now
+    },
+
     reselect() {
       const { selector } = self;
 
@@ -334,13 +338,18 @@ export const App = types
       self.targeted = undefined;
     },
 
-    syncPath() {
-      const path =
-        self.contentWindow?.location.href
-          .split(self.contentWindow.window.location.origin)
-          .pop() ?? "/";
-
+    setPath(path: string) {
       self.path = path;
+    },
+
+    syncPath() {
+      const path = self.contentWindow?.location.href
+        .split(self.contentWindow.window.location.origin)
+        .pop();
+
+      if (path) {
+        self.path = path;
+      }
     },
 
     targetDOMNode(element: HTMLElement) {
