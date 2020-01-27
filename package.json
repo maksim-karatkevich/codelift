@@ -10,6 +10,7 @@
   "scripts": {
     "build": "cd packages/codelift && yarn build",
     "cra": "cd examples/cra && codelift",
+    "cra-fast": "cd examples/cra-fast && codelift",
     "next": "cd examples/next && codelift dev",
     "release": "auto shipit",
     "test": "echo No Tests"
