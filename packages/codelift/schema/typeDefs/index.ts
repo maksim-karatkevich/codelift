@@ -3,6 +3,20 @@ import { gql } from "apollo-server-micro";
 export const typeDefs = gql`
   type Mutation {
     """
+    Open file in IDE at specific line
+    """
+    openInIDE(
+      """
+      element._reactInstance._debugSource.fileName
+      """
+      fileName: String!
+      """
+      element._reactInstance._debugSource.lineNumber
+      """
+      lineNumber: Int!
+    ): Boolean
+
+    """
     Add/remove the provided className from the Component
     """
     toggleClassName(

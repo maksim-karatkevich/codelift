@@ -13,6 +13,10 @@ export const ReactNode = types
     instance: null as any
   }))
   .views(self => ({
+    get fileName() {
+      return self.instance._debugSource.fileName;
+    },
+
     get isComponent() {
       return typeof self.instance.elementType !== "string";
     },
@@ -23,6 +27,10 @@ export const ReactNode = types
 
     get isUserCode() {
       return Boolean(self.instance._debugSource);
+    },
+
+    get lineNumber() {
+      return self.instance._debugSource.lineNumber;
     },
 
     get name(): string {
@@ -40,12 +48,27 @@ export const ReactNode = types
     }
   }))
   .actions(self => ({
+    openInIDE() {
+      const query = `
+        mutation OpenInIDE($fileName: String!, $lineNumber: Int!) {
+          openInIDE(fileName: $fileName, lineNumber: $lineNumber)
+        }
+      `;
+
+      const { fileName, lineNumber } = self;
+      const variables = { fileName, lineNumber };
+
+      fetch("/api", {
+        method: "POST",
+        body: JSON.stringify({ query, variables })
+      });
+    },
+
     setInstance(instance: any) {
       self.children.clear();
       self.instance = instance;
 
       if (self.isElement) {
-        // @ts-ignore Weird af error here with type.maybe not matching the ElementNode
         self.element = createNode(self.instance.stateNode);
       }
 

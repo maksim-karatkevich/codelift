@@ -18,6 +18,7 @@ export const App = types
     // TODO Use `types.map` for faster lookup by className:
     // https://mobx.js.org/refguide/map.html
     cssRules: types.array(CSSRule),
+    path: window.location.href.split(window.location.origin).pop() ?? "/",
     query: "",
     reactNodes: types.array(types.safeReference(ReactNode)),
     rootInstance: types.maybe(ReactNode),
@@ -200,8 +201,6 @@ export const App = types
 
       try {
         self.document = iframe.contentWindow.document;
-        // @ts-ignore
-        self.contentWindow["__CODELIFT__"] = self;
         self.error = null;
       } catch (error) {
         self.error = error;
@@ -215,9 +214,9 @@ export const App = types
 
       self.contentWindow.removeEventListener("keydown", this.handleKeyPress);
       self.contentWindow.addEventListener("keydown", this.handleKeyPress);
-
       self.contentWindow.addEventListener("unload", this.handleFrameUnload);
 
+      this.syncPath();
       this.initNodes();
       this.reselect();
     },
@@ -295,6 +294,10 @@ export const App = types
       self.state = "VISIBLE";
     },
 
+    register() {
+      // TODO App has been registered, so references can start being made now
+    },
+
     reselect() {
       const { selector } = self;
 
@@ -331,6 +334,20 @@ export const App = types
         ? self.selected.element.selector
         : undefined;
       self.targeted = undefined;
+    },
+
+    setPath(path: string) {
+      self.path = path;
+    },
+
+    syncPath() {
+      const path = self.contentWindow?.location.href
+        .split(self.contentWindow.window.location.origin)
+        .pop();
+
+      if (path) {
+        self.path = path;
+      }
     },
 
     targetDOMNode(element: HTMLElement) {
