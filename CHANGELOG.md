@@ -1,3 +1,16 @@
+# v0.6.2 (Wed Jan 29 2020)
+
+#### 🐛  Bug Fix
+
+- `codelift`
+  - Replace useSlider with hooks [#82](https://github.com/ericclemmons/codelift/pull/82) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.1 (Wed Jan 29 2020)
 
 #### ⚠️  Pushed to master

@@ -1,3 +1,15 @@
+# v0.6.2 (Wed Jan 29 2020)
+
+#### 🐛  Bug Fix
+
+- Replace useSlider with hooks  ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.0 (Mon Jan 27 2020)
 
 #### 🐛  Bug Fix
