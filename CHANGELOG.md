@@ -1,3 +1,17 @@
+# v0.6.1 (Wed Jan 29 2020)
+
+#### ⚠️  Pushed to master
+
+- Update README with more recent screenshot  ([@ericclemmons](https://github.com/ericclemmons))
+- Convert next example to TypeScript  ([@ericclemmons](https://github.com/ericclemmons))
+- Remove ALL-CONTRIBUTORS-BADGE  ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.0 (Mon Jan 27 2020)
 
 #### 🚀  Enhancement
