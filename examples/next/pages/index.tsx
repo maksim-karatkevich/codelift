@@ -7,7 +7,7 @@ const greetings = ["hello", "saluton", "hei", "bonjour", "guten tag", "aloha"];
 export default function HomePage() {
   const router = useRouter();
   const { path = [] } = router.query;
-  const [greeting] = path;
+  const [greeting] = path as string[];
   const next = greetings[(greetings.indexOf(greeting) + 1) % greetings.length];
 
   return (
