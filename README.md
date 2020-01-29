@@ -1,8 +1,9 @@
 # code<sup>_lift_</sup>
 
-![Create React App Example](/codelift.next.gif)
-
 > A "No Code" GUI for your existing React app.
+>
+> ![Next.js Example](/screenshot.png)
+> – [Launch Tweet](https://twitter.com/ericclemmons/status/1205161643300098048)
 
 ## Getting Started
 
@@ -28,21 +29,19 @@ Within your project:
 
 ## Features
 
-### CSS Inspector
+- Double-Click in tree to open in VS Code.
 
-1. Hover & Select an element.
-1. **Find-as-you-type** CSS classes.
-1. **Hover to preview** before applying.
-1. **Click to toggle** in your source code.
+- CSS Inspector
 
-### Feature Requests
+  1. Hover & Select an element.
+  1. **Find-as-you-type** CSS classes.
+  1. **Hover to preview** before applying.
+  1. **Click to toggle** in your source code.
 
-- [ ] Install missing dependencies
-- [ ] Click tag to open in editor
-- [ ] Add/Wrap elements
-- [ ] Convert element to Component
-- [ ] `:hover`, etc. classes
-- [New Feature Request](https://github.com/ericclemmons/codelift/issues/new)
+- <kbd>CMD+'</kbd> to toggle _codelift_ and browse normally.
+
+- [What feature would you like to see?](https://github.com/ericclemmons/codelift/issues/new)
+  s
 
 ## Contributing
 
@@ -73,6 +72,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
