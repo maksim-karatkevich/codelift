@@ -1,3 +1,4 @@
+import { inspect } from "codelift";
 import Link from "next/link";
 
 const links = [
@@ -5,9 +6,6 @@ const links = [
   { href: "https://nextjs.org/docs", label: "Docs" }
 ];
 
-/**
- * Description
- */
 export default function Nav() {
   return (
     <nav>
@@ -33,3 +31,13 @@ export default function Nav() {
     </nav>
   );
 }
+
+inspect(Nav, {
+  Inspector({ useState }) {
+    const [value, setValue] = useState("");
+
+    return (
+      <input onChange={event => setValue(event.target.value)} value={value} />
+    );
+  }
+});
