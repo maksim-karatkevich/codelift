@@ -1,4 +1,6 @@
 import { Instance, types, IAnyModelType } from "mobx-state-tree";
+import { render } from "react-dom";
+
 import { createNode, ElementNode } from "../ElementNode";
 
 export interface IReactNode extends Instance<typeof ReactNode> {}
@@ -62,6 +64,13 @@ export const ReactNode = types
         method: "POST",
         body: JSON.stringify({ query, variables })
       });
+    },
+
+    previewProps(props: any) {
+      // TODO What about Components with no output currently? (e.g. hidden={true})
+      // TODO How to undo the preview?
+      // TODO Use existing props (e.g. self.instance.type.pendingProps)
+      render(<self.instance.type {...props} />, self.instance.child.stateNode);
     },
 
     setInstance(instance: any) {
