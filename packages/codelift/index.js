@@ -1,5 +1,6 @@
-module.exports.inspect = (Component, { Inspector }) => {
-  Component.Inspector = Inspector;
+const isDev =
+  process.env.NODE_ENV === "development" && typeof window === "object";
+const noop = () => {};
 
-  return Component;
-};
+module.exports.inspect = isDev ? require("./inspect") : noop;
+module.exports.register = isDev ? require("./register") : noop;
