@@ -1,5 +1,10 @@
-import { Instance, types, IAnyModelType } from "mobx-state-tree";
-import { render } from "react-dom";
+import {
+  getParentOfType,
+  hasParentOfType,
+  IAnyModelType,
+  Instance,
+  types
+} from "mobx-state-tree";
 
 import { createNode, ElementNode } from "../ElementNode";
 import * as WorkTags from "./WorkTags";
@@ -19,6 +24,21 @@ export const ReactNode = types
     instance: null as any
   }))
   .views(self => ({
+    get contexts() {
+      const contexts: IReactNode[] = [];
+      let parent = self as IReactNode;
+
+      while (hasParentOfType(parent, ReactNode)) {
+        parent = getParentOfType(parent, ReactNode);
+
+        if (parent.instance.tag === WorkTags.ContextProvider) {
+          contexts.push(parent);
+        }
+      }
+
+      return contexts;
+    },
+
     get fileName() {
       return self.instance._debugSource.fileName;
     },
@@ -83,10 +103,24 @@ export const ReactNode = types
     },
 
     previewProps(props: any) {
-      // TODO What about Components with no output currently? (e.g. hidden={true})
-      // TODO How to undo the preview?
-      // TODO Use existing props (e.g. self.instance.type.pendingProps)
-      render(<self.instance.type {...props} />, self.instance.child.stateNode);
+      const Inspector = self.instance.type.Inspector;
+
+      if (!Inspector) {
+        return;
+      }
+
+      let preview = Inspector.React.createElement(self.instance.type, props);
+
+      self.contexts.forEach(context => {
+        const { value } = context.instance.memoizedProps;
+        preview = Inspector.React.createElement(
+          context.instance.type,
+          { value },
+          preview
+        );
+      });
+
+      Inspector.ReactDOM.render(preview, self.instance.child.stateNode);
     },
 
     setInstance(instance: any) {
