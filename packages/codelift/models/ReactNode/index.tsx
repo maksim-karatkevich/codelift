@@ -2,9 +2,13 @@ import { Instance, types, IAnyModelType } from "mobx-state-tree";
 import { render } from "react-dom";
 
 import { createNode, ElementNode } from "../ElementNode";
+import * as WorkTags from "./WorkTags";
 
 export interface IReactNode extends Instance<typeof ReactNode> {}
 
+/**
+ * @see: https://github.com/facebook/react/blob/65bbda7f169394005252b46a5992ece5a2ffadad/packages/react-reconciler/src/ReactFiber.js#L128
+ */
 export const ReactNode = types
   .model("ReactNode", {
     children: types.array(types.late((): IAnyModelType => ReactNode)),
@@ -36,17 +40,29 @@ export const ReactNode = types
     },
 
     get name(): string {
-      const { elementType } = self.instance;
+      const { elementType, tag } = self.instance;
 
-      if (this.isComponent) {
-        if (elementType.name) {
-          return String(elementType.name);
-        }
+      switch (tag) {
+        case WorkTags.FunctionComponent:
+        case WorkTags.ClassComponent:
+          return elementType.name ?? "Anonymous";
 
-        return "Anonymous";
+        case WorkTags.HostComponent:
+          return elementType;
+
+        case WorkTags.HostText:
+          return JSON.stringify(self.instance.memoizedProps);
+
+        case WorkTags.ContextConsumer:
+          return "Context.Consumer";
+
+        case WorkTags.ContextProvider:
+          return "Context.Provider";
+
+        default:
+          console.warn("Unknown Component", self.instance);
+          return "Unknown";
       }
-
-      return String(elementType);
     }
   }))
   .actions(self => ({
