@@ -21,7 +21,8 @@ export const ReactNode = types
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
-    instance: null as any
+    instance: null as any,
+    props: {} as any
   }))
   .views(self => ({
     get contexts() {
@@ -41,6 +42,18 @@ export const ReactNode = types
 
     get fileName() {
       return self.instance._debugSource.fileName;
+    },
+
+    get hasChanges() {
+      const prevProps = self.instance.memoizedProps;
+      const { props } = self;
+      const shallowEquals =
+        Object.keys(prevProps).length === Object.keys(props).length &&
+        Object.keys(prevProps).every(
+          key => props.hasOwnProperty(key) && prevProps[key] === props[key]
+        );
+
+      return !shallowEquals;
     },
 
     get isComponent() {
@@ -121,6 +134,7 @@ export const ReactNode = types
       });
 
       Inspector.ReactDOM.render(preview, self.instance.child.stateNode);
+      self.props = props;
     },
 
     setInstance(instance: any) {
@@ -138,6 +152,8 @@ export const ReactNode = types
         self.children.push(createReactNode(child));
         child = child.sibling;
       }
+
+      self.props = instance.memoizedProps;
     }
   }));
 
