@@ -1,5 +1,3 @@
-const env = require("./env");
-
 // @ts-check
 // Allow access from GUI on another port
 document.domain = window.location.hostname;
@@ -37,6 +35,11 @@ if (module.hot) {
 }
 
 module.exports = function register({ React, ReactDOM }) {
-  env.React = React;
-  env.ReactDOM = ReactDOM;
+  if (!window.React) {
+    window.React = React;
+  }
+
+  if (!window.ReactDOM) {
+    window.ReactDOM = ReactDOM;
+  }
 };

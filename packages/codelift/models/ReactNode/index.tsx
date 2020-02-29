@@ -1,11 +1,13 @@
 import {
   getParentOfType,
+  getRoot,
   hasParentOfType,
   IAnyModelType,
   Instance,
   types
 } from "mobx-state-tree";
 
+import { IApp } from "../App";
 import { createNode, ElementNode } from "../ElementNode";
 import * as WorkTags from "./WorkTags";
 
@@ -96,6 +98,10 @@ export const ReactNode = types
           console.warn("Unknown Component", self.instance);
           return "Unknown";
       }
+    },
+
+    get store(): IApp {
+      return getRoot(self);
     }
   }))
   .actions(self => ({
@@ -122,18 +128,20 @@ export const ReactNode = types
         return;
       }
 
-      let preview = Inspector.React.createElement(self.instance.type, props);
+      // Use host's React/ReactDOM from register
+      const { React, ReactDOM } = self.store.contentWindow as any;
+      let preview = React.createElement(self.instance.type, props);
 
       self.contexts.forEach(context => {
         const { value } = context.instance.memoizedProps;
-        preview = Inspector.React.createElement(
+        preview = React.createElement(
           context.instance.type,
           { value },
           preview
         );
       });
 
-      Inspector.ReactDOM.render(preview, self.instance.child.stateNode);
+      ReactDOM.render(preview, self.instance.child.stateNode);
       self.props = props;
     },
 

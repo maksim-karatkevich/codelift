@@ -26,7 +26,7 @@ export const Header: FunctionComponent<HeaderProps> = ({ title }) => {
   );
 };
 
-inspect(Header, ({ props, setProps }) => {
+Header["Inspector"] = ({ props, setProps }) => {
   return (
     <label className="flex flex-col px-4">
       <small className="opacity-75 italic tracking-wider">Title</small>
@@ -38,4 +38,4 @@ inspect(Header, ({ props, setProps }) => {
       />
     </label>
   );
-});
+};

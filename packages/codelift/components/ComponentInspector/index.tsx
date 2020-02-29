@@ -11,13 +11,16 @@ export const ComponentInspector = observer(() => {
   });
 
   useEffect(() => {
-    if (!ref.current || !Inspector) {
+    if (!ref.current || !Inspector || !store.contentWindow) {
       return;
     }
 
+    // Use host's React/ReactDOM from register
+    const { React, ReactDOM } = store.contentWindow as any;
+
     // Use Component's copy of React & ReactDOM so that hooks work
-    Inspector.ReactDOM.render(
-      Inspector.React.createElement(Inspector, { props, setProps }),
+    ReactDOM.render(
+      React.createElement(Inspector, { props, setProps }),
       ref.current
     );
   }, [ref.current, props, Inspector]);
