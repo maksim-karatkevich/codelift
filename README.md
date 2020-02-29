@@ -65,14 +65,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://ericclemmons.com/"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" width="50px;" alt=""/><br /><sub><b>Eric Clemmons</b></sub></a><br /><a href="https://github.com/ericclemmons/codelift/commits?author=ericclemmons" title="Code">💻</a> <a href="https://github.com/ericclemmons/codelift/commits?author=ericclemmons" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://ericclemmons.com/"><img src="https://avatars0.githubusercontent.com/u/15182?v=4" width="50px;" alt=""/><br /><sub><b>Eric Clemmons</b></sub></a><br /><a href="https://github.com/ericclemmons/codelift/commits?author=ericclemmons" title="Code">💻</a> <a href="https://github.com/ericclemmons/codelift/commits?author=ericclemmons" title="Documentation">📖</a> <a href="#infra-ericclemmons" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://aulisi.us"><img src="https://avatars2.githubusercontent.com/u/6629172?v=4" width="50px;" alt=""/><br /><sub><b>​Faizaan</b></sub></a><br /><a href="https://github.com/ericclemmons/codelift/commits?author=aulisius" title="Code">💻</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
