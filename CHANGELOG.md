@@ -1,3 +1,16 @@
+# v0.6.3 (Sat Feb 29 2020)
+
+#### 🐛  Bug Fix
+
+- `codelift`
+  - Lock package.json dependencies [#85](https://github.com/ericclemmons/codelift/pull/85) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.2 (Wed Jan 29 2020)
 
 #### 🐛  Bug Fix

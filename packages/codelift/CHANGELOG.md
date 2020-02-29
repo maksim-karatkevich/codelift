@@ -1,3 +1,16 @@
+# v0.6.3 (Sat Feb 29 2020)
+
+#### 🐛  Bug Fix
+
+- Lock all codelift packages at exact version  ([@ericclemmons](https://github.com/ericclemmons))
+- save-prefix false  ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.2 (Wed Jan 29 2020)
 
 #### 🐛  Bug Fix
