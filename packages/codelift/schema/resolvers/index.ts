@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
+import GraphQLJSON, { GraphQLJSONObject } from "graphql-type-json";
 import launchEditor from "react-dev-utils/launchEditor";
 
 import { getNodeAt } from "./utils/getNodeAt";
@@ -7,6 +8,9 @@ import { parser } from "./utils/parser";
 import { setAttribute } from "./utils/setAttribute";
 
 export const resolvers = {
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
+
   Mutation: {
     openInIDE(
       _: any,

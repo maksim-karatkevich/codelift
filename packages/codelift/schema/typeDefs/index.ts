@@ -1,6 +1,9 @@
 import { gql } from "apollo-server-micro";
 
 export const typeDefs = gql`
+  scalar JSON
+  scalar JSONObject
+
   type Mutation {
     """
     Open file in IDE at specific line
