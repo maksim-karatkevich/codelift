@@ -52,8 +52,8 @@ export const Label: FunctionComponent<LabelProps> = observer(({ node }) => {
       className={`flex items-center my-1 pl-2 rounded-l text-left truncate w-full ${
         isSelected
           ? "bg-white text-black font-bold shadow-sm"
-          : `text-gray-400 text-normal ${
-              isTargeted ? "bg-gray-800 font-bold" : ""
+          : `text-gray-200 text-normal ${
+              isTargeted ? "bg-gray-700 font-bold" : ""
             }`
       }`}
       onClick={() => store.selectReactNode(node)}
