@@ -47,12 +47,13 @@ export const ReactNode = types
     },
 
     get hasChanges() {
-      const prevProps = self.instance.memoizedProps;
-      const { props } = self;
       const shallowEquals =
-        Object.keys(prevProps).length === Object.keys(props).length &&
-        Object.keys(prevProps).every(
-          key => props.hasOwnProperty(key) && prevProps[key] === props[key]
+        Object.keys(this.originalProps).length ===
+          Object.keys(self.props).length &&
+        Object.keys(this.originalProps).every(
+          key =>
+            self.props.hasOwnProperty(key) &&
+            this.originalProps[key] === self.props[key]
         );
 
       return !shallowEquals;
@@ -100,11 +101,19 @@ export const ReactNode = types
       }
     },
 
+    get originalProps(): any {
+      return self.instance.memoizedProps;
+    },
+
     get store(): IApp {
       return getRoot(self);
     }
   }))
   .actions(self => ({
+    resetProps() {
+      self.props = self.originalProps;
+    },
+
     openInIDE() {
       const query = `
         mutation OpenInIDE($fileName: String!, $lineNumber: Int!) {
@@ -122,26 +131,6 @@ export const ReactNode = types
     },
 
     previewProps(props: any) {
-      const Inspector = self.instance.type.Inspector;
-
-      if (!Inspector) {
-        return;
-      }
-
-      // Use host's React/ReactDOM from register
-      const { React, ReactDOM } = self.store.contentWindow as any;
-      let preview = React.createElement(self.instance.type, props);
-
-      self.contexts.forEach(context => {
-        const { value } = context.instance.memoizedProps;
-        preview = React.createElement(
-          context.instance.type,
-          { value },
-          preview
-        );
-      });
-
-      ReactDOM.render(preview, self.instance.child.stateNode);
       self.props = props;
     },
 
@@ -161,7 +150,7 @@ export const ReactNode = types
         child = child.sibling;
       }
 
-      self.props = instance.memoizedProps;
+      self.props = self.originalProps;
     }
   }));
 

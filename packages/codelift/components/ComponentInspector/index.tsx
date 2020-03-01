@@ -4,30 +4,55 @@ import { useStore, observer } from "../../store";
 export const ComponentInspector = observer(() => {
   const ref = useRef(null);
   const store = useStore();
-  const type = store.selected?.instance.type;
+  const selected = store.selected;
+  const type = selected?.instance.type;
   const Inspector = type.Inspector;
-  const [props, setProps] = useState({
-    ...store.selected?.instance.memoizedProps
-  });
+  const props = selected?.props;
 
-  useEffect(() => {
-    if (!ref.current || !Inspector || !store.contentWindow) {
-      return;
-    }
+  useEffect(
+    function renderInspector() {
+      if (!ref.current || !Inspector || !store.contentWindow || !selected) {
+        return;
+      }
 
-    // Use host's React/ReactDOM from register
-    const { React, ReactDOM } = store.contentWindow as any;
+      // Use host's React/ReactDOM from register
+      const { React, ReactDOM } = store.contentWindow as any;
 
-    // Use Component's copy of React & ReactDOM so that hooks work
-    ReactDOM.render(
-      React.createElement(Inspector, { props, setProps }),
-      ref.current
-    );
-  }, [ref.current, props, Inspector]);
+      // Use Component's copy of React & ReactDOM so that hooks work
+      ReactDOM.render(
+        React.createElement(Inspector, {
+          props,
+          setProps: selected.previewProps
+        }),
+        ref.current
+      );
+    },
+    [ref.current, props, Inspector]
+  );
 
-  useEffect(() => {
-    store.selected?.previewProps(props);
-  }, [props]);
+  useEffect(
+    function renderPreview() {
+      if (!Inspector || !selected) {
+        return;
+      }
+
+      // Use host's React/ReactDOM from register
+      const { React, ReactDOM } = store.contentWindow as any;
+      let preview = React.createElement(type, props);
+
+      selected.contexts.forEach(context => {
+        const { value } = context.instance.memoizedProps;
+        preview = React.createElement(
+          context.instance.type,
+          { value },
+          preview
+        );
+      });
+
+      ReactDOM.render(preview, selected.instance.child.stateNode);
+    },
+    [props]
+  );
 
   if (!Inspector && store.selected?.isUserCode) {
     return (
