@@ -54,6 +54,24 @@ export const typeDefs = gql`
       """
       lineNumber: Int!
     ): String
+
+    """
+    Add, replace, or remove props on a Component
+    """
+    updateProps(
+      """
+      Props to update (undefined to remove)
+      """
+      props: JSONObject!
+      """
+      element._reactInstance._debugSource.fileName
+      """
+      fileName: String!
+      """
+      element._reactInstance._debugSource.lineNumber
+      """
+      lineNumber: Int!
+    ): JSONObject
   }
 
   type Query {
