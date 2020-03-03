@@ -38,8 +38,15 @@ export const ComponentInspector = observer(() => {
 
       // Use host's React/ReactDOM from register
       const { React, ReactDOM } = store.contentWindow as any;
-      let preview = React.createElement(type, props);
 
+      // Wrap preview in a <span> (just in case there are any fragments)
+      let preview = React.createElement(
+        "span",
+        {},
+        React.createElement(type, props)
+      );
+
+      // Wrap preview in contexts
       selected.contexts.forEach(context => {
         const { value } = context.instance.memoizedProps;
         preview = React.createElement(
@@ -49,7 +56,14 @@ export const ComponentInspector = observer(() => {
         );
       });
 
-      ReactDOM.render(preview, selected.instance.child.stateNode);
+      const node = selected.instance.child.stateNode;
+
+      //  This will render the preview _within_ the current DOM node.
+      // ! Warning: render(...): Replacing React-rendered children with a new root component. If you intended to update the children of this node, you should instead have the existing children update their state and render the new components instead of calling ReactDOM.render.
+      ReactDOM.render(preview, node);
+      // We don't want the nesting, so we replace the node with the <span> from before
+      // ! Warning: render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container.
+      node.replaceWith(node.firstChild);
     },
     [props]
   );
