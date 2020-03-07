@@ -56,6 +56,7 @@ export const ComponentInspector = observer(() => {
         );
       });
 
+      // ! Find first HostComponent's stateNode, as `instance.child` can be a FunctionComponent or other ReactFiber type that's not associated with the DOM
       const node = selected.instance.child.stateNode;
 
       //  This will render the preview _within_ the current DOM node.
