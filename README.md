@@ -20,7 +20,17 @@ Within your project:
 
    _(`codelift` runs `yarn ____` with whatever you provide)_
 
-1. Add `import "codelift/register"` to the top of your `src/App.tsx`.
+1. Add the following `import "codelift/register"` to the top of your `src/App.tsx` or `pages/_app.tsx`:
+
+   ```js
+   import React from "react";
+   import ReactDOM from "react-dom";
+
+   import { register } from "codelift";
+   register({ React, ReactDOM });
+   ```
+
+   _`codelift` requires access to your application's copy of `react` and `react-dom` to support custom inspectors._
 
 ## Examples
 
@@ -29,9 +39,9 @@ Within your project:
 
 ## Features
 
-- Double-Click in tree to open in VS Code.
+- <kbd>Double-Click</kbd> componetns & elements in the tree view to open in VS Code.
 
-- CSS Inspector
+- [Tailwind](https://tailwindcss.com/) Visual Inspector
 
   1. Hover & Select an element.
   1. **Find-as-you-type** CSS classes.
@@ -40,8 +50,34 @@ Within your project:
 
 - <kbd>CMD+'</kbd> to toggle _codelift_ and browse normally.
 
-- [What feature would you like to see?](https://github.com/ericclemmons/codelift/issues/new)
-  s
+- Custom Inspectors:
+
+  Suppose you have [`Header` component](examples/next/components/Header.tsx) that accepts a `title`:
+
+  ```js
+  export const Header = ({ title }) => {
+    ...
+  }
+  ```
+
+  Next, attach a custom `Inspector` component to your `Header` that accepts the current `props` and calls `setProps` when it changes:
+
+  ```js
+  Header.Inspector = ({ props, setProps }) => {
+    return (
+      <input
+        onChange={event => setProps({ title: event.target.value })}
+        defaultValue={props.title}
+      />
+    );
+  };
+  ```
+
+  Your `Inspector` will be rendered in a sidepanel when a `Header` is selected:
+
+  > ![Header Inspector](/header.inspector.png)
+
+* [What feature would you like to see?](https://github.com/ericclemmons/codelift/issues/new)
 
 ## Contributing
 
@@ -72,6 +108,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
