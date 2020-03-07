@@ -1,4 +1,3 @@
-import { inspect } from "codelift";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 
