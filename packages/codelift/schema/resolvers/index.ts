@@ -1,12 +1,17 @@
 import { readFileSync, writeFileSync } from "fs";
+import GraphQLJSON, { GraphQLJSONObject } from "graphql-type-json";
 import launchEditor from "react-dev-utils/launchEditor";
 
 import { getNodeAt } from "./utils/getNodeAt";
 import { findAttribute } from "./utils/findAttribute";
 import { parser } from "./utils/parser";
 import { setAttribute } from "./utils/setAttribute";
+import { Literal, JSXExpressionContainer } from "jscodeshift";
 
 export const resolvers = {
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
+
   Mutation: {
     openInIDE(
       _: any,
@@ -98,6 +103,50 @@ export const resolvers = {
       writeFileSync(fileName, ast.toSource(), "utf8");
 
       return value;
+    },
+
+    updateProps(
+      _: any,
+      args: {
+        props: Record<string, any>;
+        fileName: string;
+        lineNumber: number;
+      }
+    ) {
+      const { props, fileName, lineNumber } = args;
+      const ast = parser(readFileSync(fileName, "utf8"));
+      const node = getNodeAt(ast, lineNumber);
+
+      Object.entries(props).forEach(([prop, value]) => {
+        try {
+          value = JSON.parse(value);
+        } catch (error) {
+          switch (value) {
+            case "undefined":
+              value = undefined;
+              break;
+            default:
+              throw new Error(`Unsupported value: ${value}.  This is a bug!`);
+          }
+        }
+        setAttribute(node, prop, value);
+      });
+
+      const updatedProps: Record<string, any> = {};
+
+      node.find(parser.JSXAttribute).forEach(path => {
+        const { name } = path.value.name;
+        const { value } = ("expression" in
+        (path.value.value as JSXExpressionContainer)
+          ? (path.value.value as JSXExpressionContainer).expression
+          : path.value.value) as Literal;
+
+        updatedProps[name as string] = value;
+      });
+
+      writeFileSync(fileName, ast.toSource(), "utf8");
+
+      return updatedProps;
     }
   },
 

@@ -7,15 +7,16 @@ import {
   useToast
 } from "@chakra-ui/core";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { GitHub, HelpCircle } from "react-feather";
 import { createClient, Provider } from "urql";
 
-import { Selector } from "../Selector";
 import { observer, useStore } from "../../store";
-import { TreeInspector } from "../TreeInspector";
+import { ComponentInspector } from "../ComponentInspector";
 import { Error } from "./Error";
+import { Header } from "../Header";
+import { Selector } from "../Selector";
 import { Sidebar } from "./Sidebar";
 import { StyleInspector } from "../StyleInspector";
+import { TreeInspector } from "../TreeInspector";
 
 const client = createClient({ url: "/api" });
 
@@ -55,6 +56,8 @@ export const App: FunctionComponent = observer(() => {
     <Provider value={client}>
       {store.state === "VISIBLE" && <Selector />}
 
+      <Header />
+
       <Grid
         gridTemplateColumns={`${store.state === "VISIBLE" ? "16rem" : 0} 1fr ${
           store.state === "VISIBLE" ? "16rem" : 0
@@ -62,30 +65,6 @@ export const App: FunctionComponent = observer(() => {
         style={{ transition: "all 200ms ease-in-out" }}
       >
         <Sidebar key="Tree">
-          <footer className="order-last text-gray-300 flex font-thin bg-black items-center items-stretch">
-            <a
-              className="flex flex-grow items-center px-2 py-1 hover:text-white hover:bg-gray-800"
-              href="https://github.com/ericclemmons/codelift"
-            >
-              code
-              <small className="text-white font-normal italic underline pl-px">
-                lift
-              </small>
-            </a>
-            <a
-              className="flex items-center px-2 py-1 hover:text-white hover:bg-gray-800"
-              href="https://github.com/ericclemmons/codelift"
-            >
-              <GitHub className="current-color" size={13} />
-            </a>
-            <a
-              className="flex items-center px-2 py-1 hover:text-white hover:bg-gray-800"
-              href="https://github.com/ericclemmons/codelift/issues/new"
-            >
-              <HelpCircle className="current-color" size={13} />
-            </a>
-          </footer>
-
           <main className="flex-grow overflow-auto shadow-inner">
             {store.root ? (
               <TreeInspector />
@@ -121,6 +100,7 @@ export const App: FunctionComponent = observer(() => {
         </Box>
 
         <Sidebar key="CSS">
+          {store.selected?.isComponent && <ComponentInspector />}
           {store.selected?.isElement && <StyleInspector />}
         </Sidebar>
       </Grid>

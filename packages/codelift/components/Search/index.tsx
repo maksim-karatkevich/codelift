@@ -77,11 +77,11 @@ export const Search: FunctionComponent = observer(() => {
               items.length && (
                 <React.Fragment key={`group-${group}`}>
                   <li
-                    className="bg-gray-800 flex items-center shadow py-1 px-2 sticky text-sm text-white top-0"
+                    className="bg-gray-900 flex items-center shadow py-1 px-2 sticky text-sm text-white top-0"
                     key={group}
                   >
                     <label className="flex-grow truncate">{group}</label>
-                    <small className="bg-gray-900 opacity-75 px-2 rounded-full shadow-inner text-white">
+                    <small className="bg-gray-800 opacity-75 px-2 rounded-full shadow-inner text-white">
                       {items.length}
                     </small>
                   </li>

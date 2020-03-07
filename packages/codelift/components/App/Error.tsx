@@ -11,7 +11,10 @@ import { FunctionComponent } from "react";
 import { observer, useStore } from "../../store";
 
 const code = `
-import "codelift/register";
+import React from "react";
+import ReactDOM from "react-dom";
+import { register } from "codelift";
+register({ React, ReactDOM });
 `.trim();
 
 export const Error: FunctionComponent = observer(() => {

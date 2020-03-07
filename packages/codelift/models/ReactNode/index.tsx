@@ -1,8 +1,21 @@
-import { Instance, types, IAnyModelType } from "mobx-state-tree";
+import {
+  getParentOfType,
+  getRoot,
+  hasParentOfType,
+  IAnyModelType,
+  Instance,
+  types
+} from "mobx-state-tree";
+
+import { IApp } from "../App";
 import { createNode, ElementNode } from "../ElementNode";
+import * as WorkTags from "./WorkTags";
 
 export interface IReactNode extends Instance<typeof ReactNode> {}
 
+/**
+ * @see: https://github.com/facebook/react/blob/65bbda7f169394005252b46a5992ece5a2ffadad/packages/react-reconciler/src/ReactFiber.js#L128
+ */
 export const ReactNode = types
   .model("ReactNode", {
     children: types.array(types.late((): IAnyModelType => ReactNode)),
@@ -10,11 +23,40 @@ export const ReactNode = types
     uuid: types.optional(types.identifierNumber, () => Math.random())
   })
   .volatile(self => ({
-    instance: null as any
+    instance: null as any,
+    props: {} as any
   }))
   .views(self => ({
+    get contexts() {
+      const contexts: IReactNode[] = [];
+      let parent = self as IReactNode;
+
+      while (hasParentOfType(parent, ReactNode)) {
+        parent = getParentOfType(parent, ReactNode);
+
+        if (parent.instance.tag === WorkTags.ContextProvider) {
+          contexts.push(parent);
+        }
+      }
+
+      return contexts;
+    },
+
     get fileName() {
       return self.instance._debugSource.fileName;
+    },
+
+    get hasChanges() {
+      const shallowEquals =
+        Object.keys(this.originalProps).length ===
+          Object.keys(self.props).length &&
+        Object.keys(this.originalProps).every(
+          key =>
+            self.props.hasOwnProperty(key) &&
+            this.originalProps[key] === self.props[key]
+        );
+
+      return !shallowEquals;
     },
 
     get isComponent() {
@@ -34,20 +76,44 @@ export const ReactNode = types
     },
 
     get name(): string {
-      const { elementType } = self.instance;
+      const { elementType, tag } = self.instance;
 
-      if (this.isComponent) {
-        if (elementType.name) {
-          return String(elementType.name);
-        }
+      switch (tag) {
+        case WorkTags.FunctionComponent:
+        case WorkTags.ClassComponent:
+          return elementType.name ?? "Anonymous";
 
-        return "Anonymous";
+        case WorkTags.HostComponent:
+          return elementType;
+
+        case WorkTags.HostText:
+          return JSON.stringify(self.instance.memoizedProps);
+
+        case WorkTags.ContextConsumer:
+          return "Context.Consumer";
+
+        case WorkTags.ContextProvider:
+          return "Context.Provider";
+
+        default:
+          console.warn("Unknown Component", self.instance);
+          return "Unknown";
       }
+    },
 
-      return String(elementType);
+    get originalProps(): any {
+      return self.instance.memoizedProps;
+    },
+
+    get store(): IApp {
+      return getRoot(self);
     }
   }))
   .actions(self => ({
+    resetProps() {
+      self.props = self.originalProps;
+    },
+
     openInIDE() {
       const query = `
         mutation OpenInIDE($fileName: String!, $lineNumber: Int!) {
@@ -62,6 +128,10 @@ export const ReactNode = types
         method: "POST",
         body: JSON.stringify({ query, variables })
       });
+    },
+
+    previewProps(props: any) {
+      self.props = props;
     },
 
     setInstance(instance: any) {
@@ -79,6 +149,8 @@ export const ReactNode = types
         self.children.push(createReactNode(child));
         child = child.sibling;
       }
+
+      self.props = self.originalProps;
     }
   }));
 

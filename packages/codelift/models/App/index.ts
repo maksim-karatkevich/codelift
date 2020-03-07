@@ -166,7 +166,9 @@ export const App = types
         }
       }
 
-      throw new Error(`codelift could not find React's root container`);
+      console.error(`codelift could not find React's root container`);
+
+      return null;
     }
   }))
   .actions(self => ({

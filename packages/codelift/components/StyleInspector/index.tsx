@@ -41,7 +41,6 @@ import {
   Type
 } from "react-feather";
 
-import { ICSSRule } from "../../models/CSSRule";
 import { observer, useStore } from "../../store";
 import { Search } from "../Search";
 import { Palette } from "./Palette";
@@ -56,7 +55,7 @@ type HeadingProps = {
 };
 
 const Heading: FunctionComponent<HeadingProps> = ({ children, Icon }) => (
-  <label className="flex items-center text-left text-gray-500 px-2 py-1 shadow sticky text-sm top-0 w-full z-10 bg-black">
+  <label className="flex items-center text-left text-gray-500 px-2 py-1 shadow sticky text-sm top-0 w-full z-10 bg-gray-900">
     {Icon && <Icon className="mr-2" size={13} />}
     <span className="w-full">{children}</span>
   </label>
@@ -76,7 +75,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
     console.info(
       "%ccode%clift",
       "color: #669",
-      "font-style: italic; font-size: 0.8em; top: -.5em;",
+      "font-style: italic; font-size: 0.8em; text-decoration: underline;",
       store.selected?.element?.element
     );
   }, [store.selected?.element]);
@@ -84,20 +83,20 @@ export const StyleInspector: FunctionComponent = observer(() => {
   // TODO Add a toggle for :hover,, :focus, :active based on selectorText
   return (
     <ol className="text-gray-400 text-xs overflow-auto">
-      <li className="hover:bg-gray-800">
+      <li className="hover:bg-gray-700">
         <Search />
       </li>
       <li>
         <Heading Icon={Layout}>Layout</Heading>
         <ol>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Display"
               render={rule => capitalize(words(rule.className).join(" "))}
               rules={store.findRulesByStyle("display")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <SliderMenu
               label="Margin"
               items={[
@@ -131,7 +130,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <SliderMenu
               label="Padding"
               items={[
@@ -171,7 +170,7 @@ export const StyleInspector: FunctionComponent = observer(() => {
               ]}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Menu
               label="Overflow"
               selected={[
@@ -211,40 +210,40 @@ export const StyleInspector: FunctionComponent = observer(() => {
         <Heading Icon={Trello}>Flexbox</Heading>
 
         <ol>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Direction"
               rules={store.findRulesByStyle("flex-direction")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select label="Wrap" rules={store.findRulesByStyle("flex-wrap")} />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Align Items"
               rules={store.findRulesByStyle("align-items")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Align Content"
               rules={store.findRulesByStyle("align-content")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Align Self"
               rules={store.findRulesByStyle("align-self")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <Select
               label="Justify Content"
               rules={store.findRulesByStyle("justify-content")}
             />
           </li>
-          <li className="hover:bg-gray-800">
+          <li className="hover:bg-gray-700">
             <SliderMenu
               label="Order"
               items={[{ rules: store.findRulesByStyle("order") }]}
