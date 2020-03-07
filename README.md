@@ -20,7 +20,7 @@ Within your project:
 
    _(`codelift` runs `yarn ____` with whatever you provide)_
 
-1. Add the following `import "codelift/register"` to the top of your `src/App.tsx` or `pages/_app.tsx`:
+1. Add the following `import "codelift/register"` to the top of your `src/index.tsx` or `pages/_app.tsx`:
 
    ```js
    import React from "react";
