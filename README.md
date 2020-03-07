@@ -1,9 +1,9 @@
 # code<sup>_lift_</sup>&nbsp;&nbsp;![Version](https://img.shields.io/npm/v/codelift.svg) ![Downloads](https://img.shields.io/npm/dm/codelift.svg)
 
 > A "No Code" GUI for your existing React app.
->
-> ![Next.js Example](/screenshot.png)
 > – [Launch Tweet](https://twitter.com/ericclemmons/status/1205161643300098048)
+
+![Next.js Example](/screenshot.png)
 
 ## Getting Started
 
