@@ -1,3 +1,16 @@
+# v1.0.0 (Sat Mar 07 2020)
+
+#### 💥  Breaking Change
+
+- `codelift`
+  - Clicking a Component shows Component panel [#70](https://github.com/ericclemmons/codelift/pull/70) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v0.6.3 (Sat Feb 29 2020)
 
 #### 🐛  Bug Fix
