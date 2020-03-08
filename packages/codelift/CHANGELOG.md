@@ -1,3 +1,15 @@
+# v1.0.8 (Sun Mar 08 2020)
+
+#### 🐛 Bug Fix
+
+- Publish index.d.ts ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v1.0.1 (Sun Mar 08 2020)
 
 #### 🐛  Bug Fix
