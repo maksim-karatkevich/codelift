@@ -1,3 +1,19 @@
+# v1.0.7 (Sun Mar 08 2020)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie)), for all your work!
+
+#### 🐛 Bug Fix
+
+- Update release.yml [#97](https://github.com/ericclemmons/codelift/pull/97) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v1.0.1 (Sun Mar 08 2020)
 
 #### 🐛  Bug Fix
