@@ -1,3 +1,19 @@
+# v1.0.1 (Sun Mar 08 2020)
+
+#### 🐛  Bug Fix
+
+- Upgrade all dependences _except_ auto  ([@ericclemmons](https://github.com/ericclemmons))
+- Revert back to 335b42e3285119e5dc6b9439b632437a45c3e17e  ([@ericclemmons](https://github.com/ericclemmons))
+- Update README(s) to match  ([@ericclemmons](https://github.com/ericclemmons))
+- Placeholder for codelift types  ([@ericclemmons](https://github.com/ericclemmons))
+- Update codelift deps  ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v1.0.0 (Sat Mar 07 2020)
 
 #### 🐛  Bug Fix

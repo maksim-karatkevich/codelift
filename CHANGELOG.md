@@ -1,3 +1,26 @@
+# v1.0.1 (Sun Mar 08 2020)
+
+#### 🐛  Bug Fix
+
+- `codelift`
+  - Fix auto release [#98](https://github.com/ericclemmons/codelift/pull/98) ([@ericclemmons](https://github.com/ericclemmons))
+- `codelift`
+  - Update CRA to use register + inspector [#94](https://github.com/ericclemmons/codelift/pull/94) ([@ericclemmons](https://github.com/ericclemmons))
+- `codelift`
+  - Update Dependencies [#86](https://github.com/ericclemmons/codelift/pull/86) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### ⚠️  Pushed to master
+
+- Use git@github.com:ericclemmons/codelift.git for the repository  ([@ericclemmons](https://github.com/ericclemmons))
+- Clean up description + image  ([@ericclemmons](https://github.com/ericclemmons))
+- Add badges  ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v1.0.0 (Sat Mar 07 2020)
 
 #### 💥  Breaking Change
