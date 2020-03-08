@@ -26,7 +26,7 @@ jobs:
 
       - name: Create Release
         env:
-          GH_TOKEN: ${{ secrets.GH_TKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo $GITHUB_ACTION
