@@ -6,6 +6,8 @@
   "files": [
     ".next",
     "bin",
+    "index.js",
+    "index.d.ts",
     "register.dev.js",
     "register.js",
     "server.js"
