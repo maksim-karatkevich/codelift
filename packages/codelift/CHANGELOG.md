@@ -1,3 +1,15 @@
+# v1.0.10 (Mon Mar 09 2020)
+
+#### 🐛 Bug Fix
+
+- Downgrade to 4.0.1 [#100](https://github.com/ericclemmons/codelift/pull/100) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v1.0.8 (Sun Mar 08 2020)
 
 #### 🐛 Bug Fix
