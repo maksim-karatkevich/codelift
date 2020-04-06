@@ -4773,12 +4773,12 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@urql/core@^1.9.0":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.9.2.tgz#bc2880a279dd5ada26527063c7a173fda26abb58"
-  integrity sha512-0eitjW/HlUAkMTwiWFQyQkcmwAlnWlscH3/AKU1Y5MJUzzehAkOffHFQ9eD5st/0TlKSvehbz/eUAHDq/CnX8w==
+"@urql/core@^1.10.5":
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/@urql/core/-/core-1.10.7.tgz#4632088a9abd5884e08726242261ea39d3cdda40"
+  integrity sha512-KOeX6TpU0ui7WDaP3ZgXJnRRPbjPz31jECYixgc+vxo7rQVVFkRkB7qzfusYzeCYAruMz7vzoOPT22UTxKcU/g==
   dependencies:
-    wonka "^4.0.7"
+    wonka "^4.0.9"
 
 "@use-it/event-listener@^0.1.2":
   version "0.1.3"
@@ -8054,10 +8054,10 @@ dotignore@~0.1.2:
   dependencies:
     minimatch "^3.0.4"
 
-downshift@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.1.tgz#f9df1b19bd8a9c17b2bf79427edc05f92cdcd3d0"
-  integrity sha512-22SdWUfmGw3vWD46WqD6IbQ/CeEJmWWKFeGTVnIyxj11VuI/MaL516XRf9+O6uFJS3xHEW8BDVUSvM06/c2rNQ==
+downshift@5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.0.5.tgz#1cc90dc09ae62998ce28a4ce457e0f1cdd0bfcfa"
+  integrity sha512-V1idov3Rkvz1YWA1K67aIx51EgokIDvep4x6KmU7HhsayI8DvTEZBeH4O92zeFVGximKujRO7ChBzBAf4PKWFA==
   dependencies:
     "@babel/runtime" "^7.4.5"
     compute-scroll-into-view "^1.0.9"
@@ -9557,12 +9557,10 @@ graphql-upload@^8.0.2:
     http-errors "^1.7.3"
     object-path "^0.11.4"
 
-graphql@14.6.0:
-  version "14.6.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.6.0.tgz#57822297111e874ea12f5cd4419616930cd83e49"
-  integrity sha512-VKzfvHEKybTKjQVpTFrA5yUq2S9ihcZvfJAtsDBBCuV6wauPu1xl/f9ehgVf0FcEJJs4vz6ysb/ZMkGigQZseg==
-  dependencies:
-    iterall "^1.2.2"
+graphql@15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.0.0.tgz#042a5eb5e2506a2e2111ce41eb446a8e570b8be9"
+  integrity sha512-ZyVO1xIF9F+4cxfkdhOJINM+51B06Friuv4M66W7HzUOeFd+vNzUn4vtswYINPi6sysjf1M2Ri/rwZALqgwbaQ==
 
 graphql@^14.5.3:
   version "14.5.8"
@@ -11798,12 +11796,12 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-match-sorter@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-4.0.2.tgz#1b451e8bc7112e5a41ebe3a977b7e19f167c3215"
-  integrity sha512-5EcCLEmPgfvq2hg1DAgAG7zqqS9bnZmRXzLR3md0xRi3Q1oGnnze6HuY+4bDRtm+X2lTsVZL8oG9FOkALFT4vw==
+match-sorter@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-4.1.0.tgz#8ba63f4aaf438d7a844829f1a75aa3ab1b2587ba"
+  integrity sha512-DCzT9JVO2FWVOTfsKqIqVhu/skFa3bK0lQom70j6Co9yKX9bPn2gRtn9BFD9ykkM8F/USjTQeId+nlFfTVvz+w==
   dependencies:
-    "@babel/runtime" "^7.5.5"
+    "@babel/runtime" "^7.9.2"
     remove-accents "0.4.2"
 
 md5.js@^1.3.4:
@@ -17137,14 +17135,13 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-urql@1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/urql/-/urql-1.9.0.tgz#38a2a5a4c477a34162f00a9a099aa302098f36d1"
-  integrity sha512-A9mJEa5QDUB6+TWDk55UCU7QziwmN5BPBaQsT7LIOtMBNOISy5GAHqPoWqQAFueNoXk8r4rNLPNtkdLnZbES1Q==
+urql@1.9.5:
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/urql/-/urql-1.9.5.tgz#6458738c029c4ed3692cb3ac9c1ba4d4260e37b9"
+  integrity sha512-CzkOSAaS5KuP+Sx2rPLOrfMiziGhKwj9syaoG6/fqoCtUeAZaXirKYKSJPUu5u9WDvjJzcTqtpICaCw++cHZsA==
   dependencies:
-    "@urql/core" "^1.9.0"
-    use-subscription "^1.3.0"
-    wonka "^4.0.7"
+    "@urql/core" "^1.10.5"
+    wonka "^4.0.9"
 
 use-callback-ref@^1.2.1:
   version "1.2.1"
@@ -17178,13 +17175,6 @@ use-subscription@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.1.1.tgz#5509363e9bb152c4fb334151d4dceb943beaa7bb"
   integrity sha512-gk4fPTYvNhs6Ia7u8/+K7bM7sZ7O7AMfWtS+zPO8luH+zWuiGgGcrW0hL4MRWZSzXo+4ofNorf87wZwBKz2YdQ==
-
-use-subscription@^1.3.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.4.0.tgz#c4e808cfed6fe6e1ac875df1369c63f3ddae9522"
-  integrity sha512-R7P7JWpeHp+dtEYsgDzIIgOmVqRfJjRjLOO0YIYk6twctUkUYe6Tz0pcabyTDGcMMRt9uMbFMfwBfxKHg9gCSw==
-  dependencies:
-    object-assign "^4.1.1"
 
 use@^3.1.0:
   version "3.1.1"
@@ -17549,10 +17539,10 @@ windows-release@^3.1.0:
   dependencies:
     execa "^1.0.0"
 
-wonka@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/wonka/-/wonka-4.0.7.tgz#b4934685bd2449367bd72ce7770bfe3e6cc8a68b"
-  integrity sha512-Uhyl2cgWCUksYtU0Jt8MSzKUqK4BVUrewWxnn1YlKL3Zco4sDcCUDkbgH0i762HJs1rtsq03cfzsCWxJKaDgVg==
+wonka@^4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/wonka/-/wonka-4.0.9.tgz#b21d93621e1d5f3b45ca96d99d03711c7c1f7c55"
+  integrity sha512-he7Nn1254ToUN03zLbJok6QxKdRJd46/QHm8nUcJNViXQnCutCuUgAbZvzoxrX+VXzGb4sCFolC4XhkHsmvdaA==
 
 word-wrap@~1.2.3:
   version "1.2.3"
