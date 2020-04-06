@@ -17,14 +17,14 @@ export const Search: FunctionComponent = observer(() => {
     getInputProps,
     getComboboxProps,
     highlightedIndex,
-    getItemProps
+    getItemProps,
   } = useCombobox({
     initialInputValue: store.query,
     inputValue: store.query,
     isOpen: Boolean(store.query),
     items,
     itemToString(item) {
-      return item.className;
+      return item?.className;
     },
     onHighlightedIndexChange(changes) {
       const { highlightedIndex = -1, selectedItem } = changes;
@@ -46,11 +46,11 @@ export const Search: FunctionComponent = observer(() => {
         listRef.current.scrollTo({
           left: 0,
           top: 0,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     },
-    selectedItem: undefined
+    selectedItem: undefined,
   });
 
   let index = 0;
@@ -86,7 +86,7 @@ export const Search: FunctionComponent = observer(() => {
                     </small>
                   </li>
 
-                  {items.map(item => (
+                  {items.map((item) => (
                     <li key={item.className}>
                       <button
                         className={`font-mono text-left text-xs px-2 py-1 ${
