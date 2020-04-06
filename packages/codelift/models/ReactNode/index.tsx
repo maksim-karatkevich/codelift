@@ -4,7 +4,7 @@ import {
   hasParentOfType,
   IAnyModelType,
   Instance,
-  types
+  types,
 } from "mobx-state-tree";
 
 import { IApp } from "../App";
@@ -20,13 +20,13 @@ export const ReactNode = types
   .model("ReactNode", {
     children: types.array(types.late((): IAnyModelType => ReactNode)),
     element: types.maybe(ElementNode),
-    uuid: types.optional(types.identifierNumber, () => Math.random())
+    uuid: types.optional(types.identifierNumber, () => Math.random()),
   })
-  .volatile(self => ({
+  .volatile((self) => ({
     instance: null as any,
-    props: {} as any
+    props: {} as any,
   }))
-  .views(self => ({
+  .views((self) => ({
     get contexts() {
       const contexts: IReactNode[] = [];
       let parent = self as IReactNode;
@@ -51,7 +51,7 @@ export const ReactNode = types
         Object.keys(this.originalProps).length ===
           Object.keys(self.props).length &&
         Object.keys(this.originalProps).every(
-          key =>
+          (key) =>
             self.props.hasOwnProperty(key) &&
             this.originalProps[key] === self.props[key]
         );
@@ -107,9 +107,9 @@ export const ReactNode = types
 
     get store(): IApp {
       return getRoot(self);
-    }
+    },
   }))
-  .actions(self => ({
+  .actions((self) => ({
     resetProps() {
       self.props = self.originalProps;
     },
@@ -126,7 +126,7 @@ export const ReactNode = types
 
       fetch("/api", {
         method: "POST",
-        body: JSON.stringify({ query, variables })
+        body: JSON.stringify({ query, variables }),
       });
     },
 
@@ -151,7 +151,7 @@ export const ReactNode = types
       }
 
       self.props = self.originalProps;
-    }
+    },
   }));
 
 export const createReactNode = (instance: any) => {
@@ -168,18 +168,4 @@ export const flattenReactNodes = (nodes: IReactNode[]) => {
 
     return acc;
   }, [] as IReactNode[]);
-};
-
-export const getReactInstance = (element: HTMLElement) => {
-  if ("_reactRootContainer" in element) {
-    // @ts-ignore Property '_reactRootContainer' does not exist on type 'never'.ts(2339)
-    return element._reactRootContainer._internalRoot.current.child;
-  }
-
-  for (const key in element) {
-    if (key.startsWith("__reactInternalInstance$")) {
-      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'HTMLElement'.ts(7053)
-      return element[key];
-    }
-  }
 };
