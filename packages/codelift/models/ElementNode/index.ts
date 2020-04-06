@@ -3,34 +3,21 @@ import { getRoot, IAnyModelType, Instance, types } from "mobx-state-tree";
 
 import { CSSRule, ICSSRule } from "../CSSRule";
 import { IApp } from "../App";
+import { getReactInstance } from "../../utils/getReactInstance";
 
 export interface IElementNode extends Instance<typeof ElementNode> {}
-
-export const getReactInstance = (element: HTMLElement) => {
-  if ("_reactRootContainer" in element) {
-    // @ts-ignore Property '_reactRootContainer' does not exist on type 'never'.ts(2339)
-    return element._reactRootContainer._internalRoot.current.child;
-  }
-
-  for (const key in element) {
-    if (key.startsWith("__reactInternalInstance$")) {
-      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'HTMLElement'.ts(7053)
-      return element[key];
-    }
-  }
-};
 
 export const ElementNode = types
   .model("ElementNode", {
     classNames: types.array(types.string),
     childNodes: types.array(types.late((): IAnyModelType => ElementNode)),
     previewedRule: types.maybeNull(types.safeReference(CSSRule)),
-    uuid: types.optional(types.identifierNumber, () => Math.random())
+    uuid: types.optional(types.identifierNumber, () => Math.random()),
   })
-  .volatile(self => ({
-    element: document.createElement("null")
+  .volatile((self) => ({
+    element: document.createElement("null"),
   }))
-  .views(self => ({
+  .views((self) => ({
     get className() {
       const classNames = new Set(self.classNames);
 
@@ -45,7 +32,7 @@ export const ElementNode = types
       // Remove overlapping classes that style the same properties
       // ! This is O(n) and potentially slow.
       // !Instead, we need a map of cssRulesByClassName, cssRulesByKeys
-      this.store.cssRules.forEach(rule => {
+      this.store.cssRules.forEach((rule) => {
         const sameStyles = hashStyles(rule.style) === previewHash;
 
         if (sameStyles && classNames.has(rule.className)) {
@@ -109,7 +96,7 @@ export const ElementNode = types
       while (element) {
         const nthChild = element.parentNode
           ? [...element.parentNode.childNodes]
-              .filter(node => node.nodeType === 1)
+              .filter((node) => node.nodeType === 1)
               .indexOf(element) + 1
           : null;
         const { id, tagName } = element;
@@ -118,7 +105,7 @@ export const ElementNode = types
           [
             tagName.toLowerCase(),
             id && `#${element.id}`,
-            !id && nthChild && `:nth-child(${nthChild})`
+            !id && nthChild && `:nth-child(${nthChild})`,
           ]
             .filter(Boolean)
             .join("")
@@ -136,9 +123,9 @@ export const ElementNode = types
 
     get tagName() {
       return self.element.tagName.toLowerCase();
-    }
+    },
   }))
-  .actions(self => ({
+  .actions((self) => ({
     afterCreate() {
       autorun(() => {
         // Keep element className in sync with computed (preview) one
@@ -159,7 +146,7 @@ export const ElementNode = types
 
       self.classNames.replace([...element.classList]);
       self.childNodes.replace(createChildNodes(element));
-    }
+    },
   }));
 
 export const createNode = (element: HTMLElement) => {

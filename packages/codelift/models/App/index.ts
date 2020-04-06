@@ -5,11 +5,12 @@ import { SyntheticEvent } from "react";
 import { createRulesFromDocument, CSSRule, ICSSRule } from "../CSSRule";
 import {
   createReactNode,
-  getReactInstance,
   IReactNode,
   ReactNode,
-  flattenReactNodes
+  flattenReactNodes,
 } from "../ReactNode";
+
+import { getReactInstance } from "../../utils/getReactInstance";
 
 export interface IApp extends Instance<typeof App> {}
 
@@ -28,18 +29,18 @@ export const App = types
     ),
     targeted: types.maybe(types.safeReference(ReactNode)),
     selected: types.maybe(types.safeReference(ReactNode)),
-    selector: types.maybe(types.string)
+    selector: types.maybe(types.string),
   })
-  .volatile(self => ({
+  .volatile((self) => ({
     // Needed for scrollX/Y
     contentWindow: null as null | Window,
     // Needed for document.body
     document: null as null | HTMLDocument,
     // In-case of an error accessing the iframe
     error: null as null | Error,
-    rule: null as null | ICSSRule
+    rule: null as null | ICSSRule,
   }))
-  .views(self => ({
+  .views((self) => ({
     get appliedCSSRules(): ICSSRule[] {
       const { selected } = self;
 
@@ -93,7 +94,7 @@ export const App = types
     },
 
     findReactNodeByElement(element: HTMLElement) {
-      const reactNode = self.reactNodes.find(reactNode => {
+      const reactNode = self.reactNodes.find((reactNode) => {
         return (
           reactNode &&
           reactNode.element &&
@@ -109,7 +110,7 @@ export const App = types
 
       const words = query
         .split(" ")
-        .map(word => word.trim())
+        .map((word) => word.trim())
         .filter(Boolean);
 
       const matching = words.reduce(
@@ -121,25 +122,25 @@ export const App = types
 
             (rule: ICSSRule) => {
               return rule.cssText.includes(word);
-            }
+            },
           ];
 
-          return filtered.filter(rule => tests.some(test => test(rule)));
+          return filtered.filter((rule) => tests.some((test) => test(rule)));
         },
         [...cssRules]
           // Remove duplicates
           // .filter(match => !this.appliedRules.includes(match))
           // Remove :hover, :active, etc.
-          .filter(match => match.className.indexOf(":") === -1)
+          .filter((match) => match.className.indexOf(":") === -1)
       );
 
       return sortBy(matching, [
-        ...words.map(word => (rule: ICSSRule) => {
+        ...words.map((word) => (rule: ICSSRule) => {
           return rule.className.startsWith(word) ? -1 : 0;
         }),
         (rule: ICSSRule) => {
           return rule.className.replace(/[\d+]/g, "");
-        }
+        },
       ]);
     },
 
@@ -169,9 +170,9 @@ export const App = types
       console.error(`codelift could not find React's root container`);
 
       return null;
-    }
+    },
   }))
-  .actions(self => ({
+  .actions((self) => ({
     clearSelected() {
       self.selected = undefined;
     },
@@ -304,7 +305,7 @@ export const App = types
       const { selector } = self;
 
       if (self.root && selector) {
-        self.selected = self.reactNodes.find(reactNode => {
+        self.selected = self.reactNodes.find((reactNode) => {
           return (
             reactNode &&
             reactNode.element &&
@@ -362,5 +363,5 @@ export const App = types
 
     targetReactNode(node: IReactNode) {
       self.targeted = node;
-    }
+    },
   }));
