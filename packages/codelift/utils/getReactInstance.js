@@ -1,4 +1,4 @@
-export const getReactInstance = (element: HTMLElement) => {
+module.exports.getReactInstance = (element) => {
   if ("_reactRootContainer" in element) {
     // @ts-ignore Property '_reactRootContainer' does not exist on type 'never'.ts(2339)
     return element._reactRootContainer._internalRoot.current.child;
