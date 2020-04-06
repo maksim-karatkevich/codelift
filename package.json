@@ -14,10 +14,17 @@
     "release": "auto shipit",
     "test": "echo No Tests"
   },
-  "workspaces": [
-    "examples/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "examples/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/next",
+      "**/react",
+      "**/react-dom"
+    ]
+  },
   "devDependencies": {
     "@auto-it/all-contributors": "^9.26.0",
     "@auto-it/first-time-contributor": "^9.26.0",
