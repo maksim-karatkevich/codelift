@@ -1,3 +1,16 @@
+# v1.0.11 (Mon Apr 06 2020)
+
+#### 🐛 Bug Fix
+
+- `codelift`
+  - Update deps again [#126](https://github.com/ericclemmons/codelift/pull/126) ([@ericclemmons](https://github.com/ericclemmons))
+
+#### Authors: 1
+
+- Eric Clemmons ([@ericclemmons](https://github.com/ericclemmons))
+
+---
+
 # v1.0.10 (Mon Mar 09 2020)
 
 #### 🐛 Bug Fix
