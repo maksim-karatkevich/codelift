@@ -45,16 +45,13 @@
     "wait-for-localhost": "3.2.0"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "2.1.0",
     "@types/classnames": "2.2.10",
     "@types/graphql-type-json": "0.3.2",
     "@types/jscodeshift": "0.7.0",
     "@types/lodash": "4.14.149",
     "@types/match-sorter": "4.0.0",
     "@types/react-dev-utils": "9.0.4",
-    "autoprefixer": "9.7.5",
-    "cssnano": "4.1.10",
-    "postcss-easy-import": "3.0.0",
+    "postcss-preset-env": "^6.7.0",
     "tailwindcss": "1.2.0",
     "typescript": "3.8.3"
   }
