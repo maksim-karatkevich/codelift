@@ -22,51 +22,12 @@ export const ComponentInspector = observer(() => {
       ReactDOM.render(
         React.createElement(Inspector, {
           props,
-          setProps: selected.previewProps
+          setProps: selected.previewProps,
         }),
         ref.current
       );
     },
     [ref.current, props, Inspector]
-  );
-
-  useEffect(
-    function renderPreview() {
-      if (!Inspector || !selected) {
-        return;
-      }
-
-      // Use host's React/ReactDOM from register
-      const { React, ReactDOM } = store.contentWindow as any;
-
-      // Wrap preview in a <span> (just in case there are any fragments)
-      let preview = React.createElement(
-        "span",
-        {},
-        React.createElement(type, props)
-      );
-
-      // Wrap preview in contexts
-      selected.contexts.forEach(context => {
-        const { value } = context.instance.memoizedProps;
-        preview = React.createElement(
-          context.instance.type,
-          { value },
-          preview
-        );
-      });
-
-      // ! Find first HostComponent's stateNode, as `instance.child` can be a FunctionComponent or other ReactFiber type that's not associated with the DOM
-      const node = selected.instance.child.stateNode;
-
-      //  This will render the preview _within_ the current DOM node.
-      // ! Warning: render(...): Replacing React-rendered children with a new root component. If you intended to update the children of this node, you should instead have the existing children update their state and render the new components instead of calling ReactDOM.render.
-      ReactDOM.render(preview, node);
-      // We don't want the nesting, so we replace the node with the <span> from before
-      // ! Warning: render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container.
-      node.replaceWith(node.firstChild);
-    },
-    [props]
   );
 
   if (!Inspector && store.selected?.isUserCode) {
