@@ -21,6 +21,8 @@ export const ComponentInspector = observer(() => {
       // Use Component's copy of React & ReactDOM so that hooks work
       ReactDOM.render(
         React.createElement(Inspector, {
+          // Re-render inspector when it's reset to override `defaultValue`
+          key: selected.props === selected.originalProps,
           props,
           setProps: selected.previewProps,
         }),
