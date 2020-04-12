@@ -30,6 +30,10 @@ module.exports = function useInspector(props, Inspector) {
           },
         });
       };
+
+      // TODO type.Inspector.reset(props) to call `previewProps` to re-render the original node.
+      // ? maybe `type.Inspector.setProps` should be how all external events happen?
+      //  Alternatively, `Inspector.dispatch('update', props)`, `Inspector.dispatch('reset'), `Inspector.dispatch('save')`
     },
     [props, Inspector]
   );
