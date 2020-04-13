@@ -23,7 +23,7 @@
     "@emotion/styled": "10.0.27",
     "apollo-server-micro": "2.11.0",
     "classnames": "2.2.6",
-    "core-js": "3.6.4",
+    "core-js": "3.6.5",
     "cross-spawn": "7.0.2",
     "downshift": "5.0.5",
     "emotion-theming": "10.0.27",
