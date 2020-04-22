@@ -39,7 +39,7 @@ Within your project:
 
 ## Features
 
-- <kbd>Double-Click</kbd> componetns & elements in the tree view to open in VS Code.
+- <kbd>Double-Click</kbd> components & elements in the tree view to open in VS Code.
 
 - [Tailwind](https://tailwindcss.com/) Visual Inspector
 
