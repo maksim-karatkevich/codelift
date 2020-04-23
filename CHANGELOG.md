@@ -1,3 +1,19 @@
+# v1.0.12 (Thu Apr 23 2020)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, Adam Hunter ([@adamrhunter](https://github.com/adamrhunter)), for all your work!
+
+#### 🐛 Bug Fix
+
+- Fixes typo in Features section [#147](https://github.com/ericclemmons/codelift/pull/147) ([@adamrhunter](https://github.com/adamrhunter))
+
+#### Authors: 1
+
+- Adam Hunter ([@adamrhunter](https://github.com/adamrhunter))
+
+---
+
 # v1.0.11 (Mon Apr 06 2020)
 
 #### 🐛 Bug Fix
