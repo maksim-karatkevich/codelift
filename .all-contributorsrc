@@ -29,6 +29,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "adamrhunter",
+      "name": "Adam Hunter",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/119762?v=4",
+      "profile": "http://www.pushreset.org/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
